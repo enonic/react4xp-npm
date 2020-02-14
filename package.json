@@ -1,0 +1,14 @@
+{
+  "name": "react4xp-mono",
+  "version": "0.1.0",
+  "description": "React4xp monorepo for all NPM dependencies",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo 'NO TESTS IMPLEMENTED'"
+  },
+  "author": "Espen Norderud",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "lerna": "^3.20.2"
+  }
+}
