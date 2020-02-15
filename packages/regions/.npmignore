@@ -1,0 +1,7 @@
+.idea/
+.git/
+src/
+test/
+.eslintrc
+.gitignore
+.nvmrc
