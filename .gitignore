@@ -109,7 +109,11 @@
 **/*.old-from-lerna
 
 packages/build-components/**/dummy-build/
-packages/build-components/webpack.config.js
-packages/build-components/entriesandchunks.js
-!packages/build-components/src/webpack.config.js
-!packages/build-components/src/entriesandchunks.js
+packages/regions/entries/
+!packages/buildconstants/src/bin/
+packages/*/*.js
+packages/*/*.jsx
+packages/*/*.ts
+packages/*/*.tsx
+packages/*/*.es
+packages/*/*.es6

@@ -22,7 +22,7 @@
     "clean": "rimraf entries && rimraf *.js && rimraf *.jsx && rimraf *.ts && rimraf *.tsx && rimraf *.es && rimraf *.es6 && rimraf *.*ss && rimraf *.*g && rimraf *.gif && rimraf *.ico",
     "copy": "copyfiles -u 1 src/**/*.* .",
     "lint": "eslint src/**/*.* --fix",
-    "test": "echo \"NO TESTS IMPLEMENTED YET!\n\"",
+    "test": "echo \"\n------------------------------ react4xp-regions: NO TESTS IMPLEMENTED YET! ------------------------------\n\"",
     "prepublish": "npm run lint && npm run test && npm run copy",
     "postpublish": "npm run clean",
     "pretest": "npm run clean && npm run copy",
