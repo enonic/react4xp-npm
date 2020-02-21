@@ -4,7 +4,8 @@
   "description": "Single package wrapping all of React4xp's NPM dependencies",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"\n------------------------------ react4xp mains: NO TESTS IMPLEMENTED YET! See sub-packages.------------------------------\n\""
+    "test": "echo \"\n------------------------------ react4xp mains: NO TESTS IMPLEMENTED YET! See sub-packages. ------------------------------\n\"",
+    "local": "echo \"\n------------------------------ react4xp mains: no local preparations, may not be needed. ------------------------------\n\""
   },
   "repository": {
     "type": "git",

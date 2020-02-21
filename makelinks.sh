@@ -8,3 +8,4 @@ cd $PROJECTDIR/packages/runtime-client && npm link && echo "" && echo "---------
 cd $PROJECTDIR/packages/runtime-externals && npm link && echo "" && echo "--------------------------------------" && echo "" && echo ""
 cd $PROJECTDIR/packages/runtime-nashornpolyfills && npm link && echo "" && echo "--------------------------------------" && echo "" && echo ""
 cd $PROJECTDIR/packages/react4xp && npm link && echo "" && echo "--------------------------------------" && echo "" && echo ""
+cd $PROJECTDIR && lerna run local

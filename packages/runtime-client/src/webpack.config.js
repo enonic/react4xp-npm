@@ -2,6 +2,8 @@
 // The React4xp (not-third-party) core functionality for running in the client,
 // necessary for components to run/render.
 
+/* global __filename, process, __dirname */
+
 const path = require('path');
 
 const Chunks2json = require('chunks-2-json-webpack-plugin');
@@ -69,12 +71,12 @@ module.exports = env => {
                         compact: (BUILD_ENV === 'production'),
                         presets: [
                             "@babel/preset-react",
-                            "@babel/preset-env"
+                            "@babel/preset-env",
                         ],
                         plugins: [
                             "@babel/plugin-transform-arrow-functions",
-                            "@babel/plugin-proposal-object-rest-spread"
-                        ]
+                            "@babel/plugin-proposal-object-rest-spread",
+                        ],
                     },
                 },
             ],
@@ -90,7 +92,16 @@ module.exports = env => {
                 LIBRARY_NAME: JSON.stringify(LIBRARY_NAME),
                 DEVMODE_WARN_AGAINST_CLIENTRENDERED_REGIONS: BUILD_ENV === 'production' ?
                     '' :
-                    '\nregionPathsPostfilled.push(component.path);\nif (!regionsRemaining[regionName] && regionPathsPostfilled.length) {\n\tconsole.warn(`React4xp postfilled ${regionPathsPostfilled.length} component(s) because a region-containing React4xp entry was client-side rendered from an XP controller. Path(s): ${JSON.stringify(regionPathsPostfilled.join(", "))}.\\n\\nNOTE: This version of React4xp and/or XP don\'t support XP components that need page contributions inside client-rendered Regions. This includes React4xp entries in parts, etc. For now, avoid using React4xp client-side-rendering for entries with Regions, or avoid inserting XP components that need page contributions to work into those Regions.\\n\\nSee: https://github.com/enonic/lib-react4xp/issues/38`);\n}'
+                    '\nregionPathsPostfilled.push(component.path);\n' +
+                    'if (!regionsRemaining[regionName] && regionPathsPostfilled.length) {\n' +
+                    '\tconsole.warn(`React4xp postfilled ${regionPathsPostfilled.length} component(s) because a region-containing ' +
+                    'React4xp entry was client-side rendered from an XP controller. Path(s): ' +
+                    '${JSON.stringify(regionPathsPostfilled.join(", "))}.\\n' +
+                    '\\nNOTE: This version of React4xp and/or XP don\'t support XP components that need page contributions inside ' +
+                    'client-rendered Regions. This includes React4xp entries in parts, etc. For now, avoid using React4xp client-side-' +
+                    'rendering for entries with Regions, or avoid inserting XP components that need page contributions to work into ' +
+                    'those Regions.\\n\\n' +
+                    'See: https://github.com/enonic/lib-react4xp/issues/38`);\n}',
             }),
         ],
     };

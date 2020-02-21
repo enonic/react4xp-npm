@@ -23,7 +23,7 @@
     "copy": "copyfiles -u 1 src/**/*.* .",
     "lint": "eslint src/**/*.* --fix",
     "test": "echo \"\n------------------------------ react4xp-regions: NO TESTS IMPLEMENTED YET! ------------------------------\n\"",
-    "local": "npm run clean && npm run copy",
+    "local": "npm run copy",
     "pretest": "npm run lint && npm run local",
     "prepublish": "npm run test",
     "postpublish": "npm run clean"

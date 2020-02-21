@@ -4,7 +4,7 @@ import rimraf from 'rimraf';
 import deepFreeze from 'deep-freeze';
 import { expect } from 'chai';
 
-import buildConstants from '..';
+import buildConstants from '../index';
 const ensureTargetOutputPath = require('../ensureTargetOutputPath');
 
 const DIR_NAME = __dirname; // eslint-disable-line no-undef

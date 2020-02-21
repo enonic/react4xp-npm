@@ -13,10 +13,10 @@
     "clean": "rimraf ./webpack.config.js && rimraf build && rimraf ./entriesandchunks.js && rimraf test/dummy-build",
     "copy": "copyfiles --flat src/webpack.config.js . && node_modules/react4xp-buildconstants/bin/cli.js $(pwd) \"{\\\"verbose\\\":true,\\\"overwriteConstantsFile\\\":true,\\\"outputFileName\\\":\\\"$(pwd)/build/constants.json\\\",\\\"SRC_R4X\\\":\\\"$(pwd)/test/main/resources/react4xp\\\",\\\"SRC_SITE\\\":\\\"$(pwd)/test/main/resources/site\\\"}\"",
     "pretest": "npm run lint && npm run local",
-    "test": "npm run prepareDependencies && npm run testEntriesAndChunks && npm run testRaw && npm run testOverride",
+    "test": "npm run testEntriesAndChunks && npm run testRaw && npm run testOverride",
     "prepareDependencies": "npm run prepareBuildConstants && npm run prepareRegions",
-    "prepareBuildConstants": "cd ../buildconstants && npm link && npm run local && cd ../build-components && npm link react4xp-buildconstants",
-    "prepareRegions": "cd ../regions && npm link && npm run local && cd ../build-components && npm link react4xp-regions",
+    "prepareBuildConstants": "cd ../buildconstants && npm run local && npm link && cd ../build-components && npm link react4xp-buildconstants",
+    "prepareRegions": "cd ../regions && npm run local && npm link && cd ../build-components && npm link react4xp-regions",
     "testEntriesAndChunks": "NODE_PATH=./ mocha --compilers js:@babel/register --require @babel/polyfill --require test/test_helper.js \"test/**/*@(spec.js)\"",
     "babel-min": "babel src/entriesandchunks.js -o ./entriesandchunks.js --no-comments --minified --compact true",
     "babel": "babel src/entriesandchunks.js -o ./entriesandchunks.js --no-comments",
@@ -25,7 +25,7 @@
     "prepublish": "npm run test",
     "postpublish": "npm run clean",
     "lint": "node_modules/eslint/bin/eslint.js src/*.js --fix",
-    "local": "npm run clean && npm run copy && npm run babel-min"
+    "local": "npm run prepareDependencies && npm run copy && npm run babel-min"
   },
   "repository": {
     "type": "git",
