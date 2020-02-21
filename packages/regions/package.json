@@ -23,10 +23,10 @@
     "copy": "copyfiles -u 1 src/**/*.* .",
     "lint": "eslint src/**/*.* --fix",
     "test": "echo \"\n------------------------------ react4xp-regions: NO TESTS IMPLEMENTED YET! ------------------------------\n\"",
-    "prepublish": "npm run lint && npm run test && npm run copy",
-    "postpublish": "npm run clean",
-    "pretest": "npm run clean && npm run copy",
-    "local": "npm run pretest"
+    "local": "npm run clean && npm run copy",
+    "pretest": "npm run lint && npm run local",
+    "prepublish": "npm run test",
+    "postpublish": "npm run clean"
   },
   "repository": {
     "type": "git",
