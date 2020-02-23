@@ -1,6 +1,6 @@
 {
   "name": "react4xp",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "Single package wrapping all of React4xp's NPM dependencies",
   "main": "index.js",
   "scripts": {
@@ -27,7 +27,15 @@
     "react": "*",
     "react-dom": "*",
     "webpack": "^4",
-    "webpack-cli": "^3"
+    "webpack-cli": "^3",
+    "@babel/cli": "^7",
+    "@babel/core": "^7",
+    "@babel/plugin-proposal-object-rest-spread": "^7",
+    "@babel/plugin-transform-arrow-functions": "^7",
+    "@babel/plugin-proposal-class-properties": "^7",
+    "@babel/preset-env": "^7",
+    "@babel/preset-react": "^7",
+    "babel-loader": "^8"
   },
   "dependencies": {
     "@babel/cli": "^7.8.4",
@@ -40,7 +48,7 @@
     "babel-loader": "^8.0.6",
     "react4xp-build-components": "^0.7.4",
     "react4xp-buildconstants": "^0.8.0",
-    "react4xp-regions": "^0.2.1",
+    "react4xp-regions": "^0.2.2",
     "react4xp-runtime-client": "^0.5.0",
     "react4xp-runtime-externals": "^0.4.0",
     "react4xp-runtime-nashornpolyfills": "^0.4.3"
