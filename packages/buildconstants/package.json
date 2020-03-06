@@ -12,20 +12,10 @@
   ],
   "bin": "bin/cli.js",
   "scripts": {
-    "clean": "npm run cleanBin && npm run cleanEnsure && npm run cleanIndex && npm run cleanTestBuild && npm run cleanTestOutput",
-    "cleanBin": "rimraf ./bin",
-    "cleanEnsure": "rimraf ./ensureTargetOutputPath.js",
-    "cleanIndex": "rimraf ./index.js",
-    "cleanTestBuild": "rimraf test/build",
-    "cleanTestOutput": "rimraf test/output",
-    "compile": "babel src -d . --no-comments && babel src/bin -d bin --no-comments",
-    "copy": "copyfiles --flat src/*.json lib",
+    "compile": "babel src -d . --no-comments",
+    "clean": "./gradlew clean",
     "lint": "node_modules/eslint/bin/eslint.js src/",
-    "pretest": "npm run lint && npm run local",
-    "test": "NODE_PATH=./ mocha --compilers js:babel-core/register --require babel-polyfill --require test/test_helper.js \"test/**/*@(spec.js)\" && mkdir test/output/cli; bin/cli.js test/output/cli && path-exists test/output/cli/react4xp_constants.json && path-exists test/output/cli/build/resources/main/lib/enonic/react4xp/react4xp_constants.json",
-    "prepublish": "npm run test",
-    "postpublish": "npm run clean",
-    "local": "npm run copy && npm run compile"
+    "test:mocha": "NODE_PATH=./ mocha --compilers js:babel-core/register --require babel-polyfill --require test/test_helper.js \"test/**/*@(spec.js)\" && mkdir test/output/cli; bin/cli.js test/output/cli && path-exists test/output/cli/react4xp_constants.json && path-exists test/output/cli/build/resources/main/lib/enonic/react4xp/react4xp_constants.json"
   },
   "repository": {
     "type": "git",
@@ -53,8 +43,7 @@
     "eslint": "4.18.2",
     "eslint-plugin-react": "^7.12.4",
     "mocha": "^5.2.0",
-    "path-exists-cli": "^1.0.0",
-    "rimraf": "^2.6.3"
+    "path-exists-cli": "^1.0.0"
   },
   "babel": {
     "presets": [
