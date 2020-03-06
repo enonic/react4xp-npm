@@ -4,6 +4,8 @@
   "description": "Single package wrapping all of React4xp's NPM dependencies",
   "main": "index.js",
   "scripts": {
+    "npmInstall": "npm i",
+    "npmClean": "rimraf node_modules || true",
     "test": "echo \"\n------------------------------ react4xp mains: NO TESTS IMPLEMENTED YET! See sub-packages. ------------------------------\n\"",
     "local": "echo \"\n------------------------------ react4xp mains: no local preparations, may not be needed. ------------------------------\n\""
   },
@@ -52,5 +54,8 @@
     "react4xp-runtime-client": "^0.5.0",
     "react4xp-runtime-externals": "^0.4.0",
     "react4xp-runtime-nashornpolyfills": "^0.4.3"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2"
   }
 }

@@ -1,0 +1,46 @@
+plugins {
+  id "com.enonic.xp.app"
+  id "com.moowork.node"
+}
+
+dependencies {
+  include ":packages:buildconstants"
+}
+
+app {
+  systemVersion = "${xpVersion}"
+}
+
+cleanBuilt.delete './webpack.config.js', './build', './entriesandchunks.js', 'test/dummy-build'
+
+compileJS.args = ['run', 'babel-min']
+compileJS.inputs.files('package.json', 'src/entriesandchunks.js')
+compileJS.outputs.file('./entriesandchunks.js')
+
+task copyFiles(type: Copy) {
+  from 'src/webpack.config.js'
+  into '.'
+}
+copyFiles.inputs.file('src/webpack.config.js')
+copyFiles.outputs.file('./webpack.config.js')
+buildAll.dependsOn += copyFiles
+
+
+task makeConstants(type: NodeTask) {
+  script = file('node_modules/react4xp-buildconstants/bin/cli.js')
+  args = ["${project.PROJDIR}", "\"{\\\"verbose\\\":true,\\\"overwriteConstantsFile\\\":true,\\\"outputFileName\\\":\\\"\$(pwd)/build/constants.json\\\",\\\"SRC_R4X\\\":\\\"\$(pwd)/test/main/resources/react4xp\\\",\\\"SRC_SITE\\\":\\\"\$(pwd)/test/main/resources/site\\\"}\""]
+}
+makeConstants.dependsOn += npmInstall
+
+testAll.args=['run', 'test:mocha']
+testAll.inputs.files('package.json', 'test/buildconstants_spec.js', 'test_helper.js')
+testAll.inputs.dir('src')
+testAll.outputs.dir('test/build')
+testAll.outputs.dir('test/output')
+testAll.dependsOn += makeConstants
+
+task makeSubLink(type: NpmTask) {
+  args = ['link', 'react4xp-buildconstants']
+}
+makeSubLink.dependsOn += ":packages:constants:makeLink"
+makeLink.dependsOn += makeSubLink

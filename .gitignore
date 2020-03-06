@@ -108,12 +108,18 @@
 
 **/*.old-from-lerna
 
-packages/build-components/**/dummy-build/
+packages/buildcomponents/**/dummy-build/
 packages/regions/entries/
-!packages/buildconstants/src/bin/
+!packages/constants/src/bin/
 packages/*/*.js
 packages/*/*.jsx
 packages/*/*.ts
 packages/*/*.tsx
 packages/*/*.es
 packages/*/*.es6
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build

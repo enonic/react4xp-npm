@@ -19,6 +19,8 @@
     "*.ico"
   ],
   "scripts": {
+    "npmInstall": "npm i",
+    "npmClean": "rimraf node_modules || true",
     "clean": "rimraf entries && rimraf *.js && rimraf *.jsx && rimraf *.ts && rimraf *.tsx && rimraf *.es && rimraf *.es6 && rimraf *.*ss && rimraf *.*g && rimraf *.gif && rimraf *.ico",
     "copy": "copyfiles -u 1 src/**/*.* .",
     "lint": "eslint src/**/*.* --fix",
@@ -40,19 +42,19 @@
   "homepage": "https://github.com/enonic/react4xp-regions",
   "dependencies": {},
   "devDependencies": {
-    "copyfiles": "^2.1.0",
     "babel-eslint": "^10.0.3",
+    "copyfiles": "^2.1.0",
     "eslint": "^6.1.0",
-    "rimraf": "^2.0.0",
-    "husky": "^1.2.0",
-    "lint-staged": "^8.1.7",
-    "prettier": "^1.18.2",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-json": "^1.4.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.0.0",
     "eslint-plugin-react": "^7.16.0",
-    "eslint-plugin-react-hooks": "^1.7.0"
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "husky": "^1.2.0",
+    "lint-staged": "^8.1.7",
+    "prettier": "^1.18.2",
+    "rimraf": "^2.7.1"
   },
   "peerDependencies": {
     "react": "^16",

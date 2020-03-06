@@ -480,6 +480,11 @@ module.exports = (env = {}) => {
       10
     )}].js`;
   }
+  console.log(
+    "\n\n\nMODULES (components):",
+    path.resolve(process.cwd(), "node_modules"),
+    "\n\n\n"
+  );
 
   const config = {
     mode: BUILD_ENV,
@@ -495,7 +500,8 @@ module.exports = (env = {}) => {
     },
 
     resolve: {
-      extensions: [".es6", ".js", ".jsx"]
+      extensions: [".es6", ".js", ".jsx"],
+      modules: [path.resolve(process.cwd(), "node_modules")]
     },
 
     devtool: DEVMODE ? "source-map" : false,

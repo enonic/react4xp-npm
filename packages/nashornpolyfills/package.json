@@ -10,13 +10,15 @@
         "LICENSE"
     ],
     "scripts": {
+        "npmInstall": "npm i",
+        "npmClean": "rimraf node_modules || true",
         "clean": "npm run cleanRaw && npm run cleanWebpack && npm run cleanTest",
         "cleanRaw": "rimraf ./nashornpolyfills.es6",
         "cleanWebpack": "rimraf ./webpack.config.js",
         "cleanTest": "rimraf test/output",
         "copy": "copyfiles --flat src/*.* .",
         "prepareDependencies": "npm run prepareBuildConstants",
-        "prepareBuildConstants": "cd ../buildconstants && npm run local && npm link && cd ../runtime-nashornpolyfills && npm link react4xp-buildconstants",
+        "prepareBuildConstants": "cd ../constants && npm run local && npm link && cd  && npm link react4xp-buildconstants",
         "test": "npm run test:cli && npm run cleanTest && npm run makeconstants && npm run test:constants",
         "test:cli": "webpack --config webpack.config.js --env.NASHORNPOLYFILLS_SOURCE=test/testPolyfiller.es6 --env.BUILD_ENV=development --env.BUILD_R4X=$(pwd)/test/output --env.NASHORNPOLYFILLS_FILENAME=testPolyfilled && node $(pwd)/test/output/testPolyfilled.js",
         "test:constants": "webpack --config webpack.config.js --env.REACT4XP_CONFIG_FILE=test/output/testConfig.json && node test/output/testPolyfilled.js",

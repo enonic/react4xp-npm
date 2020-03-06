@@ -10,9 +10,11 @@
         "LICENSE"
     ],
     "scripts": {
+        "npmInstall": "npm i",
+        "npmClean": "rimraf node_modules || true",
         "clean": "rimraf ./react4xpClient.es6 && rimraf ./webpack.config.js && rimraf build && rimraf test/output",
         "copy": "copyfiles --flat src/*.* .",
-        "test": "node_modules/webpack-cli/bin/cli.js --config src/webpack.config.js --env.BUILD_R4X=$(pwd)/test/output --env.LIBRARY_NAME=React4xp --env.CHUNK_CONTENTHASH=9 --env.CLIENT_CHUNKS_FILENAME=chunky.json",
+        "test": "node_modules/webpack-cli/bin/cli.js --config webpack.config.js --env.BUILD_R4X=$(pwd)/test/output --env.LIBRARY_NAME=React4xp --env.CHUNK_CONTENTHASH=9 --env.CLIENT_CHUNKS_FILENAME=chunky.json",
         "lint": "eslint src/**/*.* --fix",
         "pretest": "npm run lint && npm run local",
         "prepublish": "npm run test",
@@ -61,7 +63,7 @@
         "babel-loader": "^8.0.6",
         "copyfiles": "^2.0.0",
         "eslint": "^5.15.3",
-        "rimraf": "^2.0.0",
+        "rimraf": "^2.7.1",
         "webpack": "^4.29.6",
         "webpack-cli": "^3.2.3"
     },

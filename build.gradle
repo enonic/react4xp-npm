@@ -42,12 +42,21 @@ configure(subprojects.findAll {!ignoreSubprojectDirs.contains(it.name)}) {
   npmInstall.inputs.files('package.json', 'package-lock.json')
   npmInstall.outputs.file('package-lock.json')
 
-  task clean(type: Delete) {}
+  task cleanBuilt(type: Delete) {}
+  task npmClean(type: Delete) {
+    delete 'node_modules'
+  }
 
   task compileJS(type: NpmTask) {}
   task buildAll {}
   buildAll.dependsOn += compileJS
-  task lint(type: NpmTask) {}
+  task lint(type: NpmTask) {
+    args=['run', 'lint']
+  }
+  lint.inputs.file('package.json')
+  lint.inputs.dir('src')
+  lint.dependsOn += npmInstall
+
   task testAll(type: NpmTask) {}
 
   compileJS.dependsOn += npmInstall
@@ -55,36 +64,26 @@ configure(subprojects.findAll {!ignoreSubprojectDirs.contains(it.name)}) {
   testAll.dependsOn += buildAll
 
 
-
   task doPublish(type: NpmTask) {
     args=['publish', '--dry-run']
   }
   doPublish.dependsOn += testAll
   task postPublish {}
-  postPublish.dependsOn += clean
-  clean.shouldRunAfter doPublish
+  postPublish.dependsOn += cleanBuilt
+  cleanBuilt.shouldRunAfter doPublish
   postPublish.dependsOn += doPublish
   task publish {}
   publish.dependsOn += postPublish
 
-
-// Standard
   task makeLink(type: NpmTask) {
     args=['link']
   }
   makeLink.dependsOn += compileJS
-
 }
 
 
 
 dependencies {
-  include project(":packages:buildconstants")
-}
-
-
-npmInstall.inputs.files('package.json', 'package-lock.json')
-npmInstall.outputs.file('package-lock.json')
-task npmClean(type: Delete) {
-  delete 'node_modules'
+  include project(":packages:constants")
+  include project(":packages:buildcomponents")
 }
