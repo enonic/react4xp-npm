@@ -52,7 +52,7 @@ task testOverride(type: NpmTask) {
 testOverride.outputs.dir('test/build')
 testOverride.outputs.dir('test/output')
 
-testAll.args = ['version']
+testAll.args = ['run', "test:main"]
 testAll.dependsOn += testEntriesAndChunks
 testAll.dependsOn += testRaw
 testAll.dependsOn += testOverride
@@ -72,10 +72,8 @@ task makeConstantsSubLink(type: NpmTask) {
 makeConstantsSubLink.dependsOn += ":packages:constants:makeLink"
 makeLink.dependsOn += makeConstantsSubLink
 
-/* UNCOMMENT WHEN REGIONS IS A GRADLE SUBPROJECT:
 task makeRegionsSubLink(type: NpmTask) {
   args = ['link', 'react4xp-regions']
 }
 makeRegionsSubLink.dependsOn += ":packages:regions:makeLink"
 makeLink.dependsOn += makeRegionsSubLink
-*/

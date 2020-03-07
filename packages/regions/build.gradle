@@ -1,0 +1,38 @@
+plugins {
+  id "com.moowork.node" // version "1.3.1"
+}
+
+cleanBuilt.delete 'entries'
+cleanBuilt.delete fileTree('.') { include '*.js' }
+cleanBuilt.delete fileTree('.') { include '*.jsx' }
+cleanBuilt.delete fileTree('.') { include '*.ts' }
+cleanBuilt.delete fileTree('.') { include '*.tsx' }
+cleanBuilt.delete fileTree('.') { include '*.es' }
+cleanBuilt.delete fileTree('.') { include '*.es6' }
+cleanBuilt.delete fileTree('.') { include '*.*ss' }
+cleanBuilt.delete fileTree('.') { include '*.*g' }
+cleanBuilt.delete fileTree('.') { include '*.gif' }
+cleanBuilt.delete fileTree('.') { include '*.ico' }
+
+compileJS.enabled = false
+testAll.enabled = false
+
+lint.args=['run', 'lint']
+lint.inputs.file('package.json')
+lint.inputs.dir('src')
+lint.dependsOn += project.npmInstall
+
+//args=['run', 'ADD SOME TESTS PLZ?']
+//testAll.inputs.files('package.json')
+//testAll.outputs.files('package.json')
+//testAll.inputs.dir('src')
+//testAll.outputs.dir('test/build')
+//testAll.outputs.dir('test/output')
+
+task copyFiles(type: Copy) {
+  from 'src/**.*'
+  into '.'
+}
+copyFiles.inputs.file('src/webpack.config.js')
+copyFiles.outputs.file('./webpack.config.js')
+buildAll.dependsOn += copyFiles

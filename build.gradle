@@ -41,6 +41,13 @@ configure(subprojects.findAll {!ignoreSubprojectDirs.contains(it.name)}) {
 
   npmInstall.inputs.files('package.json', 'package-lock.json')
   npmInstall.outputs.file('package-lock.json')
+  npmInstall.outputs.file file("${PROJDIR}/node_modules/npmInstalled.txt")
+  npmInstall.doLast {
+    def initFile = new File("${PROJDIR}/node_modules/npmInstalled.txt")
+    initFile.text = """
+Marker file, indicating that the npmInstall gradle task has been run in this subproject - faster than traversing the entire node_modules tree for changes.
+"""
+  }
 
   task cleanBuilt(type: Delete) {}
   task npmClean(type: Delete) {
@@ -82,10 +89,17 @@ configure(subprojects.findAll {!ignoreSubprojectDirs.contains(it.name)}) {
   makeLink.dependsOn += ":packages:${project.name}:compileJS"
 }
 
-
-
 dependencies {
   include project(":packages:constants")
   include project(":packages:buildcomponents")
 }
 
+npmInstall.inputs.files('package.json', 'package-lock.json')
+npmInstall.outputs.file('package-lock.json')
+npmInstall.outputs.file file("./node_modules/npmInstalled.txt")
+npmInstall.doLast {
+  def initFile = new File("./node_modules/npmInstalled.txt")
+  initFile.text = """
+Marker file, indicating that the npmInstall gradle task has been run in the root project - faster than traversing the entire node_modules tree for changes.
+"""
+}
