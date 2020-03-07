@@ -49,36 +49,37 @@ configure(subprojects.findAll {!ignoreSubprojectDirs.contains(it.name)}) {
 
   task compileJS(type: NpmTask) {}
   task buildAll {}
-  buildAll.dependsOn += compileJS
+  buildAll.dependsOn += ":packages:${project.name}:compileJS"
   task lint(type: NpmTask) {
     args=['run', 'lint']
   }
   lint.inputs.file('package.json')
   lint.inputs.dir('src')
-  lint.dependsOn += npmInstall
+  lint.outputs.dir('src')
+  lint.dependsOn += ":packages:${project.name}:npmInstall"
 
   task testAll(type: NpmTask) {}
 
-  compileJS.dependsOn += npmInstall
+  compileJS.dependsOn += ":packages:${project.name}:npmInstall"
   testAll.dependsOn += lint
-  testAll.dependsOn += buildAll
+  testAll.dependsOn += ":packages:${project.name}:buildAll"
 
 
   task doPublish(type: NpmTask) {
     args=['publish', '--dry-run']
   }
-  doPublish.dependsOn += testAll
+  doPublish.dependsOn += ":packages:${project.name}:testAll"
   task postPublish {}
-  postPublish.dependsOn += cleanBuilt
-  cleanBuilt.shouldRunAfter doPublish
-  postPublish.dependsOn += doPublish
+  postPublish.dependsOn += ":packages:${project.name}:cleanBuilt"
+  cleanBuilt.shouldRunAfter ":packages:${project.name}:doPublish"
+  postPublish.dependsOn += ":packages:${project.name}:doPublish"
   task publish {}
-  publish.dependsOn += postPublish
+  publish.dependsOn += ":packages:${project.name}:postPublish"
 
   task makeLink(type: NpmTask) {
     args=['link']
   }
-  makeLink.dependsOn += compileJS
+  makeLink.dependsOn += ":packages:${project.name}:compileJS"
 }
 
 
@@ -87,3 +88,4 @@ dependencies {
   include project(":packages:constants")
   include project(":packages:buildcomponents")
 }
+

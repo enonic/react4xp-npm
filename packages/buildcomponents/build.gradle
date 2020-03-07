@@ -11,9 +11,9 @@ app {
   systemVersion = "${xpVersion}"
 }
 
-cleanBuilt.delete './webpack.config.js', './build', './entriesandchunks.js', 'test/dummy-build'
+cleanBuilt.delete './webpack.config.js', './build', './entriesandchunks.js', 'test/dummy-build', "test/output"
 
-compileJS.args = ['run', 'babel-min']
+compileJS.args = ['run', 'babel']
 compileJS.inputs.files('package.json', 'src/entriesandchunks.js')
 compileJS.outputs.file('./entriesandchunks.js')
 
@@ -28,19 +28,54 @@ buildAll.dependsOn += copyFiles
 
 task makeConstants(type: NodeTask) {
   script = file('node_modules/react4xp-buildconstants/bin/cli.js')
-  args = ["${project.PROJDIR}", "\"{\\\"verbose\\\":true,\\\"overwriteConstantsFile\\\":true,\\\"outputFileName\\\":\\\"\$(pwd)/build/constants.json\\\",\\\"SRC_R4X\\\":\\\"\$(pwd)/test/main/resources/react4xp\\\",\\\"SRC_SITE\\\":\\\"\$(pwd)/test/main/resources/site\\\"}\""]
+  args = [project.PROJDIR, '"{\\"verbose\\":true,\\"overwriteConstantsFile\\":true,\\"outputFileName\\":\\"' + project.PROJDIR + '/build/constants.json\\",\\"SRC_R4X\\":\\"' + project.PROJDIR + '/test/main/resources/react4xp\\",\\"SRC_SITE\\":\\"' + project.PROJDIR + '/test/main/resources/site\\"}"']
 }
+makeConstants.inputs.file('node_modules/react4xp-buildconstants/bin/cli.js')
+makeConstants.outputs.dir('build')
 makeConstants.dependsOn += npmInstall
+makeConstants.dependsOn += copyFiles
 
-testAll.args=['run', 'test:mocha']
-testAll.inputs.files('package.json', 'test/buildconstants_spec.js', 'test_helper.js')
+
+task testEntriesAndChunks(type: NpmTask) {
+  args=['run', 'test:entriesAndChunks']
+}
+testEntriesAndChunks.outputs.dir('test/build')
+testEntriesAndChunks.outputs.dir('test/output')
+task testRaw(type: NpmTask) {
+  args=['run', 'test:raw']
+}
+testRaw.outputs.dir('test/build')
+testRaw.outputs.dir('test/output')
+task testOverride(type: NpmTask) {
+  args=['run', 'test:override']
+}
+testOverride.outputs.dir('test/build')
+testOverride.outputs.dir('test/output')
+
+testAll.args = ['version']
+testAll.dependsOn += testEntriesAndChunks
+testAll.dependsOn += testRaw
+testAll.dependsOn += testOverride
+
+testAll.inputs.files('package.json', 'test/test_helper.js', 'test/build_entries_and_chunks_spec.js', 'test/webpack.config.override.js', 'test/webpack.config.symlinks.override.js')
 testAll.inputs.dir('src')
+testAll.inputs.dir('test/main')
+testAll.inputs.dir('test/dummy-src')
 testAll.outputs.dir('test/build')
 testAll.outputs.dir('test/output')
+buildAll.dependsOn += copyFiles
 testAll.dependsOn += makeConstants
 
-task makeSubLink(type: NpmTask) {
+task makeConstantsSubLink(type: NpmTask) {
   args = ['link', 'react4xp-buildconstants']
 }
-makeSubLink.dependsOn += ":packages:constants:makeLink"
-makeLink.dependsOn += makeSubLink
+makeConstantsSubLink.dependsOn += ":packages:constants:makeLink"
+makeLink.dependsOn += makeConstantsSubLink
+
+/* UNCOMMENT WHEN REGIONS IS A GRADLE SUBPROJECT:
+task makeRegionsSubLink(type: NpmTask) {
+  args = ['link', 'react4xp-regions']
+}
+makeRegionsSubLink.dependsOn += ":packages:regions:makeLink"
+makeLink.dependsOn += makeRegionsSubLink
+*/

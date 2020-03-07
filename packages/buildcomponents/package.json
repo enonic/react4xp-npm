@@ -10,16 +10,11 @@
     "LICENSE"
   ],
   "scripts": {
-    "copy": "node_modules/react4xp-buildconstants/bin/cli.js $(pwd) ",
-    "test": "npm run testEntriesAndChunks && npm run testRaw && npm run testOverride",
-    "prepareDependencies": "npm run prepareBuildConstants && npm run prepareRegions",
-    "prepareBuildConstants": "cd ../constants && npm run npmInstall && npm run local && npm link && cd  && npm link react4xp-buildconstants",
-    "prepareRegions": "cd ../regions && npm run npmInstall && npm run local && npm link && cd  && npm link react4xp-regions",
+    "test:entriesAndChunks": "NODE_PATH=./ mocha --compilers js:@babel/register --require @babel/polyfill --require test/test_helper.js \"test/**/*@(spec.js)\"",
+    "test:raw": "webpack --config src/webpack.config.js --env.ENTRY_DIRS=../entries --env.CHUNK_DIRS=sharedComps,../redux --env.OVERRIDE_COMPONENT_WEBPACK=test/webpack.config.symlinks.override.js --env.REACT4XP_CONFIG_FILE=build/constants.json --env.VERBOSE=true ",
+    "test:override": "webpack --config src/webpack.config.js --env.OVERRIDE_COMPONENT_WEBPACK=test/webpack.config.override.js --env.VERBOSE=true --env.REACT4XP_CONFIG_FILE=build/constants.json ",
     "babel-min": "babel src/entriesandchunks.js -o ./entriesandchunks.js --no-comments --minified --compact true",
     "babel": "babel src/entriesandchunks.js -o ./entriesandchunks.js --no-comments",
-    "testEntriesAndChunks": "NODE_PATH=./ mocha --compilers js:@babel/register --require @babel/polyfill --require test/test_helper.js \"test/**/*@(spec.js)\"",
-    "testRaw": "webpack --config src/webpack.config.js --env.ENTRY_DIRS=../entries --env.CHUNK_DIRS=sharedComps,../redux --env.OVERRIDE_COMPONENT_WEBPACK=test/webpack.config.symlinks.override.js --env.REACT4XP_CONFIG_FILE=build/constants.json --env.VERBOSE=true ",
-    "testOverride": "webpack --config src/webpack.config.js --env.OVERRIDE_COMPONENT_WEBPACK=test/webpack.config.override.js --env.VERBOSE=true --env.REACT4XP_CONFIG_FILE=build/constants.json ",
     "lint": "node_modules/eslint/bin/eslint.js src/*.js --fix",
     "local": "npm run prepareDependencies && npm run copy && npm run babel-min"
   },
