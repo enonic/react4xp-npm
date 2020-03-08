@@ -55,8 +55,13 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
   }
 
   task compileJS(type: NpmTask) {}
+  compileJS.inputs.file('package.json')
+  compileJS.inputs.dir('src')
+  compileJS.dependsOn += ":packages:${project.name}:npmInstall"
+
   task buildAll {}
   buildAll.dependsOn += ":packages:${project.name}:compileJS"
+
   task lint(type: NpmTask) {
     args=['run', 'lint']
   }
@@ -64,14 +69,15 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
   lint.inputs.dir('src')
   lint.outputs.dir('src')
   lint.dependsOn += ":packages:${project.name}:npmInstall"
+  buildAll.shouldRunAfter ":packages:${project.name}:lint"
 
   task testAll(type: NpmTask) {}
-
-  compileJS.dependsOn += ":packages:${project.name}:npmInstall"
+  testAll.inputs.files('package.json')
+  testAll.inputs.dir('src')
+  testAll.inputs.dir('test')
   testAll.dependsOn += ":packages:${project.name}:lint"
   testAll.shouldRunAfter ":packages:${project.name}:lint"
   testAll.dependsOn += ":packages:${project.name}:buildAll"
-  buildAll.shouldRunAfter ":packages:${project.name}:lint"
 
 
   task doPublish(type: NpmTask) {

@@ -32,7 +32,7 @@ task makeConstants(type: NodeTask) {
 }
 makeConstants.inputs.file('node_modules/react4xp-buildconstants/bin/cli.js')
 makeConstants.outputs.dir('build')
-makeConstants.dependsOn += npmInstall
+makeConstants.dependsOn += project.npmInstall
 makeConstants.dependsOn += copyFiles
 
 
@@ -55,16 +55,10 @@ testOverride.outputs.dir('test/output')
 testAll.args = ['run', "test:main"]
 testAll.dependsOn += testEntriesAndChunks
 testAll.dependsOn += testRaw
+testAll.dependsOn += makeConstants
 testAll.dependsOn += testOverride
-
-testAll.inputs.files('package.json', 'test/test_helper.js', 'test/build_entries_and_chunks_spec.js', 'test/webpack.config.override.js', 'test/webpack.config.symlinks.override.js')
-testAll.inputs.dir('src')
-testAll.inputs.dir('test/main')
-testAll.inputs.dir('test/dummy-src')
 testAll.outputs.dir('test/build')
 testAll.outputs.dir('test/output')
-buildAll.dependsOn += copyFiles
-testAll.dependsOn += makeConstants
 
 task makeConstantsSubLink(type: NpmTask) {
   args = ['link', 'react4xp-buildconstants']

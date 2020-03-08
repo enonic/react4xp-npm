@@ -5,18 +5,7 @@ plugins {
 cleanBuilt.delete './bin', './ensureTargetOutputPath.js', './index.js', 'test/build', 'test/output'
 
 compileJS.args = ['run', 'compile']
-compileJS.inputs.file('package.json')
-compileJS.inputs.dir('src')
 compileJS.outputs.dir('./bin')
 compileJS.outputs.files('./ensureTargetOutputPath.js', './index.js')
 
-lint.args=['run', 'lint']
-lint.inputs.file('package.json')
-lint.inputs.dir('src')
-lint.dependsOn += npmInstall
-
 testAll.args=['run', 'test:mocha']
-testAll.inputs.files('package.json', 'test/buildconstants_spec.js', 'test_helper.js')
-testAll.inputs.dir('src')
-testAll.outputs.dir('test/build')
-testAll.outputs.dir('test/output')
