@@ -69,7 +69,9 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
 
   compileJS.dependsOn += ":packages:${project.name}:npmInstall"
   testAll.dependsOn += ":packages:${project.name}:lint"
+  testAll.shouldRunAfter ":packages:${project.name}:lint"
   testAll.dependsOn += ":packages:${project.name}:buildAll"
+  buildAll.shouldRunAfter ":packages:${project.name}:lint"
 
 
   task doPublish(type: NpmTask) {
