@@ -68,7 +68,7 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
   task testAll(type: NpmTask) {}
 
   compileJS.dependsOn += ":packages:${project.name}:npmInstall"
-  testAll.dependsOn += lint
+  testAll.dependsOn += ":packages:${project.name}:lint"
   testAll.dependsOn += ":packages:${project.name}:buildAll"
 
 

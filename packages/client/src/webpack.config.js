@@ -58,7 +58,6 @@ module.exports = env => {
 
         resolve: {
             extensions: ['.es6', '.js', '.jsx'],
-            modules: [path.resolve(__dirname, "..", "..", "node_modules")],
         },
         devtool: (BUILD_ENV === 'production') ? false : 'source-map',
         module: {

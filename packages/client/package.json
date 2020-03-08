@@ -10,16 +10,11 @@
         "LICENSE"
     ],
     "scripts": {
-        "npmInstall": "npm i",
-        "npmClean": "rimraf node_modules || true",
-        "clean": "rimraf ./react4xpClient.es6 && rimraf ./webpack.config.js && rimraf build && rimraf test/output",
-        "copy": "copyfiles --flat src/*.* .",
-        "test": "node_modules/webpack-cli/bin/cli.js --config webpack.config.js --env.BUILD_R4X=$(pwd)/test/output --env.LIBRARY_NAME=React4xp --env.CHUNK_CONTENTHASH=9 --env.CLIENT_CHUNKS_FILENAME=chunky.json",
-        "lint": "eslint src/**/*.* --fix",
-        "pretest": "npm run lint && npm run local",
-        "prepublish": "npm run test",
-        "postpublish": "npm run clean",
-        "local": "npm run copy"
+        "test:main": "echo \"(Placeholder necessary for task dependencies)\"",
+        "test:prepare": "npm i react",
+        "test:webpack": "webpack --config webpack.config.js --env.BUILD_R4X=$(pwd)/test/output --env.LIBRARY_NAME=React4xp --env.CHUNK_CONTENTHASH=9 --env.CLIENT_CHUNKS_FILENAME=chunky.json && echo \"-------------- react4xp-runtimeclient builds. ADD SOME ACTUAL TESTS PLZ?\"",
+        "test:cleanup": "npm remove react",
+        "lint": "eslint src/**/*.* --fix"
     },
     "repository": {
         "type": "git",
