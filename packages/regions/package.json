@@ -19,7 +19,8 @@
     "*.ico"
   ],
   "scripts": {
-    "lint": "eslint src/**/*.* --fix"
+    "lint": "eslint src/**/*.* --fix",
+    "nsi": "npm-safe-install"
   },
   "repository": {
     "type": "git",
@@ -44,8 +45,8 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "husky": "^1.2.0",
     "lint-staged": "^8.1.7",
-    "prettier": "^1.18.2",
-    "rimraf": "^2.7.1"
+    "npm-safe-install": "^1.1.0",
+    "prettier": "^1.18.2"
   },
   "peerDependencies": {
     "react": "^16",
