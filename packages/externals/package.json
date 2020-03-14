@@ -14,7 +14,7 @@
     "test:webpack": "webpack --config ./webpack.config.js --env.REACT4XP_CONFIG_FILE=/test/react4xpConstants.json --env.BUILD_R4X=$(pwd)/build && echo \"\" && echo \"--> build/\" && ls build && echo \"-------------- react4xp-runtime-externals builds. ADD SOME ACTUAL TESTS PLZ?\"",
     "test:prepare": "npm i react react-dom",
     "test:cleanup": "npm remove react react-dom",
-    "nsi": "npm-safe-install"
+    "nsi:install": "npm-safe-install"
   },
   "repository": {
     "type": "git",

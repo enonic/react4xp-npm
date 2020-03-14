@@ -17,7 +17,7 @@
     "babel-min": "babel src/entriesandchunks.js -o ./entriesandchunks.js --no-comments --minified --compact true",
     "babel": "babel src/entriesandchunks.js -o ./entriesandchunks.js --no-comments",
     "lint": "node_modules/eslint/bin/eslint.js src/*.js --fix",
-    "nsi": "npm-safe-install"
+    "nsi:install": "npm-safe-install"
   },
   "repository": {
     "type": "git",
