@@ -9,3 +9,7 @@ compileJS.outputs.dir('./bin')
 compileJS.outputs.files('./ensureTargetOutputPath.js', './index.js')
 
 testAll.args=['run', 'test:mocha']
+
+npmLink.dependsOn project.compileJS
+npmLink.mustRunAfter project.nsiInstall
+compileJS.shouldRunAfter project.nsiInstall

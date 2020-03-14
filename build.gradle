@@ -39,29 +39,31 @@ def ignoreSubprojectDirs = [
 configure(subprojects.findAll {!ignoreSubprojectDirs.contains(it.name)}) {
   apply plugin: "com.moowork.node" // version "1.3.1"
 
+
+
   def slash = File.separator
   project.ext.PROJDIR = "${project.buildDir.toString()}${slash}${slash}${slash}".replace("${slash}build${slash}${slash}", '')
 
   def markerName = "${project.ext.PROJDIR}${slash}node_modules${slash}react4xp${slash}npmInstalled.txt"
   def linkMarkerName = "${project.ext.PROJDIR}${slash}node_modules${slash}react4xp${slash}npmLinked.txt"
 
-  if (new File(linkMarkerName).exists()) {
-    task nsiInstall(type:NpmTask) {
-      args=['run', 'nsi:install']
-      doLast {
-        def marker = new File(linkMarkerName)
-        new File(marker.getParent()).mkdirs()
-        marker.text = """
+  task nsiInstall(type:NpmTask) {
+    args=['run', 'nsi:install']
+    doLast {
+      def marker = new File(linkMarkerName)
+      new File(marker.getParent()).mkdirs()
+      marker.text = """
 Marker file, indicating that node_module is locally linked - faster than traversing the entire node_modules tree for changes.
 """
-      }
     }
+  }
+  nsiInstall.inputs.files('package.json', 'package-lock.json')
+  nsiInstall.outputs.file('package-lock.json')
+  nsiInstall.outputs.file file(linkMarkerName)
+
+  if (new File(linkMarkerName).exists()) {
     npmInstall.enabled = false
     npmInstall.dependsOn += nsiInstall
-
-    nsiInstall.inputs.files('package.json', 'package-lock.json')
-    nsiInstall.outputs.file('package-lock.json')
-    nsiInstall.outputs.file file(linkMarkerName)
 
   } else {
     npmInstall.enabled = true
@@ -120,18 +122,17 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
   task publish {}
   publish.dependsOn += ":packages:${project.name}:postPublish"
 
-  task makeLink(type: NpmTask) {
+  task npmLink(type: NpmTask) {
     args=['link']
-  }
-  makeLink.outputs.file file(linkMarkerName)
-  makeLink.doLast {
-    def marker = new File(linkMarkerName)
-    new File(marker.getParent()).mkdirs()
-    marker.text = """
+    doLast {
+      def marker = new File(linkMarkerName)
+      new File(marker.getParent()).mkdirs()
+      marker.text = """
 Marker file, indicating that node_module is locally linked - faster than traversing the entire node_modules tree for changes.
 """
+    }
   }
-  makeLink.dependsOn += ":packages:${project.name}:compileJS"
+  npmLink.dependsOn += ":packages:${project.name}:nsiInstall"
 }
 
 dependencies {

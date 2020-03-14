@@ -10,3 +10,4 @@
 rootProject.name = 'buildcomponents'
 
 include ":packages:constants"
+include ":packages:regions"

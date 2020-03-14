@@ -53,5 +53,5 @@ buildAll.dependsOn += project.copyFiles
 task makeConstantsSubLink(type: NpmTask) {
   args = ['link', 'react4xp-buildconstants']
 }
-makeConstantsSubLink.dependsOn += ":packages:constants:makeLink"
-makeLink.dependsOn += makeConstantsSubLink
+makeConstantsSubLink.dependsOn += ":packages:constants:npmLink"
+npmLink.dependsOn += makeConstantsSubLink
