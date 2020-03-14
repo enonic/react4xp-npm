@@ -132,7 +132,6 @@ Marker file, indicating that node_module is locally linked - faster than travers
 """
     }
   }
-  npmLink.dependsOn += ":packages:${project.name}:nsiInstall"
 }
 
 dependencies {

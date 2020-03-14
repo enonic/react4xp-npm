@@ -12,16 +12,16 @@ task makeConstantsSubLink(type: NpmTask) {
   args = ['link', 'react4xp-buildconstants']
 }
 makeConstantsSubLink.dependsOn += ":packages:constants:npmLink"
-makeConstantsSubLink.mustRunAfter npmInstall
-makeConstantsSubLink.mustRunAfter project.npmInstall
+// makeConstantsSubLink.mustRunAfter npmInstall
+// makeConstantsSubLink.mustRunAfter project.npmInstall
 
 
 task makeRegionsSubLink(type: NpmTask) {
   args = ['link', 'react4xp-regions']
 }
 makeRegionsSubLink.dependsOn += ":packages:regions:npmLink"
-makeRegionsSubLink.mustRunAfter npmInstall
-makeRegionsSubLink.mustRunAfter project.npmInstall
+// makeRegionsSubLink.mustRunAfter npmInstall
+// makeRegionsSubLink.mustRunAfter project.npmInstall
 makeRegionsSubLink.mustRunAfter makeConstantsSubLink
 
 
@@ -29,8 +29,8 @@ task makeComponentSubLink(type: NpmTask) {
   args = ['link', 'react4xp-build-components']
 }
 makeComponentSubLink.dependsOn += ":packages:buildcomponents:npmLink"
-makeComponentSubLink.mustRunAfter npmInstall
-makeComponentSubLink.mustRunAfter project.npmInstall
+// makeComponentSubLink.mustRunAfter npmInstall
+// makeComponentSubLink.mustRunAfter project.npmInstall
 makeComponentSubLink.mustRunAfter makeConstantsSubLink
 makeComponentSubLink.mustRunAfter makeRegionsSubLink
 
@@ -39,8 +39,8 @@ task makeNashornSubLink(type: NpmTask) {
   args = ['link', 'react4xp-runtime-nashornpolyfills']
 }
 makeNashornSubLink.dependsOn += ":packages:nashornpolyfills:npmLink"
-makeNashornSubLink.mustRunAfter npmInstall
-makeNashornSubLink.mustRunAfter project.npmInstall
+// makeNashornSubLink.mustRunAfter npmInstall
+// makeNashornSubLink.mustRunAfter project.npmInstall
 makeNashornSubLink.mustRunAfter makeConstantsSubLink
 
 
@@ -48,18 +48,21 @@ task makeClientSubLink(type: NpmTask) {
   args = ['link', 'react4xp-runtime-client']
 }
 makeClientSubLink.dependsOn += ":packages:client:npmLink"
-makeClientSubLink.mustRunAfter npmInstall
-makeClientSubLink.mustRunAfter project.npmInstall
+// makeClientSubLink.mustRunAfter npmInstall
+// makeClientSubLink.mustRunAfter project.npmInstall
 
 
 task makeExternalsSubLink(type: NpmTask) {
   args = ['link', 'react4xp-runtime-externals']
 }
 makeExternalsSubLink.dependsOn += ":packages:externals:npmLink"
-makeExternalsSubLink.mustRunAfter npmInstall
-makeExternalsSubLink.mustRunAfter project.npmInstall
+// makeExternalsSubLink.mustRunAfter npmInstall
+// makeExternalsSubLink.mustRunAfter project.npmInstall
 
 
+task makeMainLink(type: NpmTask) {
+  args = ['link']
+}
 task makeSubLinks {}
 makeSubLinks.dependsOn += makeComponentSubLink
 makeSubLinks.dependsOn += makeNashornSubLink
@@ -68,7 +71,8 @@ makeSubLinks.dependsOn += makeExternalsSubLink
 makeSubLinks.dependsOn += makeConstantsSubLink
 makeSubLinks.dependsOn += makeRegionsSubLink
 
-makeSubLinks.mustRunAfter npmInstall
-makeSubLinks.mustRunAfter project.npmInstall
-
 npmLink.dependsOn += makeSubLinks
+npmLink.dependsOn += makeMainLink
+makeSubLinks.mustRunAfter makeMainLink
+
+npmLink.args = ['version']

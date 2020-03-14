@@ -50,8 +50,22 @@ copyFiles.inputs.dir('src')
 copyFiles.outputs.files('./nashornpolyfills.es6', './webpack.config.js')
 buildAll.dependsOn += project.copyFiles
 
+
+
 task makeConstantsSubLink(type: NpmTask) {
   args = ['link', 'react4xp-buildconstants']
 }
 makeConstantsSubLink.dependsOn += ":packages:constants:npmLink"
-npmLink.dependsOn += makeConstantsSubLink
+
+
+task makeMainLink(type: NpmTask) {
+  args = ['link']
+}
+task makeSubLinks {}
+makeSubLinks.dependsOn += makeConstantsSubLink
+
+npmLink.dependsOn += makeSubLinks
+npmLink.dependsOn += makeMainLink
+makeSubLinks.mustRunAfter makeMainLink
+
+npmLink.args = ['version']

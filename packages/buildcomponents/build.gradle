@@ -60,14 +60,31 @@ testAll.dependsOn += testOverride
 testAll.outputs.dir('test/build')
 testAll.outputs.dir('test/output')
 
+
+
+
+
+
 task makeConstantsSubLink(type: NpmTask) {
   args = ['link', 'react4xp-buildconstants']
 }
 makeConstantsSubLink.dependsOn += ":packages:constants:npmLink"
-npmLink.dependsOn += makeConstantsSubLink
+
 
 task makeRegionsSubLink(type: NpmTask) {
   args = ['link', 'react4xp-regions']
 }
 makeRegionsSubLink.dependsOn += ":packages:regions:npmLink"
-npmLink.dependsOn += makeRegionsSubLink
+
+task makeMainLink(type: NpmTask) {
+  args = ['link']
+}
+task makeSubLinks {}
+makeSubLinks.dependsOn += makeConstantsSubLink
+makeSubLinks.dependsOn += makeRegionsSubLink
+
+npmLink.dependsOn += makeSubLinks
+npmLink.dependsOn += makeMainLink
+makeSubLinks.mustRunAfter makeMainLink
+
+npmLink.args = ['version']
