@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"\n------------------------------ react4xp main: NO TESTS IMPLEMENTED YET! See sub-packages. ------------------------------\n\"",
+    "lint": "echo \"react4xp main: nothing to lint. This is fine\"",
     "nsi:install": "npm-safe-install"
   },
   "repository": {
