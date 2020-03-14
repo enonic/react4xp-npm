@@ -1,0 +1,36 @@
+plugins {
+  id "com.moowork.node" // version "1.3.1"
+}
+
+cleanBuilt.enabled = false
+compileJS.enabled = false
+testAll.enabled = false
+buildAll.enabled = false
+
+// Buildcomponents takes care of linking the constants and regions subprojects
+task makeComponentSubLink(type: NpmTask) {
+  args = ['link', 'react4xp-build-components']
+}
+
+// NashornPolyfills also links the constants subproject
+task makeNashornSubLink(type: NpmTask) {
+  args = ['link', 'react4xp-runtime-nashornpolyfills']
+}
+
+task makeClientSubLink(type: NpmTask) {
+  args = ['link', 'react4xp-runtime-client']
+}
+
+task makeExternalsSubLink(type: NpmTask) {
+  args = ['link', 'react4xp-runtime-externals']
+}
+
+makeComponentSubLink.dependsOn += ":packages:buildcomponents:makeLink"
+makeNashornSubLink.dependsOn += ":packages:nashornpolyfills:makeLink"
+makeClientSubLink.dependsOn += ":packages:client:makeLink"
+makeExternalsSubLink.dependsOn += ":packages:externals:makeLink"
+
+makeLink.dependsOn += makeComponentSubLink
+makeLink.dependsOn += makeNashornSubLink
+makeLink.dependsOn += makeClientSubLink
+makeLink.dependsOn += makeExternalsSubLink
