@@ -22,12 +22,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/enonic/react4xp-runtime-externals.git"
+    "url": "git+ssh://git@github.com:enonic/react4xp-npm.git"
   },
   "author": "Espen Norderud",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/enonic/react4xp-runtime-externals/issues"
+    "url": "https://github.com/enonic/lib-react4xp/issues"
   },
   "homepage": "https://github.com/enonic/react4xp-runtime-externals/",
   "dependencies": {
