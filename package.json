@@ -7,8 +7,7 @@
     "setup": "npm i && npm run npmClean && npm run npmInstall",
     "npmClean": "lerna run npmClean",
     "npmInstall": "lerna run --scope react4xp-buildconstants npmInstall && lerna run --scope react4xp-regions npmInstall && lerna run npmInstall",
-    "test": "echo 'NO TESTS IMPLEMENTED'",
-    "local": "./makelinks.sh || ./makelinks.bat"
+    "test": "echo 'NO TESTS IMPLEMENTED'"
   },
   "author": "Espen Norderud",
   "license": "Apache-2.0",

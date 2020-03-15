@@ -7,12 +7,5 @@
  * in the user manual at https://docs.gradle.org/6.2.1/userguide/multi_project_builds.html
  */
 
-rootProject.name = 'react4xp'
+rootProject.name = 'externals'
 
-include ":packages:buildcomponents"
-include ":packages:constants"
-include ":packages:regions"
-include ":packages:client"
-include ":packages:externals"
-include ":packages:nashornpolyfills"
-include ":packages:react4xp"

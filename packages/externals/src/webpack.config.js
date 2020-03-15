@@ -174,8 +174,8 @@ module.exports = (env = {}) => {
     },
 
     resolve: {
-      extensions: [".es6", ".js", ".jsx"],
-      modules: [path.resolve(__dirname, "..", "..", "node_modules")]
+      extensions: [".es6", ".js", ".jsx"]
+      // modules: [path.resolve(__dirname, "..", "..", "node_modules")]
     },
     module: {
       rules: [

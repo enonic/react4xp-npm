@@ -15,9 +15,9 @@
   },
   "scripts": {
     "compile": "babel src -d . --no-comments",
-    "clean": "./gradlew clean",
     "lint": "node_modules/eslint/bin/eslint.js src/",
-    "test:mocha": "NODE_PATH=./ mocha --compilers js:babel-core/register --require babel-polyfill --require test/test_helper.js \"test/**/*@(spec.js)\" && mkdir test/output/cli; bin/cli.js test/output/cli && path-exists test/output/cli/react4xp_constants.json && path-exists test/output/cli/build/resources/main/lib/enonic/react4xp/react4xp_constants.json"
+    "test:mocha": "NODE_PATH=./ mocha --compilers js:babel-core/register --require babel-polyfill --require test/test_helper.js \"test/**/*@(spec.js)\" && mkdir test/output/cli; bin/cli.js test/output/cli && path-exists test/output/cli/react4xp_constants.json && path-exists test/output/cli/build/resources/main/lib/enonic/react4xp/react4xp_constants.json",
+    "nsi:install": "npm-safe-install"
   },
   "repository": {
     "type": "git",
@@ -45,6 +45,7 @@
     "eslint": "4.18.2",
     "eslint-plugin-react": "^7.12.4",
     "mocha": "^5.2.0",
+    "npm-safe-install": "^1.1.0",
     "path-exists-cli": "^1.0.0"
   },
   "babel": {

@@ -500,8 +500,8 @@ module.exports = (env = {}) => {
     },
 
     resolve: {
-      extensions: [".es6", ".js", ".jsx"],
-      modules: [path.resolve(process.cwd(), "node_modules")]
+      extensions: [".es6", ".js", ".jsx"]
+      // modules: [path.resolve(process.cwd(), "node_modules")]
     },
 
     devtool: DEVMODE ? "source-map" : false,

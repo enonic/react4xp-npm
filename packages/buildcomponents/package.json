@@ -17,7 +17,7 @@
     "babel-min": "babel src/entriesandchunks.js -o ./entriesandchunks.js --no-comments --minified --compact true",
     "babel": "babel src/entriesandchunks.js -o ./entriesandchunks.js --no-comments",
     "lint": "node_modules/eslint/bin/eslint.js src/*.js --fix",
-    "local": "npm run prepareDependencies && npm run copy && npm run babel-min"
+    "nsi:install": "npm-safe-install"
   },
   "repository": {
     "type": "git",
@@ -70,12 +70,12 @@
     "husky": "^1.2.0",
     "lint-staged": "^8.1.7",
     "mocha": "^5.2.0",
+    "npm-safe-install": "^1.1.0",
     "prettier": "^1.18.2",
     "react-redux": "^6.0.1",
     "react4xp-buildconstants": "0.8.0",
     "react4xp-regions": "0.2.2",
     "redux": "^4.0.1",
-    "rimraf": "^2.0.0",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"
   },

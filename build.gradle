@@ -37,17 +37,48 @@ def ignoreSubprojectDirs = [
         'packages'
 ]
 configure(subprojects.findAll {!ignoreSubprojectDirs.contains(it.name)}) {
-  project.ext.PROJDIR = "${project.buildDir.toString()}${File.separator}${File.separator}${File.separator}".replace("${File.separator}build${File.separator}${File.separator}", '')
+  apply plugin: "com.moowork.node" // version "1.3.1"
 
-  npmInstall.inputs.files('package.json', 'package-lock.json')
-  npmInstall.outputs.file('package-lock.json')
-  npmInstall.outputs.file file("${PROJDIR}/node_modules/npmInstalled.txt")
-  npmInstall.doLast {
-    def initFile = new File("${PROJDIR}/node_modules/npmInstalled.txt")
-    initFile.text = """
+
+
+  def slash = File.separator
+  project.ext.PROJDIR = "${project.buildDir.toString()}${slash}${slash}${slash}".replace("${slash}build${slash}${slash}", '')
+
+  def markerName = "${project.ext.PROJDIR}${slash}node_modules${slash}react4xp${slash}npmInstalled.txt"
+  def linkMarkerName = "${project.ext.PROJDIR}${slash}node_modules${slash}react4xp${slash}npmLinked.txt"
+
+  task nsiInstall(type:NpmTask) {
+    args=['run', 'nsi:install']
+    doLast {
+      def marker = new File(linkMarkerName)
+      new File(marker.getParent()).mkdirs()
+      marker.text = """
+Marker file, indicating that node_module is locally linked - faster than traversing the entire node_modules tree for changes.
+"""
+    }
+  }
+  nsiInstall.inputs.files('package.json', 'package-lock.json')
+  nsiInstall.outputs.file('package-lock.json')
+  nsiInstall.outputs.file file(linkMarkerName)
+
+  if (new File(linkMarkerName).exists()) {
+    npmInstall.enabled = false
+    npmInstall.dependsOn += nsiInstall
+
+  } else {
+    npmInstall.enabled = true
+    npmInstall.inputs.files('package.json', 'package-lock.json')
+    npmInstall.outputs.file('package-lock.json')
+    npmInstall.outputs.file file(markerName)
+    npmInstall.doLast {
+      def marker = new File(markerName)
+      new File(marker.getParent()).mkdirs()
+      marker.text = """
 Marker file, indicating that the npmInstall gradle task has been run in this subproject - faster than traversing the entire node_modules tree for changes.
 """
+    }
   }
+
 
   task cleanBuilt(type: Delete) {}
   task npmClean(type: Delete) {
@@ -55,8 +86,13 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
   }
 
   task compileJS(type: NpmTask) {}
+  compileJS.inputs.file('package.json')
+  compileJS.inputs.dir('src')
+  compileJS.dependsOn += ":packages:${project.name}:npmInstall"
+
   task buildAll {}
   buildAll.dependsOn += ":packages:${project.name}:compileJS"
+
   task lint(type: NpmTask) {
     args=['run', 'lint']
   }
@@ -64,11 +100,14 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
   lint.inputs.dir('src')
   lint.outputs.dir('src')
   lint.dependsOn += ":packages:${project.name}:npmInstall"
+  buildAll.shouldRunAfter ":packages:${project.name}:lint"
 
   task testAll(type: NpmTask) {}
-
-  compileJS.dependsOn += ":packages:${project.name}:npmInstall"
+  testAll.inputs.files('package.json')
+  testAll.inputs.dir('src')
+  testAll.inputs.dir('test')
   testAll.dependsOn += ":packages:${project.name}:lint"
+  testAll.shouldRunAfter ":packages:${project.name}:lint"
   testAll.dependsOn += ":packages:${project.name}:buildAll"
 
 
@@ -83,10 +122,16 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
   task publish {}
   publish.dependsOn += ":packages:${project.name}:postPublish"
 
-  task makeLink(type: NpmTask) {
+  task npmLink(type: NpmTask) {
     args=['link']
+    doLast {
+      def marker = new File(linkMarkerName)
+      new File(marker.getParent()).mkdirs()
+      marker.text = """
+Marker file, indicating that node_module is locally linked - faster than traversing the entire node_modules tree for changes.
+"""
+    }
   }
-  makeLink.dependsOn += ":packages:${project.name}:compileJS"
 }
 
 dependencies {
@@ -94,12 +139,15 @@ dependencies {
   include project(":packages:buildcomponents")
 }
 
+def slash = File.separator
+def markerName = ".${slash}node_modules${slash}react4xp${slash}npmInstalled.txt"
 npmInstall.inputs.files('package.json', 'package-lock.json')
 npmInstall.outputs.file('package-lock.json')
-npmInstall.outputs.file file("./node_modules/npmInstalled.txt")
+npmInstall.outputs.file file(markerName)
 npmInstall.doLast {
-  def initFile = new File("./node_modules/npmInstalled.txt")
-  initFile.text = """
+  def marker = new File(markerName)
+  new File(marker.getParent()).mkdirs()
+  marker.text = """
 Marker file, indicating that the npmInstall gradle task has been run in the root project - faster than traversing the entire node_modules tree for changes.
 """
 }
