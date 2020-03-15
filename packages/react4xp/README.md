@@ -1,11 +1,11 @@
-# `regions`
+# `react4xp`
 
 > TODO: description
 
 ## Usage
 
 ```
-const regions = require('regions');
+const react4Xp = require('react4xp');
 
 // TODO: DEMONSTRATE API
 ```
