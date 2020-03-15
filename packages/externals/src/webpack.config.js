@@ -163,6 +163,17 @@ module.exports = (env = {}) => {
     )}].js`;
   }
 
+  const resolveModules = [path.resolve(__dirname, "node_modules")];
+  if (env.ROOT) {
+    resolveModules.push(path.resolve(env.ROOT, "node_modules"));
+  }
+  /* console.log("resolveModules (" +
+  	(Array.isArray(resolveModules) ?
+  		("array[" + resolveModules.length + "]") :
+  		(typeof resolveModules + (resolveModules && typeof resolveModules === 'object' ? (" with keys: " + JSON.stringify(Object.keys(resolveModules))) : ""))
+  	) + "): " + JSON.stringify(resolveModules, null, 2)
+  ); // */
+
   return {
     mode: BUILD_ENV,
 
@@ -174,8 +185,8 @@ module.exports = (env = {}) => {
     },
 
     resolve: {
-      extensions: [".es6", ".js", ".jsx"]
-      // modules: [path.resolve(__dirname, "..", "..", "node_modules")]
+      extensions: [".es6", ".js", ".jsx"],
+      modules: resolveModules
     },
     module: {
       rules: [
