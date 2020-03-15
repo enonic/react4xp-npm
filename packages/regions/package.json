@@ -62,5 +62,10 @@
       "pre-commit": "lint-staged",
       "pre-push": "npm run test"
     }
+  },
+  "main": "lib/regions.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
   }
 }

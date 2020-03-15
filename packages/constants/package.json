@@ -10,7 +10,9 @@
     "README.md",
     "LICENSE"
   ],
-  "bin": "bin/cli.js",
+  "bin": {
+    "react4xp-buildconstants": "bin/cli.js"
+  },
   "scripts": {
     "compile": "babel src -d . --no-comments",
     "clean": "./gradlew clean",
@@ -53,5 +55,9 @@
     "plugins": [
       "transform-object-rest-spread"
     ]
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
   }
 }

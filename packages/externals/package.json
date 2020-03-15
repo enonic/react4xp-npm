@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/enonic/react4xp-runtime-externals"
+    "url": "git+https://github.com/enonic/react4xp-runtime-externals.git"
   },
   "author": "Espen Norderud",
   "license": "Apache-2.0",
@@ -79,5 +79,9 @@
       "pre-commit": "lint-staged",
       "pre-push": "npm run test"
     }
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
   }
 }
