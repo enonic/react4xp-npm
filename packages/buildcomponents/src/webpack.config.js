@@ -126,6 +126,8 @@ module.exports = (env = {}) => {
   const DEVMODE = BUILD_ENV !== "production";
   const VERBOSE = `${env.VERBOSE || ""}`.trim().toLowerCase() === "true";
 
+  const ROOT = env.ROOT || __dirname;
+
   // TODO: Probably more consistent if this too is a master config file property. Add to react4xp-buildconstants and import above from env.REACT4XP_CONFIG_FILE.
   let OVERRIDE_COMPONENT_WEBPACK = `${env.OVERRIDE_COMPONENT_WEBPACK ||
     ""}`.trim();
@@ -500,8 +502,8 @@ module.exports = (env = {}) => {
     },
 
     resolve: {
-      extensions: [".es6", ".js", ".jsx"]
-      // modules: [path.resolve(process.cwd(), "node_modules")]
+      extensions: [".es6", ".js", ".jsx"],
+      modules: [path.resolve(ROOT, "node_modules")]
     },
 
     devtool: DEVMODE ? "source-map" : false,

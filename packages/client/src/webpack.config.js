@@ -29,9 +29,19 @@ module.exports = env => {
             {}
     );
 
+    // Optional root from which to look for node_modules
+    let ROOT = env.ROOT || __dirname;
+
+    try {
+        // env.ROOT may enter wrapped in double-quotes
+        ROOT = JSON.parse(ROOT);
+    } catch (e) {
+        // Guess it wasn't wrapped then.
+    }
+
     if  (overridden) {
         console.log(__filename, "overridden config: " + JSON.stringify({
-            BUILD_R4X, LIBRARY_NAME, BUILD_ENV, CHUNK_CONTENTHASH, CLIENT_CHUNKS_FILENAME,
+            BUILD_R4X, LIBRARY_NAME, BUILD_ENV, CHUNK_CONTENTHASH, CLIENT_CHUNKS_FILENAME, ROOT,
         }, null, 2));
     }
 
@@ -58,6 +68,7 @@ module.exports = env => {
 
         resolve: {
             extensions: ['.es6', '.js', '.jsx'],
+            modules: [path.resolve(ROOT, "node_modules")],
         },
         devtool: (BUILD_ENV === 'production') ? false : 'source-map',
         module: {
@@ -82,8 +93,11 @@ module.exports = env => {
             ],
         },
 
+        // TODO: Replace hardcoded values with EXTERNALS from buildconstants!
         externals: {
+            "react": "React",
             "react-dom": "ReactDOM",
+            "react-dom/server": "ReactDOMServer",
         },
 
         plugins: [

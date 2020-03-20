@@ -3,12 +3,6 @@
 
 import ReactDOM from 'react-dom';
 
-require('react-dom');
-console.log("client - window.React1:", window.React1);
-window.React2 = require('react');
-console.log("client - window.React2:", window.React2);
-console.log("client - Equal: ", window.React1 === window.React2);
-
 /** Adjusted version of https://www.oreilly.com/library/view/high-performance-javascript/9781449382308/ch01.html#I_programlisting1_d1e1051
   * in order to parallelly load internally independent scripts from multiple urls, and only when they've ALL completely loaded
   * and run, run the callback.

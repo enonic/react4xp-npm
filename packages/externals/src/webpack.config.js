@@ -112,6 +112,8 @@ module.exports = (env = {}) => {
   const BUILD_ENV = env.BUILD_ENV || config.BUILD_ENV;
   const BUILD_R4X = env.BUILD_R4X || config.BUILD_R4X;
 
+  const ROOT = env.ROOT || __dirname;
+
   /* EXTERNALS is the main object handled here. By default it looks like this:
       {
         "react": "React",
@@ -163,17 +165,6 @@ module.exports = (env = {}) => {
     )}].js`;
   }
 
-  const resolveModules = [path.resolve(__dirname, "node_modules")];
-  if (env.ROOT) {
-    resolveModules.push(path.resolve(env.ROOT, "node_modules"));
-  }
-  /* console.log("resolveModules (" +
-  	(Array.isArray(resolveModules) ?
-  		("array[" + resolveModules.length + "]") :
-  		(typeof resolveModules + (resolveModules && typeof resolveModules === 'object' ? (" with keys: " + JSON.stringify(Object.keys(resolveModules))) : ""))
-  	) + "): " + JSON.stringify(resolveModules, null, 2)
-  ); // */
-
   return {
     mode: BUILD_ENV,
 
@@ -186,7 +177,7 @@ module.exports = (env = {}) => {
 
     resolve: {
       extensions: [".es6", ".js", ".jsx"],
-      modules: resolveModules
+      modules: [path.resolve(ROOT, "node_modules")]
     },
     module: {
       rules: [
