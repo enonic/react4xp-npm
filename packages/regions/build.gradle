@@ -11,7 +11,7 @@ cleanBuilt.delete fileTree('.') { include '*.*ss' }
 cleanBuilt.delete fileTree('.') { include '*.*g' }
 cleanBuilt.delete fileTree('.') { include '*.gif' }
 cleanBuilt.delete fileTree('.') { include '*.ico' }
-/* THE ABOVE WORKS. THE BELOW DOESN'T - SHOULDN'T IT? WOULD BE A BIT CLEANER:
+/* TODO: THE ABOVE WORKS. THE BELOW DOESN'T - SHOULDN'T IT? WOULD BE A BIT CLEANER:
 [
   '*.js',
   '*.jsx',
@@ -54,3 +54,5 @@ copyFiles.inputs.dir('src')
 copyFiles.outputs.files('./*.jsx')
 copyFiles.outputs.dir('entries')
 buildAll.dependsOn project.copyFiles
+
+project.doPublish.shouldRunAfter ":packages:constants:doPublish"

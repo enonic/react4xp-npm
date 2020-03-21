@@ -69,3 +69,5 @@ npmLink.dependsOn makeMainLink
 makeSubLinks.mustRunAfter makeMainLink
 
 npmLink.args = ['version']
+
+doPublish.shouldRunAfter ":packages:constants:doPublish"

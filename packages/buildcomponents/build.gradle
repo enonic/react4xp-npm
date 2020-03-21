@@ -89,3 +89,6 @@ npmLink.dependsOn makeMainLink
 makeSubLinks.mustRunAfter makeMainLink
 
 npmLink.enabled = false
+
+doPublish.shouldRunAfter ":packages:constants:doPublish"
+doPublish.shouldRunAfter ":packages:regions:doPublish"
