@@ -1,6 +1,6 @@
 {
   "name": "react4xp",
-  "version": "0.1.2",
+  "version": "0.0.5",
   "description": "Single package wrapping all of React4xp's NPM dependencies",
   "main": "index.js",
   "scripts": {
@@ -48,12 +48,12 @@
     "@babel/preset-react": "^7.8.3",
     "@babel/register": "^7.8.3",
     "babel-loader": "^8.0.6",
-    "react4xp-build-components": "0.8.2",
-    "react4xp-buildconstants": "0.8.4",
-    "react4xp-regions": "0.2.5",
-    "react4xp-runtime-client": "0.6.2",
-    "react4xp-runtime-externals": "0.5.2",
-    "react4xp-runtime-nashornpolyfills": "0.4.6"
+    "react4xp-build-components": "0.7.4",
+    "react4xp-buildconstants": "0.8.2",
+    "react4xp-regions": "0.2.3",
+    "react4xp-runtime-client": "0.5.0",
+    "react4xp-runtime-externals": "0.4.0",
+    "react4xp-runtime-nashornpolyfills": "0.4.3"
   },
   "devDependencies": {
     "npm-safe-install": "^1.1.0"
@@ -64,6 +64,5 @@
   },
   "files": [
     "lib"
-  ],
-  "gitHead": "282c60f0346532ec875eb6a80f5aa651ec0b1f94"
+  ]
 }
