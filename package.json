@@ -4,11 +4,36 @@
   "description": "React4xp monorepo for all NPM dependencies",
   "main": "index.js",
   "scripts": {
-    "test": "echo 'NO TESTS IMPLEMENTED'"
+    "publish:cc:npm": "lerna publish --conventional-commits",
+    "publish:cc:": "lerna publish --conventional-commits --skip-npm && echo \"Versioning done, using conventional commits. Publish to NPM with: 'lerna run publish'\"",
+    "setup": "npm i && npm run cleanNpm && npm run npmInstall",
+    "npmInstall": "run-script-os",
+    "npmInstall:win32": "gradlew npmInstall",
+    "npmInstall:default": "./gradlew npmInstall",
+    "clean": "run-script-os",
+    "clean:win32": "gradlew cleanBuilt",
+    "clean:default": "./gradlew cleanBuilt",
+    "cleanNpm": "run-script-os",
+    "cleanNpm:win32": "gradlew cleanNpm",
+    "cleanNpm:default": "./gradlew cleanNpm",
+    "test": "run-script-os",
+    "test:win32": "gradlew testAll",
+    "test:default": "./gradlew testAll",
+    "build": "run-script-os",
+    "build:win32": "gradlew buildAll",
+    "build:default": "./gradlew buildAll",
+    "npmLink": "run-script-os",
+    "npmLink:win32": "gradlew npmLink",
+    "npmLink:default": "./gradlew npmLink"
   },
   "author": "Espen Norderud",
   "license": "Apache-2.0",
   "devDependencies": {
-    "lerna": "^3.20.2"
+    "lerna": "^3.20.2",
+    "run-script-os": "^1.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:enonic/react4xp-npm.git"
   }
 }
