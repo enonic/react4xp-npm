@@ -1,0 +1,15 @@
+plugins {
+  id "com.moowork.node" // version "1.3.1"
+}
+
+cleanBuilt.delete './bin', './ensureTargetOutputPath.js', './index.js', 'test/build', 'test/output'
+
+compileJS.args = ['run', 'compile']
+compileJS.outputs.dir('./bin')
+compileJS.outputs.files('./ensureTargetOutputPath.js', './index.js')
+
+testAll.args=['run', 'test:mocha']
+
+npmLink.dependsOn project.compileJS
+npmLink.mustRunAfter project.nsiInstall
+compileJS.shouldRunAfter project.nsiInstall
