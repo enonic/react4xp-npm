@@ -1,6 +1,6 @@
 {
   "name": "react4xp-runtime-externals",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "React4xp helper: using webpack externals as input, generates a runnable externals chunk for shared external libraries",
   "main": "webpack.config.js",
   "files": [
@@ -30,14 +30,14 @@
     "chunks-2-json-webpack-plugin": "^1.0.0"
   },
   "peerDependencies": {
+    "@babel/cli": "^7",
+    "@babel/preset-env": "^7",
+    "@babel/register": "^7",
+    "babel-loader": "^8",
     "react": "*",
     "react-dom": "*",
     "webpack": "^4",
-    "webpack-cli": "^3",
-    "@babel/cli": "^7",
-    "babel-loader": "^8",
-    "@babel/preset-env": "^7",
-    "@babel/register": "^7"
+    "webpack-cli": "^3"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.7",

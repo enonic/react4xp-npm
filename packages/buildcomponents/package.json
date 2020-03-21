@@ -1,6 +1,6 @@
 {
   "name": "react4xp-build-components",
-  "version": "0.7.4",
+  "version": "0.8.0",
   "description": "React4xp helper: basic webpack compilation of user-added React components in a React4xp structure",
   "main": "webpack.config.js",
   "files": [
@@ -30,8 +30,8 @@
   },
   "homepage": "https://github.com/enonic/react4xp-build-components",
   "dependencies": {
-    "stats-webpack-plugin": "^0.7.0",
-    "glob": "^7.1.6"
+    "glob": "^7.1.6",
+    "stats-webpack-plugin": "^0.7.0"
   },
   "peerDependencies": {
     "@babel/plugin-proposal-object-rest-spread": "^7",
@@ -73,8 +73,8 @@
     "npm-safe-install": "^1.1.0",
     "prettier": "^1.18.2",
     "react-redux": "^6.0.1",
-    "react4xp-buildconstants": "0.8.0",
-    "react4xp-regions": "0.2.2",
+    "react4xp-buildconstants": "^0.8.1",
+    "react4xp-regions": "^0.2.3",
     "redux": "^4.0.1",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"
