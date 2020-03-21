@@ -7,7 +7,7 @@
     "test": "echo \"\n------------------------------ react4xp main: NO TESTS IMPLEMENTED YET! See sub-packages. ------------------------------\n\"",
     "lint": "echo \"react4xp main: nothing to lint. This is fine\"",
     "nsi:install": "npm-safe-install",
-    "postpublishOnly": "cd../.. && ./copytag.js react4xp"
+    "postpublishOnly": "cd ../.. && ./copytag.js react4xp"
   },
   "repository": {
     "type": "git",
@@ -64,5 +64,6 @@
   },
   "files": [
     "lib"
-  ]
+  ],
+  "gitHead": "282c60f0346532ec875eb6a80f5aa651ec0b1f94"
 }
