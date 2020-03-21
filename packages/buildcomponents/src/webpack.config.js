@@ -482,11 +482,6 @@ module.exports = (env = {}) => {
       10
     )}].js`;
   }
-  console.log(
-    "\n\n\nMODULES (components):",
-    path.resolve(process.cwd(), "node_modules"),
-    "\n\n\n"
-  );
 
   const config = {
     mode: BUILD_ENV,
