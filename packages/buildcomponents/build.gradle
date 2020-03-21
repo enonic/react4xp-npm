@@ -1,0 +1,90 @@
+plugins {
+  id "com.enonic.xp.app"
+  id "com.moowork.node"
+}
+
+dependencies {
+  include ":packages:buildconstants"
+}
+
+app {
+  systemVersion = "${xpVersion}"
+}
+
+cleanBuilt.delete './webpack.config.js', './build', './entriesandchunks.js', 'test/dummy-build', "test/output"
+
+compileJS.args = ['run', 'babel']
+compileJS.inputs.files('package.json', 'src/entriesandchunks.js')
+compileJS.outputs.file('./entriesandchunks.js')
+
+task copyFiles(type: Copy) {
+  from 'src/webpack.config.js'
+  into '.'
+}
+copyFiles.inputs.file('src/webpack.config.js')
+copyFiles.outputs.file('./webpack.config.js')
+buildAll.dependsOn += copyFiles
+
+
+task makeConstants(type: NodeTask) {
+  script = file('node_modules/react4xp-buildconstants/bin/cli.js')
+  args = [project.PROJDIR, '"{\\"verbose\\":true,\\"overwriteConstantsFile\\":true,\\"outputFileName\\":\\"' + project.PROJDIR + '/build/constants.json\\",\\"SRC_R4X\\":\\"' + project.PROJDIR + '/test/main/resources/react4xp\\",\\"SRC_SITE\\":\\"' + project.PROJDIR + '/test/main/resources/site\\"}"']
+}
+makeConstants.inputs.file('node_modules/react4xp-buildconstants/bin/cli.js')
+makeConstants.outputs.dir('build')
+makeConstants.dependsOn += project.npmInstall
+makeConstants.dependsOn += copyFiles
+
+
+task testEntriesAndChunks(type: NpmTask) {
+  args=['run', 'test:entriesAndChunks']
+}
+testEntriesAndChunks.outputs.dir('test/build')
+testEntriesAndChunks.outputs.dir('test/output')
+task testRaw(type: NpmTask) {
+  args=['run', 'test:raw']
+}
+testRaw.outputs.dir('test/build')
+testRaw.outputs.dir('test/output')
+task testOverride(type: NpmTask) {
+  args=['run', 'test:override']
+}
+testOverride.outputs.dir('test/build')
+testOverride.outputs.dir('test/output')
+
+testAll.args = ['run', "test:main"]
+testAll.dependsOn += testEntriesAndChunks
+testAll.dependsOn += testRaw
+testAll.dependsOn += makeConstants
+testAll.dependsOn += testOverride
+testAll.outputs.dir('test/build')
+testAll.outputs.dir('test/output')
+
+
+
+
+
+
+task makeConstantsSubLink(type: NpmTask) {
+  args = ['link', 'react4xp-buildconstants']
+}
+makeConstantsSubLink.dependsOn += ":packages:constants:npmLink"
+
+
+task makeRegionsSubLink(type: NpmTask) {
+  args = ['link', 'react4xp-regions']
+}
+makeRegionsSubLink.dependsOn += ":packages:regions:npmLink"
+
+task makeMainLink(type: NpmTask) {
+  args = ['link']
+}
+task makeSubLinks {}
+makeSubLinks.dependsOn += makeConstantsSubLink
+makeSubLinks.dependsOn += makeRegionsSubLink
+
+npmLink.dependsOn += makeSubLinks
+npmLink.dependsOn += makeMainLink
+makeSubLinks.mustRunAfter makeMainLink
+
+npmLink.args = ['version']
