@@ -73,8 +73,8 @@
     "npm-safe-install": "^1.1.0",
     "prettier": "^1.18.2",
     "react-redux": "^6.0.1",
-    "react4xp-buildconstants": "^0.8.1",
-    "react4xp-regions": "^0.2.3",
+    "react4xp-buildconstants": "0.8.1",
+    "react4xp-regions": "0.2.3",
     "redux": "^4.0.1",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"
