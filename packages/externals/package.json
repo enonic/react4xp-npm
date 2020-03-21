@@ -1,0 +1,83 @@
+{
+  "name": "react4xp-runtime-externals",
+  "version": "0.5.0",
+  "description": "React4xp helper: using webpack externals as input, generates a runnable externals chunk for shared external libraries",
+  "main": "webpack.config.js",
+  "files": [
+    "webpack.config.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "lint": "eslint --fix src/**/*.js",
+    "test:main": "echo \"(Placeholder necessary for task dependencies)\"",
+    "test:webpack": "webpack --config ./webpack.config.js --env.REACT4XP_CONFIG_FILE=/test/react4xpConstants.json --env.BUILD_R4X=$(pwd)/build && echo \"\" && echo \"--> build/\" && ls build && echo \"-------------- react4xp-runtime-externals builds. ADD SOME ACTUAL TESTS PLZ?\"",
+    "test:prepare": "npm i react react-dom",
+    "test:cleanup": "npm remove react react-dom",
+    "nsi:install": "npm-safe-install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:enonic/react4xp-npm.git"
+  },
+  "author": "Espen Norderud",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/enonic/lib-react4xp/issues"
+  },
+  "homepage": "https://github.com/enonic/react4xp-runtime-externals/",
+  "dependencies": {
+    "chunks-2-json-webpack-plugin": "^1.0.0"
+  },
+  "peerDependencies": {
+    "@babel/cli": "^7",
+    "@babel/preset-env": "^7",
+    "@babel/register": "^7",
+    "babel-loader": "^8",
+    "react": "*",
+    "react-dom": "*",
+    "webpack": "^4",
+    "webpack-cli": "^3"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/register": "^7.7.7",
+    "babel-loader": "^8.0.6",
+    "copyfiles": "^2.1.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-json": "^1.4.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "husky": "^1.2.0",
+    "lint-staged": "^8.1.7",
+    "npm-safe-install": "^1.1.0",
+    "prettier": "^1.18.2",
+    "webpack": "^4",
+    "webpack-cli": "^3"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "lint-staged": {
+    "*.{js,jsx,json}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run test"
+    }
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  }
+}
