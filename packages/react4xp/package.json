@@ -1,15 +1,16 @@
 {
   "name": "react4xp",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Single package wrapping all of React4xp's NPM dependencies",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"\n------------------------------ react4xp mains: NO TESTS IMPLEMENTED YET! See sub-packages. ------------------------------\n\"",
-    "local": "echo \"\n------------------------------ react4xp mains: no local preparations, may not be needed. ------------------------------\n\""
+    "test": "echo \"\n------------------------------ react4xp main: NO TESTS IMPLEMENTED YET! See sub-packages. ------------------------------\n\"",
+    "lint": "echo \"react4xp main: nothing to lint. This is fine\"",
+    "nsi:install": "npm-safe-install"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/enonic/react4xp.git"
+    "url": "git+ssh://git@github.com:enonic/react4xp-npm.git"
   },
   "keywords": [
     "React4xp",
@@ -24,18 +25,18 @@
   },
   "homepage": "https://github.com/enonic/react4xp#readme",
   "peerDependencies": {
+    "@babel/cli": "^7",
+    "@babel/core": "^7",
+    "@babel/plugin-proposal-class-properties": "^7",
+    "@babel/plugin-proposal-object-rest-spread": "^7",
+    "@babel/plugin-transform-arrow-functions": "^7",
+    "@babel/preset-env": "^7",
+    "@babel/preset-react": "^7",
+    "babel-loader": "^8",
     "react": "*",
     "react-dom": "*",
     "webpack": "^4",
-    "webpack-cli": "^3",
-    "@babel/cli": "^7",
-    "@babel/core": "^7",
-    "@babel/plugin-proposal-object-rest-spread": "^7",
-    "@babel/plugin-transform-arrow-functions": "^7",
-    "@babel/plugin-proposal-class-properties": "^7",
-    "@babel/preset-env": "^7",
-    "@babel/preset-react": "^7",
-    "babel-loader": "^8"
+    "webpack-cli": "^3"
   },
   "dependencies": {
     "@babel/cli": "^7.8.4",
@@ -46,11 +47,21 @@
     "@babel/preset-react": "^7.8.3",
     "@babel/register": "^7.8.3",
     "babel-loader": "^8.0.6",
-    "react4xp-build-components": "^0.7.4",
-    "react4xp-buildconstants": "^0.8.0",
-    "react4xp-regions": "^0.2.2",
-    "react4xp-runtime-client": "^0.5.0",
-    "react4xp-runtime-externals": "^0.4.0",
-    "react4xp-runtime-nashornpolyfills": "^0.4.3"
-  }
+    "react4xp-build-components": "0.8.0",
+    "react4xp-buildconstants": "0.8.1",
+    "react4xp-regions": "0.2.3",
+    "react4xp-runtime-client": "0.6.0",
+    "react4xp-runtime-externals": "0.5.0",
+    "react4xp-runtime-nashornpolyfills": "0.4.4"
+  },
+  "devDependencies": {
+    "npm-safe-install": "^1.1.0"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ]
 }
