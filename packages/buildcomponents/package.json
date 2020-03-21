@@ -17,7 +17,9 @@
     "babel-min": "babel src/entriesandchunks.js -o ./entriesandchunks.js --no-comments --minified --compact true",
     "babel": "babel src/entriesandchunks.js -o ./entriesandchunks.js --no-comments",
     "lint": "node_modules/eslint/bin/eslint.js src/*.js --fix",
-    "nsi:install": "npm-safe-install"
+    "nsi:install": "npm-safe-install",
+    "prepublishOnly": "cd ../.. && ./gradlew :packages:buildcomponents:buildAll --info",
+    "postpublish": "cd ../.. && ./gradlew :packages:buildcomponents:cleanBuilt"
   },
   "repository": {
     "type": "git",
