@@ -13,8 +13,6 @@
     "lint": "eslint --fix src/**/*.js",
     "test:constants": "webpack --config webpack.config.js --env.REACT4XP_CONFIG_FILE=test/output/testConfig.json && node test/output/testPolyfilled.js",
     "nsi:install": "npm-safe-install",
-    "prepublishOnly": "cd ../.. && ./gradlew :packages:nashornpolyfills:buildAll --info",
-    "postpublishOnly": "cd ../.. && ./gradlew :packages:nashornpolyfills:cleanBuilt && npm run postversion",
     "postversion": "cd ../.. && ./copytag.js nashornpolyfills"
   },
   "repository": {

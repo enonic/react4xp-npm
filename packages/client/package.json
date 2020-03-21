@@ -16,8 +16,6 @@
     "test:cleanup": "npm remove react",
     "lint": "eslint src/**/*.* --fix",
     "nsi:install": "npm-safe-install",
-    "prepublishOnly": "cd ../.. && ./gradlew :packages:client:buildAll --info",
-    "postpublishOnly": "cd ../.. && ./gradlew :packages:client:cleanBuilt && npm run postversion",
     "postversion": "cd ../.. && ./copytag.js client"
   },
   "repository": {
