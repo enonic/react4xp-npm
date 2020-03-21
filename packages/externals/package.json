@@ -16,7 +16,8 @@
     "test:cleanup": "npm remove react react-dom",
     "nsi:install": "npm-safe-install",
     "prepublishOnly": "cd ../.. && ./gradlew :packages:externals:buildAll --info",
-    "postpublishOnly": "cd ../.. && ./gradlew :packages:externals:cleanBuilt && ./copytag.js externals"
+    "postpublishOnly": "cd ../.. && ./gradlew :packages:externals:cleanBuilt && npm run postversion",
+    "postversion": "cd ../.. && ./copytag.js externals"
   },
   "repository": {
     "type": "git",

@@ -22,7 +22,8 @@
     "lint": "eslint src/**/*.* --fix",
     "nsi:install": "npm-safe-install",
     "prepublishOnly": "cd ../.. && ./gradlew :packages:regions:buildAll --info",
-    "postpublishOnly": "cd ../.. && ./gradlew :packages:regions:cleanBuilt && ./copytag.js regions"
+    "postpublishOnly": "cd ../.. && ./gradlew :packages:regions:cleanBuilt && npm run postversion",
+    "postversion": "cd ../.. && ./copytag.js regions"
   },
   "repository": {
     "type": "git",
