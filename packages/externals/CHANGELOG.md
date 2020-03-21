@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.2](https://github.com/enonic/react4xp-npm/compare/react4xp-runtime-externals@0.5.1...react4xp-runtime-externals@0.5.2) (2020-03-21)
+
+**Note:** Version bump only for package react4xp-runtime-externals
+
+
+
+
+
 # 0.5.0 (2020-03-21)
 
 
