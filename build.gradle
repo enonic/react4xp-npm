@@ -106,9 +106,11 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
 
 
   task doPublish(type: NpmTask) {
-    args=['publish', '--dry-run']
+    args=['publish']
   }
-  doPublish.dependsOn ":packages:${project.name}:buildAll"
+
+  // doPublish.dependsOn ":packages:${project.name}:buildAll" // <-- IMPORTANT: npm link messes up the sequence. Always run "gradlew buildAll" (or something that runs it, e.g. "npm run version") before gradlew doPublish!!! TODO: doPublish should check and warn about this.
+
   task postPublish {}
   postPublish.dependsOn ":packages:${project.name}:cleanBuilt"
   cleanBuilt.shouldRunAfter ":packages:${project.name}:doPublish"
