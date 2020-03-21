@@ -55,7 +55,7 @@ Marker file, indicating that node_module is locally linked - faster than travers
 
   if (new File(linkMarkerName).exists()) {
     npmInstall.enabled = false
-    npmInstall.dependsOn += nsiInstall
+    npmInstall.dependsOn nsiInstall
 
   } else {
     npmInstall.enabled = true
@@ -80,10 +80,10 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
   task compileJS(type: NpmTask) {}
   compileJS.inputs.file('package.json')
   compileJS.inputs.dir('src')
-  compileJS.dependsOn += ":packages:${project.name}:npmInstall"
+  compileJS.dependsOn ":packages:${project.name}:npmInstall"
 
   task buildAll {}
-  buildAll.dependsOn += ":packages:${project.name}:compileJS"
+  buildAll.dependsOn ":packages:${project.name}:compileJS"
 
   task lint(type: NpmTask) {
     args=['run', 'lint']
@@ -91,30 +91,30 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
   lint.inputs.file('package.json')
   lint.inputs.dir('src')
   lint.outputs.dir('src')
-  lint.dependsOn += ":packages:${project.name}:npmLink"
-  lint.dependsOn += ":packages:${project.name}:npmInstall"
-  npmInstall.shouldRunAfter += ":packages:${project.name}:npmLink"
+  lint.dependsOn ":packages:${project.name}:npmLink"
+  lint.dependsOn ":packages:${project.name}:npmInstall"
+  npmInstall.shouldRunAfter ":packages:${project.name}:npmLink"
   buildAll.shouldRunAfter ":packages:${project.name}:lint"
 
   task testAll(type: NpmTask) {}
   testAll.inputs.files('package.json')
   testAll.inputs.dir('src')
   testAll.inputs.dir('test')
-  testAll.dependsOn += ":packages:${project.name}:lint"
+  testAll.dependsOn ":packages:${project.name}:lint"
   testAll.shouldRunAfter ":packages:${project.name}:lint"
-  testAll.dependsOn += ":packages:${project.name}:buildAll"
+  testAll.dependsOn ":packages:${project.name}:buildAll"
 
 
   task doPublish(type: NpmTask) {
     args=['publish', '--dry-run']
   }
-  doPublish.dependsOn += ":packages:${project.name}:buildAll"
+  doPublish.dependsOn ":packages:${project.name}:buildAll"
   task postPublish {}
-  postPublish.dependsOn += ":packages:${project.name}:cleanBuilt"
+  postPublish.dependsOn ":packages:${project.name}:cleanBuilt"
   cleanBuilt.shouldRunAfter ":packages:${project.name}:doPublish"
-  postPublish.dependsOn += ":packages:${project.name}:doPublish"
+  postPublish.dependsOn ":packages:${project.name}:doPublish"
   task publish {}
-  publish.dependsOn += ":packages:${project.name}:postPublish"
+  publish.dependsOn ":packages:${project.name}:postPublish"
 
   task npmLink(type: NpmTask) {
     args=['link']

@@ -34,7 +34,7 @@ compileJS.enabled = false
 lint.args=['run', 'lint']
 lint.inputs.file('package.json')
 lint.inputs.dir('src')
-lint.dependsOn += project.npmInstall
+lint.dependsOn project.npmInstall
 
 testAll.enabled = false
 //testAll.args=['run', 'ADD SOME TESTS PLZ?']
@@ -53,4 +53,4 @@ task copyFiles(type: Copy) {
 copyFiles.inputs.dir('src')
 copyFiles.outputs.files('./*.jsx')
 copyFiles.outputs.dir('entries')
-buildAll.dependsOn += project.copyFiles
+buildAll.dependsOn project.copyFiles

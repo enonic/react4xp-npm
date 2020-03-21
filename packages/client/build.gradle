@@ -29,4 +29,4 @@ task copyFiles(type: Copy) {
 }
 copyFiles.inputs.dir('src')
 copyFiles.outputs.files('./react4xpClient.es6', './webpack.config.js')
-buildAll.dependsOn += project.copyFiles
+buildAll.dependsOn project.copyFiles

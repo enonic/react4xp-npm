@@ -4,7 +4,8 @@ plugins {
 }
 
 dependencies {
-  include ":packages:buildconstants"
+  include ":packages:constants"
+  include ":packages:regions"
 }
 
 app {
@@ -23,7 +24,7 @@ task copyFiles(type: Copy) {
 }
 copyFiles.inputs.file('src/webpack.config.js')
 copyFiles.outputs.file('./webpack.config.js')
-buildAll.dependsOn += copyFiles
+buildAll.dependsOn copyFiles
 
 
 task makeConstants(type: NodeTask) {
@@ -32,8 +33,8 @@ task makeConstants(type: NodeTask) {
 }
 makeConstants.inputs.file('node_modules/react4xp-buildconstants/bin/cli.js')
 makeConstants.outputs.dir('build')
-makeConstants.dependsOn += project.npmInstall
-makeConstants.dependsOn += copyFiles
+makeConstants.dependsOn project.npmInstall
+makeConstants.dependsOn copyFiles
 
 
 task testEntriesAndChunks(type: NpmTask) {
@@ -53,10 +54,10 @@ testOverride.outputs.dir('test/build')
 testOverride.outputs.dir('test/output')
 
 testAll.args = ['run', "test:main"]
-testAll.dependsOn += testEntriesAndChunks
-testAll.dependsOn += testRaw
-testAll.dependsOn += makeConstants
-testAll.dependsOn += testOverride
+testAll.dependsOn testEntriesAndChunks
+testAll.dependsOn testRaw
+testAll.dependsOn makeConstants
+testAll.dependsOn testOverride
 testAll.outputs.dir('test/build')
 testAll.outputs.dir('test/output')
 
@@ -68,23 +69,23 @@ testAll.outputs.dir('test/output')
 task makeConstantsSubLink(type: NpmTask) {
   args = ['link', 'react4xp-buildconstants']
 }
-makeConstantsSubLink.dependsOn += ":packages:constants:npmLink"
+makeConstantsSubLink.dependsOn ":packages:constants:npmLink"
 
 
 task makeRegionsSubLink(type: NpmTask) {
   args = ['link', 'react4xp-regions']
 }
-makeRegionsSubLink.dependsOn += ":packages:regions:npmLink"
+makeRegionsSubLink.dependsOn ":packages:regions:npmLink"
 
 task makeMainLink(type: NpmTask) {
   args = ['link']
 }
 task makeSubLinks {}
-makeSubLinks.dependsOn += makeConstantsSubLink
-makeSubLinks.dependsOn += makeRegionsSubLink
+makeSubLinks.dependsOn makeConstantsSubLink
+makeSubLinks.dependsOn makeRegionsSubLink
 
-npmLink.dependsOn += makeSubLinks
-npmLink.dependsOn += makeMainLink
+npmLink.dependsOn makeSubLinks
+npmLink.dependsOn makeMainLink
 makeSubLinks.mustRunAfter makeMainLink
 
-npmLink.args = ['version']
+npmLink.enabled = false

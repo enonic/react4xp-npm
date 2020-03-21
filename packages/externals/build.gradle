@@ -31,4 +31,4 @@ task copyFiles(type: Copy) {
 }
 copyFiles.inputs.dir('src')
 copyFiles.outputs.files('./webpack.config.js')
-buildAll.dependsOn += project.copyFiles
+buildAll.dependsOn project.copyFiles
