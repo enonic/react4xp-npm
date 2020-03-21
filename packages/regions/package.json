@@ -1,6 +1,6 @@
 {
   "name": "react4xp-regions",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Ready-made React4xp templates for handling XP regions, and bare-bone page/layout templates with regions supported/included",
   "files": [
     "LICENCE",
@@ -19,44 +19,37 @@
     "*.ico"
   ],
   "scripts": {
-    "clean": "rimraf entries && rimraf *.js && rimraf *.jsx && rimraf *.ts && rimraf *.tsx && rimraf *.es && rimraf *.es6 && rimraf *.*ss && rimraf *.*g && rimraf *.gif && rimraf *.ico",
-    "copy": "copyfiles -u 1 src/**/*.* .",
     "lint": "eslint src/**/*.* --fix",
-    "test": "echo \"\n------------------------------ react4xp-regions: NO TESTS IMPLEMENTED YET! ------------------------------\n\"",
-    "local": "npm run copy",
-    "pretest": "npm run lint && npm run local",
-    "prepublish": "npm run test",
-    "postpublish": "npm run clean"
+    "nsi:install": "npm-safe-install"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/enonic/react4xp-regions.git"
+    "url": "git+ssh://git@github.com:enonic/react4xp-npm.git"
   },
   "author": "Espen Norderud",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/enonic/react4xp-regions/issues"
+    "url": "https://github.com/enonic/lib-react4xp/issues"
   },
   "homepage": "https://github.com/enonic/react4xp-regions",
-  "dependencies": {},
   "devDependencies": {
-    "copyfiles": "^2.1.0",
     "babel-eslint": "^10.0.3",
+    "copyfiles": "^2.1.0",
     "eslint": "^6.1.0",
-    "rimraf": "^2.0.0",
-    "husky": "^1.2.0",
-    "lint-staged": "^8.1.7",
-    "prettier": "^1.18.2",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-json": "^1.4.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.0.0",
     "eslint-plugin-react": "^7.16.0",
-    "eslint-plugin-react-hooks": "^1.7.0"
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "husky": "^1.2.0",
+    "lint-staged": "^8.1.7",
+    "npm-safe-install": "^1.1.0",
+    "prettier": "^1.18.2"
   },
   "peerDependencies": {
-    "react": "^16",
-    "prop-types": "^15"
+    "prop-types": "^15",
+    "react": "^16"
   },
   "lint-staged": {
     "*.{js,jsx,es,es6}": [
@@ -69,5 +62,10 @@
       "pre-commit": "lint-staged",
       "pre-push": "npm run test"
     }
+  },
+  "main": "lib/regions.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
   }
 }
