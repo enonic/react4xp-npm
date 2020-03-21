@@ -19,7 +19,7 @@
     "test:mocha": "NODE_PATH=./ node_modules/mocha/bin/mocha --compilers js:babel-core/register --require babel-polyfill --require test/test_helper.js \"test/**/*@(spec.js)\" && mkdir test/output/cli; bin/cli.js test/output/cli && node_modules/path-exists-cli/cli.js test/output/cli/react4xp_constants.json && node_modules/path-exists-cli/cli.js test/output/cli/build/resources/main/lib/enonic/react4xp/react4xp_constants.json",
     "nsi:install": "npm-safe-install",
     "prepublishOnly": "cd ../.. && ./gradlew :packages:constants:buildAll --info",
-    "postpublish": "cd ../.. && ./gradlew :packages:constants:cleanBuilt"
+    "postpublishOnly": "cd ../.. && ./gradlew :packages:constants:cleanBuilt && ./copytag.js constants"
   },
   "repository": {
     "type": "git",

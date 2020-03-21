@@ -17,11 +17,12 @@ const package = require(`./packages/${targetPackage}/package.json`);
 const { name, version } = package;
 
 const oldTag = `${name}@${version}`;
-const newTag = `${name}/${version}`;
+const newTag = `${name.replace('react4xp', '_react4xp/react4xp').replace('_react4xp/react4xp-', '_react4xp/')}/${version}`;
+
 
 const VERBOSE = true;
 
-if (VERBOSE) console.log("Renaming git tag:", oldTag, '->', newTag);
+if (VERBOSE) console.log("Copy git tag:", oldTag, '->', newTag);
 
 const getHandler = (label, callbackOnSuccess) =>  (error, stdout, stderr) => {
   if (error) {
@@ -47,9 +48,9 @@ ${command}
 };
 
 // Commands declared in reverse running order:
-const pushTags = getCommandRunner('pushTags', 'git push --tags', ()=>{ console.log("Renamed git tag:", oldTag, '->', newTag); });
-const pushDeletion = getCommandRunner('pushDeletion', `git push origin :ref/tags/${oldTag}`, pushTags);
-const deleteOld = getCommandRunner('deleteOld', `git tag -d ${oldTag}`, pushDeletion);
-const tagNew = getCommandRunner('tagNew', `git tag ${newTag} ${oldTag}`, deleteOld);
+const pushTags = getCommandRunner('pushTags', 'git push --tags', ()=>{ console.log("Copied git tag:", oldTag, '->', newTag); });
+//const pushDeletion = getCommandRunner('pushDeletion', `git push origin :ref/tags/${oldTag}`, pushTags);
+//const deleteOld = getCommandRunner('deleteOld', `git tag -d ${oldTag}`, pushDeletion);
+const tagNew = getCommandRunner('tagNew', `git tag ${newTag} ${oldTag}`, pushTags);
 
 tagNew();
