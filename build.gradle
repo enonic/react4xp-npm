@@ -91,18 +91,9 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
   lint.inputs.file('package.json')
   lint.inputs.dir('src')
   lint.outputs.dir('src')
-  lint.dependsOn ":packages:${project.name}:npmLink"
   lint.dependsOn ":packages:${project.name}:npmInstall"
-  npmInstall.shouldRunAfter ":packages:${project.name}:npmLink"
   buildAll.shouldRunAfter ":packages:${project.name}:lint"
 
-  task testAll(type: NpmTask) {}
-  testAll.inputs.files('package.json')
-  testAll.inputs.dir('src')
-  testAll.inputs.dir('test')
-  testAll.dependsOn ":packages:${project.name}:lint"
-  testAll.shouldRunAfter ":packages:${project.name}:lint"
-  testAll.dependsOn ":packages:${project.name}:buildAll"
 
 
   task doPublish(type: NpmTask) {
@@ -118,6 +109,7 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
   task publish {}
   publish.dependsOn ":packages:${project.name}:postPublish"
 
+
   task npmLink(type: NpmTask) {
     args=['link']
     doLast {
@@ -128,6 +120,22 @@ Marker file, indicating that node_module is locally linked - faster than travers
 """
     }
   }
+  npmLink.dependsOn lint
+
+
+  task testAll(type: NpmTask) {}
+  testAll.inputs.files('package.json')
+  testAll.inputs.dir('src')
+  testAll.inputs.dir('test')
+  testAll.dependsOn ":packages:${project.name}:npmClean"
+  testAll.dependsOn ":packages:${project.name}:npmInstall"
+  testAll.dependsOn ":packages:${project.name}:lint"
+  testAll.dependsOn ":packages:${project.name}:npmLink"
+  testAll.dependsOn buildAll
+  npmInstall.shouldRunAfter npmClean
+  lint.shouldRunAfter npmInstall
+  npmLink.shouldRunAfter lint
+  buildAll.shouldRunAfter npmLink
 }
 
 dependencies {
