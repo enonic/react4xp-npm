@@ -53,9 +53,7 @@
     "react4xp-regions": "0.2.4",
     "react4xp-runtime-client": "0.5.1",
     "react4xp-runtime-externals": "0.4.1",
-    "react4xp-runtime-nashornpolyfills": "0.4.4"
-  },
-  "devDependencies": {
+    "react4xp-runtime-nashornpolyfills": "0.4.4",
     "npm-safe-install": "^1.1.0"
   },
   "directories": {
