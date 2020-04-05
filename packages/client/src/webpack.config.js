@@ -13,9 +13,6 @@ module.exports = env => {
     env = env || {};
 
     const overridden = (Object.keys(env).length !== 1 && Object.keys(env)[0] !== "REACT4XP_CONFIG_FILE");
-    if  (overridden) {
-        console.log(__filename, "overrides: " + JSON.stringify(env, null, 2));
-    }
 
     // Gets the following constants from the config file UNLESS they are overridden by an env parameter, which takes priority:
     const {
@@ -45,7 +42,7 @@ module.exports = env => {
         }, null, 2));
     }
 
-    // Decides whether or not to hash filenames of common-component chunk files, and the length of the hash
+    // Decides whether or not to hash filenames of the produced asset, and the length of the hash
     const chunkFileName = (!CHUNK_CONTENTHASH) ?
         "[name].js" :
         isNaN(CHUNK_CONTENTHASH) ?
@@ -62,7 +59,7 @@ module.exports = env => {
         output: {
             path: BUILD_R4X,  // <-- Sets the base url for plugins and other target dirs.
             filename: chunkFileName,
-            libraryTarget: 'var', 
+            libraryTarget: 'var',
             library: [LIBRARY_NAME, 'CLIENT'],
         },
 
