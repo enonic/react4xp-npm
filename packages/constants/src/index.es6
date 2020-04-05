@@ -52,7 +52,11 @@ const buildConstants = (rootDir, overrides) => {
 
         // UGLY FIX/HACK FOR PLATFORM INCONSISTENCIES IN HANDLING OF CLI PARAMETERS - might need parsing twice in windows!
         if (typeof overrides === "string") {
-            overrides = JSON.parse(overrides);
+            try {
+                overrides = JSON.parse(overrides);
+            } catch (e) {
+                // Guess it wasn't needed after all
+            }
         }
     }
     if (typeof overrides !== "object" || Array.isArray(overrides)) {
