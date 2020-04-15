@@ -46,7 +46,7 @@ function generateTempES6SourceAndGetFilename(_externals, outputFileName) {
     typeof outputFileName !== "string" ||
     (outputFileName || "").trim() === ""
   ) {
-    console.warn(`${__filename} - Skipping generation of the externals chunk: 
+    console.warn(`${__filename} - Skipping generation of the externals chunk:
         \tThe outputFileName parameter must be a non-empty string: ${JSON.stringify(
           outputFileName,
           null,
@@ -66,7 +66,7 @@ function generateTempES6SourceAndGetFilename(_externals, outputFileName) {
     Array.isArray(externals) ||
     Object.keys(externals) < 1
   ) {
-    console.warn(`${__filename} - Skipping generation of the externals chunk: 
+    console.warn(`${__filename} - Skipping generation of the externals chunk:
         \tThe externals parameter must be an object (or JSON-string object) with at least one entry: ${JSON.stringify(
           externals,
           null,
@@ -120,13 +120,7 @@ module.exports = (env = {}) => {
         "react-dom": "ReactDOM",
         "react-dom/server": "ReactDOMServer"
       }
-      The parent project using this package will run this webpack.config.js, and is expected to supply its own
-      versions of the packages in the EXTERNALS object - in this case react and react-dom. Because of this,
-      react and react-dom are set as peerDependencies in this project's package.json.
-
-      EXTERNALS can be adjusted (either by an env.EXTERNALS cli argument, or by altering the master config file
-      referred to by env.REACT4XP_CONFIG_FILE. That file is by default built by react4xp-buildcomponents). If you do,
-      the parent project must handle the packages (the keys in the EXTERNALS object).
+      See the README.
    */
 
   const EXTERNALS = env.EXTERNALS || config.EXTERNALS;
