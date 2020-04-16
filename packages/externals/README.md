@@ -33,7 +33,10 @@ The parent project using this package will run the `webpack.config.js` supplied 
 
 Since `react4xp-runtime-externals` are only declaring react and react-dom as peerDependencies, the parent project gets to decide the used versions in its `package.json`.
 
-About the parameters below: note that as usual in react4xp, working default values come from [react4xp-buildconstants](https://www.npmjs.com/package/react4xp-buildconstants), where all the parameters have the same name and are better described! You can alter the values here by using `--env.XXXX=yyyy` CLI parameters to this webpack (XXXX is the parameter name, yyyy is the value, usually a string, but if it's an object then yyyy must be a valid JSON string). But apart from the mandatory config file name, **it's recommended to override these parameters in _react4xp-buildconstants_ instead**, with the same-name input parameters there. That's more stable: produces a general config file with shared and fixed values across react4xp. The rest is handled for you (as long as you use the gradle setup from the starter, see for example the gradle-basic-setup section in the README of [lib-react4xp](https://github.com/enonic/lib-react4xp)).
+The webpack config takes one or more CLI arguments. These are one the form of `--env.X=Y`, where X is any of the _capital-letter_ keys below (X is the parameter name, Y is the value, usually a string - but if it's an object then Y is expected to be a valid _JSON string_)
+
+**The usual caveat about these parameters:** these are among a set of working default values that come from [react4xp-buildconstants](https://www.npmjs.com/package/react4xp-buildconstants), where all the parameters have the same name as below (and are better described!). The values can be changed as parameters to react4xp-runtime-externals, but apart from the mandatory `REACT4XP_CONFIG_FILE`, **it's recommended to override these parameters in _react4xp-buildconstants_ instead**. Use the same-name input parameters there. That will affect the general config file instead of only this package's behavior, the rest is handled for you (as long as you use the gradle setup from the starter, see for example the gradle-basic-setup section in the README of [lib-react4xp](https://github.com/enonic/lib-react4xp)).
+
 
 ### Webpack parameters
 
