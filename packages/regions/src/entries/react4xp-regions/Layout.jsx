@@ -5,7 +5,7 @@ import Regions from 'react4xp-regions/Regions';
 
 /**
  * Layout controller template: wraps a react rendering of a bare-bones XP layout, with regions if supplied with regions data.
- * Can be used as a wrapping component, neating regular react children: <Layout><h2>A layout!</h2></Layout>
+ * Can be used as a wrapping component, nesting regular react children: <Layout><h2>A layout!</h2></Layout>
  *
  * @param regionsData (optional object, althout layouts make little sense without regions): regions data object (e.g. component.regions).
  *      Keys are region names, values are region data.
