@@ -1,4 +1,4 @@
-# `react4xp-runtime-externals`
+# react4xp-runtime-externals
 
 Part of the [react4xp NPM bundle](https://www.npmjs.com/package/react4xp). **Not really meant for separate installation or use.**
  Better start with the [React4xp introduction](https://developer.enonic.com/templates/react4xp).
@@ -39,9 +39,9 @@ The webpack config takes one or more CLI arguments. These are one the form of `-
 
 
 ### Webpack parameters
-
+`
 - `REACT4XP_CONFIG_FILE` is a mandatory webpack CLI argument: the name of a shared general react4xp config file.
-
+`
 - `EXTERNALS` is the main point of interest. By react4xp's default it looks like this:
   ```json
       {

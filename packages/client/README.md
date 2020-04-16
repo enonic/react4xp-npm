@@ -1,4 +1,4 @@
-# `react4xp-runtime-client`
+# react4xp-runtime-client
 
 
 Used by a an [Enonic XP](https://developer.enonic.com/) root project, builds an asset used by the browser at buildtime.
@@ -7,7 +7,7 @@ Supplies source code and a webpack setup to compile it.
 
 ## Usage
 
-**Not primarily intended for separate installation or use.** Part of the [react4xp NPM bundle](https://www.npmjs.com/package/react4xp). Better start with the [React4xp introduction](https://developer.enonic.com/templates/react4xp).
+**Not really intended for separate installation or use.** Part of the [react4xp NPM bundle](https://www.npmjs.com/package/react4xp). Better start with the [React4xp introduction](https://developer.enonic.com/templates/react4xp).
 
 ## API: webpack build
 

@@ -1,4 +1,4 @@
-# `react4xp-buildconstants`
+# react4xp-buildconstants
 
 Supplies a script for the first step in a react4xp build: builds a JSON file with environment-specific constants that need to be maintained and shared between buildtime and runtime.
 

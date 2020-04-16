@@ -1,4 +1,4 @@
-# `react4xp-build-components`
+# react4xp-build-components
 
 React4xp compile-time, used by a an [Enonic XP](https://developer.enonic.com/) root project.
 
@@ -19,7 +19,7 @@ This webpack setup is minimal by design. If you want to replace or modify it to 
 
 ## Usage
 
-**Not primarily intended for separate installation or use!** Part of the [react4xp NPM bundle](https://www.npmjs.com/package/react4xp). Better start with the [React4xp introduction](https://developer.enonic.com/templates/react4xp).
+**Not really intended for separate installation or use!** Part of the [react4xp NPM bundle](https://www.npmjs.com/package/react4xp). Better start with the [React4xp introduction](https://developer.enonic.com/templates/react4xp).
 
 ## API
 
