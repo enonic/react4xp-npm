@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/enonic/react4xp-npm/compare/react4xp@0.2.0...react4xp@0.2.1) (2020-04-16)
+
+**Note:** Version bump only for package react4xp
+
+
+
+
+
 # [0.2.0](https://github.com/enonic/react4xp-npm/compare/react4xp@0.1.0...react4xp@0.2.0) (2020-03-27)
 
 
