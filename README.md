@@ -1,4 +1,4 @@
-# react4xp-mono
+# react4xp-npm
 
 [React4xp](https://developer.enonic.com/templates/react4xp) monorepo for all the NPM dependency packages required by both [lib-react4xp](https://github.com/enonic/lib-react4xp/) and parent projects running react4xp (for example the [react4xp starter](https://market.enonic.com/vendors/enonic/react4xp-starter) and anything derived from it).
 
@@ -43,7 +43,7 @@ From the project root:
 
 `gradlew testAll`: main test command
 
-`gradlew npmLink`: enter development linked mode: same as running [npm link](https://docs.npmjs.com/cli/link.html) in each package, but also linking up the internal dependencies between the packages. Use the cleanNpm gradle task (above) to exit linked mode. A corresponding script, `getlinks.sh`, can be run by relative path from a parent project's root folder (e.g. `sh ../../react4xp-mono/getlinks.sh`) to hook up the same links below that project's node_modules/. Sorry, no windows script yet (but it should be easy to reverse-engineer).
+`gradlew npmLink`: enter development linked mode: same as running [npm link](https://docs.npmjs.com/cli/link.html) in each package, but also linking up the internal dependencies between the packages. Use the cleanNpm gradle task (above) to exit linked mode. A corresponding script, `getlinks.sh`, can be run by relative path from a parent project's root folder (e.g. `sh ../../react4xp-npm/getlinks.sh`) to hook up the same links below that project's node_modules/. Sorry, no windows script yet (but it should be easy to reverse-engineer).
 
 `npm run version`: _after committing your changes_, run this to let [lerna](https://github.com/lerna/lerna) handle independent versioning in the packages, by tracking changes across them (using conventional-commits flags from your commit messages to track major:minor:patch versions), tagging the commit and auto-updating version tags everywhere. Next, run the _doPublish_ gradle task (below).
 
