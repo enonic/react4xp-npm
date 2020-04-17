@@ -31,23 +31,23 @@ Gradle 5+ (a 6.2.1 gradle wrapper is included), Java JDK 11, Enonic XP 7+, Node.
 
 From the project root:
 
-`npm run setup`: initial install, run this first.
+  - `npm run setup`: initial install, run this first.
 
-`gradlew npmInstall`: install NPM dependencies. Note: in linked mode (see _npmLink_ below), NPM links will be preserved (by this command and the build commands).
+  - `gradlew npmInstall`: install NPM dependencies. Note: in linked mode (see _npmLink_ below), NPM links will be preserved (by this command and the build commands).
 
-`gradlew cleanNpm`: delete node_modules/ folders in all packages. Cancels the linked mode (see _npmLink_ below).
+  - `gradlew cleanNpm`: delete node_modules/ folders in all packages. Cancels the linked mode (see _npmLink_ below).
 
-`gradlew cleanBuilt`: delete build/ folders in all packages
+  - `gradlew cleanBuilt`: delete build/ folders in all packages
 
-`gradlew buildAll`: main build command
+  - `gradlew buildAll`: main build command
 
-`gradlew testAll`: main test command
+  - `gradlew testAll`: main test command
 
-`gradlew npmLink`: enter development linked mode: same as running [npm link](https://docs.npmjs.com/cli/link.html) in each package, but also linking up the internal dependencies between the packages. Use the cleanNpm gradle task (above) to exit linked mode. A corresponding script, `getlinks.sh`, can be run by relative path from a parent project's root folder (e.g. `sh ../../react4xp-npm/getlinks.sh`) to hook up the same links below that project's node_modules/. Sorry, no windows script yet (but it should be easy to reverse-engineer).
+  - `gradlew npmLink`: enter development linked mode: same as running [npm link](https://docs.npmjs.com/cli/link.html) in each package, but also linking up the internal dependencies between the packages. Use the cleanNpm gradle task (above) to exit linked mode. A corresponding script, `getlinks.sh`, can be run by relative path from a parent project's root folder (e.g. `sh ../../react4xp-npm/getlinks.sh`) to hook up the same links below that project's node_modules/. Sorry, no windows script yet (but it should be easy to reverse-engineer).
 
-`npm run version`: _after committing your changes_, run this to let [lerna](https://github.com/lerna/lerna) handle independent versioning in the packages, by tracking changes across them (using conventional-commits flags from your commit messages to track major:minor:patch versions), tagging the commit and auto-updating version tags everywhere. Next, run the _doPublish_ gradle task (below).
+  - `npm run version`: _after committing your changes_, run this to let [lerna](https://github.com/lerna/lerna) handle independent versioning in the packages, by tracking changes across them (using conventional-commits flags from your commit messages to track major:minor:patch versions), tagging the commit and auto-updating version tags everywhere. Next, run the _doPublish_ gradle task (below).
 
-`gradlew doPublish`: _after running the _version_ script above_, run this to publish all the changed packages to NPM.
+  - `gradlew doPublish`: _after running the _version_ script above_, run this to publish all the changed packages to NPM.
 
 
 
