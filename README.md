@@ -33,9 +33,9 @@ From the project root:
 
 `npm run setup`: initial install, run this first.
 
-`gradlew npmInstall`: install NPM dependencies. Note: in linked mode, NPM links will be preserved (by this command and the build commands).
+`gradlew npmInstall`: install NPM dependencies. Note: in linked mode (see _npmLink_ below), NPM links will be preserved (by this command and the build commands).
 
-`gradlew cleanNpm`: delete node_modules/ folders in all packages. Cancels the linked mode (see below).
+`gradlew cleanNpm`: delete node_modules/ folders in all packages. Cancels the linked mode (see _npmLink_ below).
 
 `gradlew cleanBuilt`: delete build/ folders in all packages
 
