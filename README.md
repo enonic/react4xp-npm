@@ -43,9 +43,9 @@ From the project root:
 
   - `gradlew npmLink`: enter development linked mode: same as running [npm link](https://docs.npmjs.com/cli/link.html) in each package, but also linking up the internal dependencies between the packages. Use the cleanNpm gradle task (above) to exit linked mode. A corresponding script, `getlinks.sh`, can be run by relative path from a parent project's root folder (e.g. `sh ../../react4xp-npm/getlinks.sh`) to hook up the same links below that project's node_modules/. Sorry, no windows script yet (but it should be easy to reverse-engineer).
 
-  - `npm run version`: _after committing your changes_, run this to let [lerna](https://github.com/lerna/lerna) handle independent versioning in the packages, by tracking changes across them (using conventional-commits flags from your commit messages to track major:minor:patch versions), tagging the commit and auto-updating version tags everywhere. Next, run the _doPublish_ gradle task (below).
+  - `npm run version`: after committing your changes, run this to let [lerna](https://github.com/lerna/lerna) handle independent versioning in the packages, by tracking changes across them (using conventional-commits flags from your commit messages to track major:minor:patch versions), tagging the commit and auto-updating version tags everywhere. Next, run the _doPublish_ gradle task (below).
 
-  - `gradlew doPublish`: _after running the _version_ script above_, run this to publish all the changed packages to NPM.
+  - `gradlew doPublish`: after running the _version_ script above, run this to publish all the changed packages to NPM.
 
 
 
