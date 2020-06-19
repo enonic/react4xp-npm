@@ -71,3 +71,4 @@ React4xp.CLIENT.renderWithDependencies(entriesWithTargetIdsAndProps, callback, s
 - `serviceUrlRoot` (string, kinda-sorta-optional): root of the URL to the lib-react4xp's services - e.g. your app.
   - For example, if they have the URLs `/_/service/my.app/react4xp/` and `/_/service/my.app/react4xp-dependencies/`, then `serviceRootUrl` should be `/_/service/my.app` - _without_ a trailing slash.
   - You can skip this argument ONLY IF you define the constant SERVICE_URL_ROOT in global namespace before this call.
+

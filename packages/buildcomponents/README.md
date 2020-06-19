@@ -77,3 +77,4 @@ These are the same as the camel-case properties under react4xp.properties above:
   - `CHUNK_DIRS`: see `chunkDirs`
   - `BUILD_ENV`: see `buildEnv`
   - `VERBOSE`: see `verbose`
+

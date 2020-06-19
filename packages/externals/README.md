@@ -39,9 +39,9 @@ The webpack config takes one or more CLI arguments. These are one the form of `-
 
 
 ### Webpack parameters
-`
+
 - `REACT4XP_CONFIG_FILE` is a mandatory webpack CLI argument: the name of a shared general react4xp config file.
-`
+
 - `EXTERNALS` is the main point of interest. By react4xp's default it looks like this:
   ```json
       {

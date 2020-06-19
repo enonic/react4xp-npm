@@ -82,8 +82,3 @@ module.exports.get = req => {
     return React4xp.render('react4xp-regions/Page', props, request);
 }
 ```
-
-
-
-
-

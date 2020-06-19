@@ -25,4 +25,3 @@ See the caveat above, but if you want to override any parameters locally to this
 - `NASHORNPOLYFILLS_SOURCE`: the nashornpolyfills package supplies a standard polyfills setup. But with this parameter you can point to an uncompiled source file with _additional_ polyfill code. Path with file name and extension, relative to the root project.
 
 - `NASHORNPOLYFILLS_FILENAME`: name of compiled output file for the additional nashorn polyfilling. No path or file extension, only file name.
-
