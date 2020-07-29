@@ -31,9 +31,9 @@ From the project root:
 
   - `npm run setup`: initial install, run this first.
 
-  - `gradlew npmInstall`: install NPM dependencies. Note: in linked mode (see _npmLink_ below), NPM links will be preserved (by this command and the build commands).
+  - `gradlew npmInstall`: install NPM dependencies. Note: in linked mode (see `npmLink` below), NPM links will be preserved (by this command and the build commands).
 
-  - `gradlew cleanNpm`: delete node_modules/ folders in all packages. Cancels the linked mode (see _npmLink_ below).
+  - `gradlew cleanNpm`: delete node_modules/ folders in all packages. Cancels the linked mode (see `npmLink` below).
 
   - `gradlew cleanBuilt`: delete build/ folders in all packages
 
@@ -45,9 +45,4 @@ From the project root:
 
   - `npm run version`: after committing your changes, run this to let [lerna](https://github.com/lerna/lerna) handle independent versioning in the packages, by tracking changes across them (using conventional-commits flags from your commit messages to track major:minor:patch versions), tagging the commit and auto-updating version tags everywhere. Next, run the _doPublish_ gradle task (below).
 
-  - `gradlew doPublish`: after running the _version_ script above, run this to publish all the changed packages to NPM.
-
-
-
-
-
+  - `gradlew doPublish`: after running the `version` script above, run this to publish all the changed packages to NPM.
