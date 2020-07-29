@@ -49,12 +49,12 @@
     "@babel/register": "^7.8.3",
     "babel-loader": "^8.0.6",
     "npm-safe-install": "^1.1.0",
-    "react4xp-build-components": "1.0.1",
+    "react4xp-build-components": "1.0.3",
     "react4xp-buildconstants": "0.8.6",
     "react4xp-regions": "1.0.1",
     "react4xp-runtime-client": "1.0.1",
     "react4xp-runtime-externals": "1.0.1",
-    "react4xp-runtime-nashornpolyfills": "1.0.1"
+    "react4xp-runtime-nashornpolyfills": "1.0.3"
   },
   "directories": {
     "lib": "lib",
