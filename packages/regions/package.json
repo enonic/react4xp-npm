@@ -21,7 +21,11 @@
   "scripts": {
     "lint": "eslint src/**/*.* --fix",
     "nsi:install": "npm-safe-install",
-    "postversion": "cd ../.. && ./copytag.js regions"
+    "postversion": "cd ../.. && ./copytag.js regions",
+    "prepublish": "npm run copyFiles",
+    "copyFiles": "run-script-os",
+    "copyFiles:win32": "cd .. && cd .. && gradlew :packages:regions:copyFiles --info",
+    "copyFiles:default": "cd .. && cd .. && ./gradlew :packages:regions:copyFiles --info"
   },
   "repository": {
     "type": "git",
@@ -46,6 +50,7 @@
     "husky": "^1.2.0",
     "lint-staged": "^8.1.7",
     "npm-safe-install": "^1.1.0",
+    "run-script-os": "^1.1.1",
     "prettier": "^1.18.2"
   },
   "peerDependencies": {
