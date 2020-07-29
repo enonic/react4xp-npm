@@ -50,7 +50,7 @@
     "babel-loader": "^8.0.6",
     "npm-safe-install": "^1.1.0",
     "react4xp-build-components": "1.0.1",
-    "react4xp-buildconstants": "0.8.5",
+    "react4xp-buildconstants": "0.8.4",
     "react4xp-regions": "1.0.1",
     "react4xp-runtime-client": "1.0.1",
     "react4xp-runtime-externals": "1.0.1",
