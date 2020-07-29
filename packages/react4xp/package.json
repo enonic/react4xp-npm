@@ -1,6 +1,6 @@
 {
   "name": "react4xp",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Single package wrapping all of React4xp's NPM dependencies",
   "main": "index.js",
   "scripts": {
