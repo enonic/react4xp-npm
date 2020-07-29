@@ -16,7 +16,11 @@
     "test:cleanup": "npm remove react",
     "lint": "eslint src/**/*.* --fix",
     "nsi:install": "npm-safe-install",
-    "postversion": "cd ../.. && ./copytag.js client"
+    "postversion": "cd ../.. && ./copytag.js client",
+    "prepublish": "npm run copyFiles",
+    "copyFiles": "run-script-os",
+    "copyFiles:win32": "cd .. && cd .. && gradlew :packages:client:copyFiles --info",
+    "copyFiles:default": "cd .. && cd .. && ./gradlew :packages:client:copyFiles --info"
   },
   "repository": {
     "type": "git",
@@ -62,7 +66,8 @@
     "eslint": "^6.8.0",
     "npm-safe-install": "^1.1.0",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3"
+    "webpack-cli": "^3.2.3",
+    "run-script-os": "^1.1.1"
   },
   "babel": {
     "presets": [
