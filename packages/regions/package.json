@@ -1,6 +1,6 @@
 {
   "name": "react4xp-regions",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Ready-made React4xp templates for handling XP regions, and bare-bone page/layout templates with regions supported/included",
   "files": [
     "LICENCE",
@@ -50,8 +50,8 @@
     "husky": "^1.2.0",
     "lint-staged": "^8.1.7",
     "npm-safe-install": "^1.1.0",
-    "run-script-os": "^1.1.1",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "run-script-os": "^1.1.1"
   },
   "peerDependencies": {
     "prop-types": "^15",
