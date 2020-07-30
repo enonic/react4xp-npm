@@ -1,5 +1,7 @@
 # react4xp-npm
 
+<img src="media/react4xp.svg" alt="React4xp logo" title="React4xp logo" width="300px">
+
 [React4xp](https://developer.enonic.com/templates/react4xp) monorepo for all the NPM dependency packages required by both [lib-react4xp](https://github.com/enonic/lib-react4xp/) and parent projects running react4xp (for example the [react4xp starter](https://market.enonic.com/vendors/enonic/react4xp-starter) and anything derived from it).
 
 These packages (with this project's package names in _italics_) are:
