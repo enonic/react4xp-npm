@@ -27,6 +27,12 @@ These packages don't need separate installation, they are bundled as dependencie
 
 You'll need Gradle 5+ (a 6.2.1 gradle wrapper is included), Java JDK 11, Enonic XP 7+, and Node.
 
+### Internal package dependencies
+
+All the sub-packages mentioned above are dependencies of this main react4xp package. In addition, _react4xp-regions_ and _react4xp-buildconstants_ are dependencies of _react4xp-build-components_, and  _react4xp-buildconstants_ is a dependency of _react4xp-runtime-nashornpolyfills_:
+
+<img src="media/react4xp-internal-dependencies.png" alt="React4xp internal package dependencies" title="React4xp internal package dependencies" width="1000px">
+
 ### Important: git
 
 When committing to git, please follow the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0-beta.2/) pattern in your messages, at least use `feat:` and `BREAKING CHANGE`. Also leave tags and all versioning to [lerna](https://github.com/lerna/lerna) with the _version_ NPM script (see below) - which depends on using git this way.
