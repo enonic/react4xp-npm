@@ -18,12 +18,13 @@ if (typeof console === 'undefined') {
 
 var context = typeof window !== 'undefined' ? window : global;
 
-// Polyfills Set and Map:
+// Polyfills Set, Map and empty event listener (since nashorn is only used for SSR, where event listener is irrelevant):
 var Map = require( 'es6-set-and-map' ).map;
 var Set = require( 'es6-set-and-map' ).set;
 (function(window) {
     if (typeof window.Map === 'undefined') window.Map = Map;
     if (typeof window.Set === 'undefined') window.Set = Set;
+    if (typeof window.addEventListener !== 'function') window.addEventListener = () => {};
 } )(context);
 
 
@@ -33,7 +34,7 @@ var Set = require( 'es6-set-and-map' ).set;
 // https://gist.github.com/josmardias/20493bd205e24e31c0a406472330515a
 //
 // NOTE:
-// "At least one timeout needs to be set, larger then your code bootstrap or Nashorn will run forever. 
+// "At least one timeout needs to be set, larger then your code bootstrap or Nashorn will run forever.
 // Preferably, put a timeout 0 after your code bootstrap."
 (function(context) {
   'use strict';
