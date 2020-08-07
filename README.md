@@ -39,9 +39,13 @@ When committing to git, please follow the [conventional commits](https://www.con
 
 ### Terminal commands
 
-From the project root:
+From the project root, handles the entire file structure: triggers the same tasks in subprojects under /packages/, where needed.
 
   - `npm run setup`: initial install, run this first.
+
+  - `gradlew build`: main build command
+
+  - `gradlew test`: main test command
 
   - `gradlew npmInstall`: install NPM dependencies. Note: in linked mode (see `npmLink` below), NPM links will be preserved (by this command and the build commands).
 
@@ -49,12 +53,8 @@ From the project root:
 
   - `gradlew cleanBuilt`: delete build/ folders in all packages
 
-  - `gradlew buildAll`: main build command
-
-  - `gradlew testAll`: main test command
-
   - `gradlew npmLink`: enter development linked mode: same as running [npm link](https://docs.npmjs.com/cli/link.html) in each package, but also linking up the internal dependencies between the packages. Use the cleanNpm gradle task (above) to exit linked mode. A corresponding script, `getlinks.sh`, can be run by relative path from a parent project's root folder (e.g. `sh ../../react4xp-npm/getlinks.sh`) to hook up the same links below that project's node_modules/. Sorry, no windows script yet (but it should be easy to reverse-engineer).
 
-  - `npm run version`: after committing your changes, run this to let [lerna](https://github.com/lerna/lerna) handle independent versioning in the packages, by tracking changes across them (using conventional-commits flags from your commit messages to track major:minor:patch versions), tagging the commit and auto-updating version tags everywhere. IMPORTANT: before running `version`, you should have run `setup`, `npmLink` and `buildAll`. And after `version`, verify that the react4xp-* references in all packages/*/package-lock.json files are up-to-date (i.e. don't still refer to the previous versions for their dependencies). Finalize by running the _doPublish_ gradle task (below).
+  - `npm run version`: after committing your changes, run this to let [lerna](https://github.com/lerna/lerna) handle independent versioning in the packages, by tracking changes across them (using conventional-commits flags from your commit messages to track major:minor:patch versions), tagging the commit and auto-updating version tags everywhere. IMPORTANT: before running `version`, you should have run `setup`, `npmLink` and `build`. And after `version`, verify that the react4xp-* references in all packages/*/package-lock.json files are up-to-date (i.e. don't still refer to the previous versions for their dependencies). Finalize by running the _doPublish_ gradle task (below).
 
   - `gradlew doPublish`: after running the `version` script above, run this to publish all the changed packages to NPM.

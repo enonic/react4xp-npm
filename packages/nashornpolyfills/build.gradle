@@ -37,9 +37,9 @@ makeConstants.outputs.dir('build')
 makeConstants.outputs.dir('test/output')
 makeConstants.dependsOn cleanTest
 
-testAll.args=['run', 'test:constants']
-testAll.inputs.dir('test/output')
-testAll.dependsOn makeConstants
+test.args=['run', 'test:constants']
+test.inputs.dir('test/output')
+test.dependsOn makeConstants
 
 task copyFiles(type: Copy) {
   from 'src'
@@ -48,7 +48,7 @@ task copyFiles(type: Copy) {
 }
 copyFiles.inputs.dir('src')
 copyFiles.outputs.files('./nashornpolyfills.es6', './webpack.config.js')
-buildAll.dependsOn project.copyFiles
+build.dependsOn project.copyFiles
 
 
 

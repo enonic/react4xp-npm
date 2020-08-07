@@ -6,7 +6,7 @@
  */
 
 plugins {
-  id "com.enonic.xp.app" version "2.0.0"
+  // id "com.enonic.xp.app" version "2.0.0"
   id "com.moowork.node" version "1.3.1"
 }
 
@@ -17,9 +17,9 @@ allprojects {
   }
 }
 
-app {
+/*app {
   systemVersion = "${xpVersion}"
-}
+}*/
 
 def ignoreSubprojectDirs = [
         'packages'
@@ -82,8 +82,9 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
   compileJS.inputs.dir('src')
   compileJS.dependsOn ":packages:${project.name}:npmInstall"
 
-  task buildAll {}
-  buildAll.dependsOn ":packages:${project.name}:compileJS"
+
+  task build {}
+  build.dependsOn ":packages:${project.name}:compileJS"
 
   task lint(type: NpmTask) {
     args=['run', 'lint']
@@ -92,7 +93,7 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
   lint.inputs.dir('src')
   lint.outputs.dir('src')
   lint.dependsOn ":packages:${project.name}:npmInstall"
-  buildAll.shouldRunAfter ":packages:${project.name}:lint"
+  build.shouldRunAfter ":packages:${project.name}:lint"
 
 
 
@@ -100,7 +101,7 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
     args=['publish']
   }
 
-  // doPublish.dependsOn ":packages:${project.name}:buildAll" // <-- IMPORTANT: npm link messes up the sequence. Always run "gradlew buildAll" (or something that runs it, e.g. "npm run version") before gradlew doPublish!!! TODO: doPublish should check and warn about this.
+  // doPublish.dependsOn ":packages:${project.name}:build" // <-- IMPORTANT: npm link messes up the sequence. Always run "gradlew build" (or something that runs it, e.g. "npm run version") before gradlew doPublish!!! TODO: doPublish should check and warn about this.
 
   task postPublish {}
   postPublish.dependsOn ":packages:${project.name}:cleanBuilt"
@@ -123,25 +124,25 @@ Marker file, indicating that node_module is locally linked - faster than travers
   npmLink.dependsOn lint
 
 
-  task testAll(type: NpmTask) {}
-  testAll.inputs.files('package.json')
-  testAll.inputs.dir('src')
-  testAll.inputs.dir('test')
-  testAll.dependsOn ":packages:${project.name}:npmClean"
-  testAll.dependsOn ":packages:${project.name}:npmInstall"
-  testAll.dependsOn ":packages:${project.name}:lint"
-  testAll.dependsOn ":packages:${project.name}:npmLink"
-  testAll.dependsOn buildAll
+  task test(type: NpmTask) {}
+  test.inputs.files('package.json')
+  test.inputs.dir('src')
+  test.inputs.dir('test')
+  test.dependsOn ":packages:${project.name}:npmClean"
+  test.dependsOn ":packages:${project.name}:npmInstall"
+  test.dependsOn ":packages:${project.name}:lint"
+  test.dependsOn ":packages:${project.name}:npmLink"
+  test.dependsOn build
   npmInstall.shouldRunAfter npmClean
   lint.shouldRunAfter npmInstall
   npmLink.shouldRunAfter lint
-  buildAll.shouldRunAfter npmLink
+  build.shouldRunAfter npmLink
 }
 
-dependencies {
+/*dependencies {
   include project(":packages:constants")
   include project(":packages:buildcomponents")
-}
+}*/
 
 def slash = File.separator
 def markerName = ".${slash}node_modules${slash}react4xp${slash}npmInstalled.txt"

@@ -36,13 +36,13 @@ lint.inputs.file('package.json')
 lint.inputs.dir('src')
 lint.dependsOn project.npmInstall
 
-testAll.enabled = false
-//testAll.args=['run', 'ADD SOME TESTS PLZ?']
-//testAll.inputs.files('package.json')
-//testAll.outputs.files('package.json')
-//testAll.inputs.dir('src')
-//testAll.outputs.dir('test/build')
-//testAll.outputs.dir('test/output')
+test.enabled = false
+//test.args=['run', 'ADD SOME TESTS PLZ?']
+//test.inputs.files('package.json')
+//test.outputs.files('package.json')
+//test.inputs.dir('src')
+//test.outputs.dir('test/build')
+//test.outputs.dir('test/output')
 
 task copyFiles(type: Copy) {
   from 'src'
@@ -53,6 +53,6 @@ task copyFiles(type: Copy) {
 copyFiles.inputs.dir('src')
 copyFiles.outputs.files('./*.jsx')
 copyFiles.outputs.dir('entries')
-buildAll.dependsOn project.copyFiles
+build.dependsOn project.copyFiles
 
 project.doPublish.shouldRunAfter ":packages:constants:doPublish"

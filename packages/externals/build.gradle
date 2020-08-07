@@ -18,11 +18,11 @@ task cleanupTest(type: NpmTask) {
 }
 runTest.dependsOn prepareTest
 cleanupTest.dependsOn runTest
-testAll.dependsOn cleanupTest
+test.dependsOn cleanupTest
 
 
-testAll.args=['run', 'test:main']
-testAll.outputs.dir('test/output')
+test.args=['run', 'test:main']
+test.outputs.dir('test/output')
 
 task copyFiles(type: Copy) {
   from 'src'
@@ -31,4 +31,4 @@ task copyFiles(type: Copy) {
 }
 copyFiles.inputs.dir('src')
 copyFiles.outputs.files('./webpack.config.js')
-buildAll.dependsOn project.copyFiles
+build.dependsOn project.copyFiles

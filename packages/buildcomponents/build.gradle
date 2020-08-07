@@ -1,16 +1,16 @@
 plugins {
-  id "com.enonic.xp.app"
+  // id "com.enonic.xp.app"
   id "com.moowork.node"
 }
 
-dependencies {
+/*dependencies {
   include ":packages:constants"
   include ":packages:regions"
 }
 
 app {
   systemVersion = "${xpVersion}"
-}
+}*/
 
 cleanBuilt.delete './webpack.config.js', './build', './entriesandchunks.js', 'test/dummy-build', "test/output"
 
@@ -24,7 +24,7 @@ task copyFiles(type: Copy) {
 }
 copyFiles.inputs.file('src/webpack.config.js')
 copyFiles.outputs.file('./webpack.config.js')
-buildAll.dependsOn copyFiles
+build.dependsOn copyFiles
 
 
 task makeConstants(type: NodeTask) {
@@ -53,13 +53,13 @@ task testOverride(type: NpmTask) {
 testOverride.outputs.dir('test/build')
 testOverride.outputs.dir('test/output')
 
-testAll.args = ['run', "test:main"]
-testAll.dependsOn testEntriesAndChunks
-testAll.dependsOn testRaw
-testAll.dependsOn makeConstants
-testAll.dependsOn testOverride
-testAll.outputs.dir('test/build')
-testAll.outputs.dir('test/output')
+test.args = ['run', "test:main"]
+test.dependsOn testEntriesAndChunks
+test.dependsOn testRaw
+test.dependsOn makeConstants
+test.dependsOn testOverride
+test.outputs.dir('test/build')
+test.outputs.dir('test/output')
 
 
 

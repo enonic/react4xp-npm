@@ -4,8 +4,8 @@ plugins {
 
 cleanBuilt.enabled = false
 compileJS.enabled = false
-testAll.enabled = false
-buildAll.enabled = false
+test.enabled = false
+build.enabled = false
 
 
 task makeConstantsSubLink(type: NpmTask) {
