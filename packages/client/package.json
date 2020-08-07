@@ -67,7 +67,9 @@
     "npm-safe-install": "^1.1.0",
     "run-script-os": "^1.1.1",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3"
+    "webpack-cli": "^3.2.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "babel": {
     "presets": [
