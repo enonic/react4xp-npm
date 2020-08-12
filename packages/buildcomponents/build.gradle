@@ -19,11 +19,14 @@ compileJS.inputs.files('package.json', 'src/entriesandchunks.js')
 compileJS.outputs.file('./entriesandchunks.js')
 
 task copyFiles(type: Copy) {
-  from 'src/webpack.config.js'
+  from 'src'
+  include "*.*"
   into '.'
 }
 copyFiles.inputs.file('src/webpack.config.js')
+copyFiles.inputs.file('src/entriesandchunks.js')
 copyFiles.outputs.file('./webpack.config.js')
+copyFiles.outputs.file('./entriesandchunks.js')
 build.dependsOn copyFiles
 
 
@@ -54,10 +57,15 @@ testOverride.outputs.dir('test/build')
 testOverride.outputs.dir('test/output')
 
 test.args = ['run', "test:main"]
+test.dependsOn copyFiles
 test.dependsOn testEntriesAndChunks
 test.dependsOn testRaw
 test.dependsOn makeConstants
 test.dependsOn testOverride
+testEntriesAndChunks.dependsOn copyFiles
+testRaw.dependsOn copyFiles
+makeConstants.dependsOn copyFiles
+testOverride.dependsOn copyFiles
 test.outputs.dir('test/build')
 test.outputs.dir('test/output')
 
