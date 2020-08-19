@@ -2,7 +2,7 @@
   "name": "react4xp",
   "version": "1.0.9",
   "description": "Single package wrapping all of React4xp's NPM dependencies",
-  "main": "index.js",
+  "main": "react4xp.gradle",
   "scripts": {
     "test": "echo \"\n------------------------------ react4xp main: NO TESTS IMPLEMENTED YET! See sub-packages. ------------------------------\n\"",
     "lint": "echo \"react4xp main: nothing to lint. This is fine\"",
@@ -61,6 +61,8 @@
     "test": "__tests__"
   },
   "files": [
-    "lib"
+    "npmInstall.gradle",
+    "react4xp.gradle",
+    "updaters.gradle"
   ]
 }
