@@ -13,7 +13,7 @@ task copyFiles(type: Copy) {
 build.dependsOn += copyFiles
 doPublish.dependsOn += copyFiles
 
-cleanBuilt.delete './npmInstall.gradle', './react4xp.gradle', './updaters.gradle'
+cleanBuilt.delete './npmInstall.gradle', './react4xp.gradle', './updaters.gradle', 'lib'
 
 task makeConstantsSubLink(type: NpmTask) {
   args = ['link', 'react4xp-buildconstants']
