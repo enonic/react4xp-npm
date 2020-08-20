@@ -120,6 +120,7 @@ packages/*/*.ts
 packages/*/*.tsx
 packages/*/*.es
 packages/*/*.es6
+packages/*/*.marker
 
 # Ignore Gradle project-specific cache directory
 .gradle

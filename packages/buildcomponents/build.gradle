@@ -87,6 +87,16 @@ makeRegionsSubLink.dependsOn ":packages:regions:npmLink"
 
 task makeMainLink(type: NpmTask) {
   args = ['link']
+  doLast {
+    // Make marker
+    def linkMarkerName = "${project.ext.PROJDIR}node_modules/react4xp/npmLinked.marker"
+    def marker = new File(linkMarkerName)
+    new File(marker.getParent()).mkdirs()
+    marker.text = """
+Marker file, indicating that react4xp in node_module is locally linked - faster than traversing node_modules.
+"""
+    println "Created: $linkMarkerName"
+  }
 }
 task makeSubLinks {}
 makeSubLinks.dependsOn makeConstantsSubLink

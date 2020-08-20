@@ -36,8 +36,8 @@ configure(subprojects.findAll {!ignoreSubprojectDirs.contains(it.name)}) {
   def slash = File.separator
   project.ext.PROJDIR = "${project.buildDir.toString()}${slash}${slash}${slash}".replace("${slash}build${slash}${slash}", '')
 
-  def markerName = "${project.ext.PROJDIR}${slash}node_modules${slash}react4xp${slash}npmInstalled.txt"
-  def linkMarkerName = "${project.ext.PROJDIR}${slash}node_modules${slash}react4xp${slash}npmLinked.txt"
+  def markerName = "${project.ext.PROJDIR}node_modules${slash}react4xp${slash}npmInstalled.marker"
+  def linkMarkerName = "${project.ext.PROJDIR}node_modules${slash}react4xp${slash}npmLinked.marker"
 
   task nsiInstall(type:NpmTask) {
     args=['run', 'nsi:install']
@@ -47,6 +47,7 @@ configure(subprojects.findAll {!ignoreSubprojectDirs.contains(it.name)}) {
       marker.text = """
 Marker file, indicating that node_module is locally linked - faster than traversing the entire node_modules tree for changes.
 """
+      println "Created: $linkMarkerName"
     }
   }
   nsiInstall.inputs.files('package.json', 'package-lock.json')
@@ -54,10 +55,12 @@ Marker file, indicating that node_module is locally linked - faster than travers
   nsiInstall.outputs.file file(linkMarkerName)
 
   if (new File(linkMarkerName).exists()) {
+    println "$linkMarkerName found!"
     npmInstall.enabled = false
     npmInstall.dependsOn nsiInstall
 
   } else {
+    println "$linkMarkerName not found."
     npmInstall.enabled = true
     npmInstall.inputs.files('package.json', 'package-lock.json')
     npmInstall.outputs.file('package-lock.json')
@@ -119,6 +122,7 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
       marker.text = """
 Marker file, indicating that node_module is locally linked - faster than traversing the entire node_modules tree for changes.
 """
+      println "Created: $linkMarkerName"
     }
   }
   npmLink.dependsOn lint

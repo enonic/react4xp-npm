@@ -10,9 +10,9 @@ def markerName = "node_modules/react4xp/npmInstalled.marker"
 def linkMarkerName = "node_modules/react4xp/npmLinked.marker"
 
 task nsiInstall(type:NodeTask) {
-    doFirst {
+    /*doFirst {
         println "react4xp.properties#buildEnv is set to '" + react4xp.buildEnv + "':\nOVERRIDING VANILLA npmInstall IN FAVOR OF node-safe-install (nsi)." // Because nsi retains 'npm link' symlinks!
-    }
+    }*/
     script = file("node_modules/npm-safe-install/out/cli.js")   // npm-safe-install comes with react4xp@^0.2.0
     doLast {
         def marker = new File(linkMarkerName)
