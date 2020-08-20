@@ -127,3 +127,5 @@ packages/*/*.marker
 
 # Ignore Gradle build output directory
 build
+
+tmp
