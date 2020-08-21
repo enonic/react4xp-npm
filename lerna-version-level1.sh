@@ -32,7 +32,7 @@ for f in $(git diff --name-only HEAD^ | grep -e "^packages[\/\\].*[\/\\]package.
   toc="$(echo $to | grep -e "version" -c)"
   frc="$(echo $from | grep -e "version" -c)"
 
-  # Modify To an From, from git diff format to something usable in a search replace
+  # Modify To and From, from git diff format to something usable in a search replace
   to=$(echo $to | sed 's/^\- *//g' | sed 's/\s*,\s*$//g')
   from=$(echo $from | sed 's/^\+ *//g' | sed 's/\s*,\s*$//g' | sed 's/\(.|-\)/\\\1/g')
 
