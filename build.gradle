@@ -119,6 +119,9 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
       }
     }
   }
+  if (project.hasProperty("dry")) {
+    doPublish.args = ['publish', '--dry-run']
+  }
 
   task npmLink(type: NpmTask) {
     args=['link']
