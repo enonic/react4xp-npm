@@ -22,7 +22,7 @@
     "lint": "eslint src/**/*.* --fix",
     "nsi:install": "npm-safe-install",
     "postversion": "cd ../.. && ./copytag.js regions",
-    "prepublish": "npm run copyFiles",
+    "_TEMP_DISABLED_prepublish": "npm run copyFiles",
     "copyFiles": "run-script-os",
     "copyFiles:win32": "cd .. && cd .. && gradlew :packages:regions:copyFiles --info",
     "copyFiles:default": "cd .. && cd .. && ./gradlew :packages:regions:copyFiles --info"
@@ -65,7 +65,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
+      "_TEMP_DISABLED_pre-commit": "lint-staged",
       "pre-push": "npm run test"
     }
   },
