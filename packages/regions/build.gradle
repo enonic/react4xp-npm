@@ -55,4 +55,4 @@ copyFiles.outputs.files('./*.jsx')
 copyFiles.outputs.dir('entries')
 build.dependsOn project.copyFiles
 
-project.doPublish.shouldRunAfter ":packages:constants:doPublish"
+//project.doPublish.shouldRunAfter ":packages:constants:doPublish"

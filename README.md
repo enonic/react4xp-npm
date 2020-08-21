@@ -27,6 +27,8 @@ These packages don't need separate installation, they are bundled as dependencie
 
 You'll need Gradle 5+ (a 6.2.1 gradle wrapper is included), Java JDK 11, Enonic XP 7+, and Node.
 
+NOTE: The interdependencies below have caused problems for automatic versioning and publish of the monorepo. `lerna-version-level1.sh` can be used as a rough guide for the steps, but proceed with caution.
+
 ### Internal package dependencies
 
 All the sub-packages mentioned above are dependencies of this main react4xp package. In addition, _react4xp-regions_ and _react4xp-buildconstants_ are dependencies of _react4xp-build-components_, and  _react4xp-buildconstants_ is a dependency of _react4xp-runtime-nashornpolyfills_:

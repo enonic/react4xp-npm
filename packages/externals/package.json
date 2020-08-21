@@ -1,6 +1,6 @@
 {
   "name": "react4xp-runtime-externals",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "React4xp helper: using webpack externals as input, generates a runnable externals chunk for shared external libraries",
   "main": "webpack.config.js",
   "files": [
@@ -73,7 +73,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
+      "_TEMP_DISABLED_pre-commit": "lint-staged",
       "pre-push": "npm run test"
     }
   },

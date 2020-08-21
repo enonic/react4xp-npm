@@ -103,16 +103,25 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
   task doPublish(type: NpmTask) {
     args=['publish']
   }
-
-  // doPublish.dependsOn ":packages:${project.name}:build" // <-- IMPORTANT: npm link messes up the sequence. Always run "gradlew build" (or something that runs it, e.g. "npm run version") before gradlew doPublish!!! TODO: doPublish should check and warn about this.
-
-  task postPublish {}
-  postPublish.dependsOn ":packages:${project.name}:cleanBuilt"
-  cleanBuilt.shouldRunAfter ":packages:${project.name}:doPublish"
-  postPublish.dependsOn ":packages:${project.name}:doPublish"
-  task publish {}
-  publish.dependsOn ":packages:${project.name}:postPublish"
-
+  doPublish.enabled = false
+  if (project.hasProperty("lvl")) {
+    if (project.name == "regions" || project.name == "constants") {
+      if (project.property("lvl") == "1") {
+        doPublish.enabled = true
+      }
+    } else if (project.name == "react4xp") {
+      if (project.property("lvl") == "3") {
+        doPublish.enabled = true
+      }
+    } else {
+      if (project.property("lvl") == "2") {
+        doPublish.enabled = true
+      }
+    }
+  }
+  if (project.hasProperty("dry")) {
+    doPublish.args = ['publish', '--dry-run']
+  }
 
   task npmLink(type: NpmTask) {
     args=['link']
