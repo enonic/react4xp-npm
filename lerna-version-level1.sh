@@ -16,7 +16,7 @@ lerna version --conventional-commits --exact --no-push --include-merged-tags --n
 # lerna version --conventional-commits --exact --no-push --include-merged-tags --no-changelog --conventional-prerelease=react4xp --preid lernatmp
 
 # Remove lernatmp tags
-git tag -d $(git tag -l "*lernatmp*")
+git push --delete origin $(git tag -l "*lernatmp*") && git tag -d $(git tag -l "*lernatmp*")
 
 
 # Traverse all changed package*.json files. For each that now has "lernatmp" in the version, revert the version line to before the last commit:
