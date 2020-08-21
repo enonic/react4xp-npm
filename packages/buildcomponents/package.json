@@ -96,7 +96,7 @@
   },
   "husky": {
     "hooks": {
-      "_DEPRECATED_pre-commit": "lint-staged",
+      "_TEMP_DISABLED_pre-commit": "lint-staged",
       "pre-push": "npm run test"
     }
   },
