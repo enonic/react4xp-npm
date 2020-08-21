@@ -41,6 +41,9 @@ for f in $(git diff --name-only HEAD^ | grep -e "^packages[\/\\].*[\/\\]package.
   fi
 done
 
+# For some reason, the prev script creates json-e files. Remove them.
+rm packages/*/*.json-e
+
 echo "First level of packages (regions and constants) is done. Now:"
 echo "    1. commit/push,"
 echo "    2. publish this level to NPM (gradlew doPublish),"
