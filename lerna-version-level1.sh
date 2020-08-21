@@ -15,8 +15,6 @@ lerna version --conventional-commits --exact --no-push --include-merged-tags --n
 #level 2:
 # lerna version --conventional-commits --exact --no-push --include-merged-tags --no-changelog --conventional-prerelease=react4xp --preid lernatmp
 
-# Remove lernatmp tags
-git push --delete origin $(git tag -l "*lernatmp*") && git tag -d $(git tag -l "*lernatmp*")
 
 
 # Traverse all changed package*.json files. For each that now has "lernatmp" in the version, revert the version line to before the last commit:
@@ -45,6 +43,7 @@ for f in $(git diff --name-only HEAD^ | grep -e "^packages[\/\\].*[\/\\]package.
     echo ""
   fi
 done
+# INSTEAD, LET DOPUBLISH FILTER AWAY lernatmp VERSIONS?
 
 # For some reason, the prev script creates json-e files. Remove them.
 rm packages/*/*.json-e
@@ -59,3 +58,7 @@ echo "       gradlew cleanNpm && gradlew npmInstall"
 echo "    4. Commit/push the now updated package-locks:"
 echo "       git add . --all && git commit -m'Update package-locks' && git push"
 echo "    5. Move on to level 2 (the rest of the packages except react4xp)"
+
+# DO THIS LAST?
+# Remove lernatmp tags
+git push --delete origin $(git tag -l "*lernatmp*") && git tag -d $(git tag -l "*lernatmp*")
