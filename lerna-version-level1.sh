@@ -12,6 +12,8 @@ gradlew test
 # Level 1: checks for/bumps the basic dependencies: regions and constants, marking all othe packages as "lernatmp" prereleases:
 lerna version --conventional-commits --exact --no-push --include-merged-tags --no-changelog --conventional-prerelease=react4xp-build-components,react4xp-runtime-client,react4xp-runtime-externals,react4xp-runtime-nashornpolyfills,react4xp --preid lernatmp
 
+#level 2:
+# lerna version --conventional-commits --exact --no-push --include-merged-tags --no-changelog --conventional-prerelease=react4xp --preid lernatmp
 
 # Remove lernatmp tags
 git tag -d $(git tag -l "*lernatmp*")
@@ -51,7 +53,9 @@ echo "First level of packages (regions and constants) is done. Now:"
 echo "    1. Commit/push:"
 echo "       git add . --all && git commit -m'Revert premature lernatmp version bumps, keep completed bumps in dependencies' && git push"
 echo "    2. Publish this level to NPM:"
-echo "       lerna exec -- npm publish"
-echo "    3. Clean and rebuild the next level:"
-echo "       gradlew cleanNpm npmInstall"
-echo "    4. Move on to level 2 (the rest of the packages except react4xp)"
+echo "       gradlew doPublish -Plvl=1"
+echo "    3. Clean and rebuild the next level (let react4xp, the last level, fail)"
+echo "       gradlew cleanNpm && gradlew npmInstall"
+echo "    4. Commit/push the now updated package-locks:"
+echo "       git add . --all && git commit -m'Update package-locks' && git push"
+echo "    5. Move on to level 2 (the rest of the packages except react4xp)"
