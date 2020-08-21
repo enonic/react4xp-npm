@@ -1,7 +1,7 @@
 
-HVORFOR npmInstaller react4xp, nashornpolyfills, buildcomponents underveis i lerna version?
-Bryter prosessen når det skjer før lvl1 publish!
-Del av dette bygget, eller lerna?
+#HVORFOR npmInstaller react4xp, nashornpolyfills, buildcomponents underveis i lerna version?
+#Bryter prosessen når det skjer før lvl1 publish!
+#Del av dette bygget, eller lerna?
 
 
 #Why? Lerna updates versions and dependents, but dependents need to update their package-lock AFTER their dependencies have been released with new versions.
