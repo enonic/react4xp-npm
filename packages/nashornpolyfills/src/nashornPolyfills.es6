@@ -25,6 +25,7 @@ var Set = require( 'es6-set-and-map' ).set;
     if (typeof window.Map === 'undefined') window.Map = Map;
     if (typeof window.Set === 'undefined') window.Set = Set;
     if (typeof window.addEventListener !== 'function') window.addEventListener = () => {};
+    if (typeof window.document === 'undefined') window.document = {};
 } )(context);
 
 
