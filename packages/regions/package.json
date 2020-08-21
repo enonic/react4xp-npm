@@ -1,6 +1,6 @@
 {
   "name": "react4xp-regions",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Ready-made React4xp templates for handling XP regions, and bare-bone page/layout templates with regions supported/included",
   "files": [
     "LICENCE",
