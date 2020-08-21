@@ -108,5 +108,5 @@ makeSubLinks.mustRunAfter makeMainLink
 
 npmLink.enabled = false
 
-doPublish.shouldRunAfter ":packages:constants:doPublish"
-doPublish.shouldRunAfter ":packages:regions:doPublish"
+//doPublish.shouldRunAfter ":packages:constants:doPublish"
+//doPublish.shouldRunAfter ":packages:regions:doPublish"
