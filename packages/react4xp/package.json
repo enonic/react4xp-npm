@@ -1,6 +1,6 @@
 {
   "name": "react4xp",
-  "version": "1.0.10-lernatmp.0",
+  "version": "1.0.10",
   "description": "Single package wrapping all of React4xp's NPM dependencies",
   "main": "react4xp.gradle",
   "scripts": {
@@ -49,12 +49,12 @@
     "@babel/register": "^7.8.3",
     "babel-loader": "^8.0.6",
     "npm-safe-install": "^1.1.0",
-    "react4xp-build-components": "1.0.7-lernatmp.0",
+    "react4xp-build-components": "1.0.7",
     "react4xp-buildconstants": "0.8.8",
     "react4xp-regions": "1.0.4",
-    "react4xp-runtime-client": "1.0.4-lernatmp.0",
-    "react4xp-runtime-externals": "1.0.3-lernatmp.0",
-    "react4xp-runtime-nashornpolyfills": "1.1.0-lernatmp.0"
+    "react4xp-runtime-client": "1.0.4",
+    "react4xp-runtime-externals": "1.0.3",
+    "react4xp-runtime-nashornpolyfills": "1.0.5"
   },
   "directories": {
     "lib": "lib",
