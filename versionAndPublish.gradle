@@ -20,6 +20,8 @@ import groovy.json.JsonSlurper
 // CLI options:
 //   -Pmessage=... (describes the entire multi-level publication)
 //   -Pdry (dry-run)
+//
+// TODO: less abomination, more DRY.
 
 
 def PRERELEASE_ID = "prereleasetmp"
@@ -81,61 +83,114 @@ task versionLevel3(type: Exec) {
   }
 }
 
-task postLevel1(type: Exec) {
-  def cmds = [
-    'npm', 'run', 'cleanNpm', '&&',
-    'npm', 'run', 'npmInstall', '&&',
-    'git', 'add', '.', '--all', '&&',
-    'git', 'commit', "-m'Post level1 release: update package-locks'", '&&',
-    'git', 'push'
-  ]
 
-  if (project.hasProperty("dry")) {
-    cmds = ['echo', "\"${cmds.join(' ')}\""]
-  }
-  commandLine cmds
-  doFirst {
-    if (!project.hasProperty("dry")) println cmds.join(' ')
-  }
+
+////////////////////////
+
+task wipePrereleaseTagsRemote(type: Exec) {
+  commandLine 'git', 'push', '--delete', 'origin', "\$(git tag -l \"*$PRERELEASE_ID*\")"
+  enabled = !project.hasProperty("dry")
 }
-task postLevel2(type: Exec) {
-  def cmds = [
-    'npm', 'run', 'cleanNpm', '&&',
-    'npm', 'run', 'npmInstall', '&&',
-    'git', 'add', '.', '--all', '&&',
-    'git', 'commit', "-m'Post level2 release: update package-locks'", '&&',
-    'git', 'push'
-  ]
-
-  if (project.hasProperty("dry")) {
-    cmds = ['echo', "\"${cmds.join(' ')}\""]
-  }
-  commandLine cmds
-  doFirst {
-    if (!project.hasProperty("dry")) println cmds.join(' ')
-  }
+task wipePrereleaseTagsLocal(type: Exec) {
+  commandLine 'git', 'tag', '-d', "\$(git tag -l \"*$PRERELEASE_ID*\")"
+  enabled = !project.hasProperty("dry")
+  dependsOn wipePrereleaseTagsRemote
 }
 
-task postLevel3(type: Exec) {
-  def cmds = [
-    // Remove all temporary tags with thw prerelease ID
-    'git', 'push', '--delete', 'origin', "\$(git tag -l \"*$PRERELEASE_ID*\")", '&&',
-    'git', 'tag', '-d', "\$(git tag -l \"*$PRERELEASE_ID*\")", '&&',
 
-    'npm', 'run', 'cleanNpm', '&&',
-    'npm', 'run', 'npmInstall', '&&',
-    'git', 'add', '.', '--all', '&&',
-    'git', 'commit', "-m'Post level3 release: update package-locks'", '&&',
-    'git', 'push'
-  ]
+task npmClean1(type: NpmTask) {
+  args = ['npmClean']
+  enabled = !project.hasProperty("dry")
+}
+task npmClean2(type: NpmTask) {
+  args = ['npmClean']
+  enabled = !project.hasProperty("dry")
+}
+task npmClean3(type: NpmTask) {
+  args = ['npmClean']
+  enabled = !project.hasProperty("dry")
+  dependsOn wipePrereleaseTagsLocal
+}
 
-  if (project.hasProperty("dry")) {
-    cmds = ['echo', "\"${cmds.join(' ')}\""]
-  }
-  commandLine cmds
-  doFirst {
-    if (!project.hasProperty("dry")) println cmds.join(' ')
-  }
+
+task npmInstall1(type: NpmTask) {
+  args = ['npmInstall']
+  enabled = !project.hasProperty("dry")
+  dependsOn npmClean1
+}
+task npmInstall2(type: NpmTask) {
+  args = ['npmInstall']
+  enabled = !project.hasProperty("dry")
+  dependsOn npmClean2
+}
+task npmInstall3(type: NpmTask) {
+  args = ['npmInstall']
+  enabled = !project.hasProperty("dry")
+  dependsOn npmClean3
+}
+
+
+task gitAdd1(type: Exec) {
+  commandLine 'git', 'add', '.', '--all'
+  enabled = !project.hasProperty("dry")
+  dependsOn npmInstall1
+}
+task gitAdd2(type: Exec) {
+  commandLine 'git', 'add', '.', '--all'
+  enabled = !project.hasProperty("dry")
+  dependsOn npmInstall2
+}
+task gitAdd3(type: Exec) {
+  commandLine 'git', 'add', '.', '--all'
+  enabled = !project.hasProperty("dry")
+  dependsOn npmInstall3
+}
+
+
+task gitCommit1(type: Exec) {
+  commandLine 'git', 'commit', "-m'Post level1 release: update package-locks'"
+  enabled = !project.hasProperty("dry")
+  dependsOn gitAdd1
+}
+task gitCommit2(type: Exec) {
+  commandLine 'git', 'commit', "-m'Post level2 release: update package-locks'"
+  enabled = !project.hasProperty("dry")
+  dependsOn gitAdd2
+}
+task gitCommit3(type: Exec) {
+  commandLine 'git', 'commit', "-m'Post level3 release: update package-locks'"
+  enabled = !project.hasProperty("dry")
+  dependsOn gitAdd3
+}
+
+
+task gitPush1(type: Exec) {
+  commandLine 'git', 'push'
+  enabled = !project.hasProperty("dry")
+  dependsOn gitCommit1
+}
+task gitPush2(type: Exec) {
+  commandLine 'git', 'push'
+  enabled = !project.hasProperty("dry")
+  dependsOn gitCommit2
+}
+task gitPush3(type: Exec) {
+  commandLine 'git', 'push'
+  enabled = !project.hasProperty("dry")
+  dependsOn gitCommit3
+}
+
+
+task postLevel1() {
+  dependsOn gitPush1
+}
+
+task postLevel2() {
+  dependsOn gitPush2
+}
+
+task postLevel3() {
+  dependsOn gitPush3
 }
 
 

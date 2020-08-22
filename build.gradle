@@ -112,7 +112,7 @@ Marker file, indicating that node_module is locally linked - faster than travers
   test.inputs.files('package.json')
   test.inputs.dir('src')
   test.inputs.dir('test')
-  test.dependsOn ":packages:${project.name}:npmClean"
+  // test.dependsOn ":packages:${project.name}:npmClean"
   test.dependsOn ":packages:${project.name}:npmInstall"
   test.dependsOn ":packages:${project.name}:lint"
   test.dependsOn ":packages:${project.name}:npmLink"
