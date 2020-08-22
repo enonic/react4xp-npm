@@ -46,6 +46,7 @@ task versionLevel1(type: Exec) {
   if (project.hasProperty("dry")) {
     cmds = ['echo', "\"${cmds.join(' ')}\""]
   }
+  standardInput = System.in
   commandLine cmds
   doFirst {
     if (!project.hasProperty("dry")) println cmds.join(' ')
@@ -62,6 +63,7 @@ task versionLevel2(type: Exec) {
   if (project.hasProperty("dry")) {
     cmds = ['echo', "\"${cmds.join(' ')}\""]
   }
+  standardInput = System.in
   commandLine cmds
   doFirst {
     if (!project.hasProperty("dry")) println cmds.join(' ')
@@ -77,6 +79,7 @@ task versionLevel3(type: Exec) {
   if (project.hasProperty("dry")) {
     cmds = ['echo', "\"${cmds.join(' ')}\""]
   }
+  standardInput = System.in
   commandLine cmds
   doFirst {
     if (!project.hasProperty("dry")) println cmds.join(' ')
