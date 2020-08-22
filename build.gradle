@@ -19,21 +19,16 @@ allprojects {
   }
 }
 
+
 /*app {
   systemVersion = "${xpVersion}"
 }*/
-
-
-import groovy.json.JsonSlurper
-def PRERELEASE_ID = "prereleasetmp"
 
 def ignoreSubprojectDirs = [
         'packages'
 ]
 configure(subprojects.findAll {!ignoreSubprojectDirs.contains(it.name)}) {
   apply plugin: "com.moowork.node" // version "1.3.1"
-
-  def PACKAGE_JSON = new JsonSlurper().parseText(file('package.json').text)
 
   task cleanNpm(type: Delete) {
     delete 'node_modules'
@@ -67,7 +62,7 @@ Marker file, indicating that node_module is locally linked - faster than travers
     npmInstall.dependsOn nsiInstall
 
   } else {
-    println "$linkMarkerName not found."
+    // println "$linkMarkerName not found."
     npmInstall.enabled = true
     npmInstall.inputs.files('package.json', 'package-lock.json')
     npmInstall.outputs.file('package-lock.json')
@@ -105,54 +100,6 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
   lint.dependsOn ":packages:${project.name}:npmInstall"
   build.shouldRunAfter ":packages:${project.name}:lint"
 
-//////////////////////////////////////////////////  Auto-update version and publish
-
-  // Set up 3 groups (levels) of publish, which must happen in that order.
-  // Also disable publish for each package that has the prerelease ID in the version string:
-
-  task publishLevel1(type: NpmTask) {
-    args = (!project.hasProperty("dry")) ? ['publish'] : ['publish', '--dry-run']
-    enabled = false
-    doFirst {
-      println "Level 1: ${args.join()} ${project.name}@${PACKAGE_JSON.version}"
-    }
-  }
-  task publishLevel2(type: NpmTask) {
-    args = (!project.hasProperty("dry")) ? ['publish'] : ['publish', '--dry-run']
-    enabled = false
-    doFirst {
-      println "Level 1: ${args.join()} ${project.name}@${PACKAGE_JSON.version}"
-    }
-  }
-  task publishLevel3(type: NpmTask) {
-    args = (!project.hasProperty("dry")) ? ['publish'] : ['publish', '--dry-run']
-    enabled = false
-    doFirst {
-      println "Level 1: ${args.join()} ${project.name}@${PACKAGE_JSON.version}"
-    }
-  }
-
-  def pattern = ~".*$PRERELEASE_ID.*"
-  def enablePublish = !(PACKAGE_JSON.version ==~ pattern)
-  println "    ${project.name}@${PACKAGE_JSON.version}: enable publish (i.e. '$PRERELEASE_ID' wasn't found in version)? $enablePublish"
-
-  // regions and constants are released first, since other packages depend on them:
-  if (project.name == "regions" || project.name == "constants") {
-    publishLevel1.enabled = enablePublish
-
-  // react4xp is released last, since it depends on all the other packages:
-  } else if (project.name == "react4xp") {
-    publishLevel3.enabled = enablePublish
-
-  // all other packages fall in between:
-  } else {
-    publishLevel2.enabled = enablePublish
-  }
-
-
-
-
-  ///////////////////////////////////////////////////////////////////////////////
 
   task npmLink(type: NpmTask) {
     args=['link']
@@ -200,3 +147,196 @@ npmInstall.doLast {
 Marker file, indicating that the npmInstall gradle task has been run in the root project - faster than traversing the entire node_modules tree for changes.
 """
 }
+
+
+
+
+////////////////////////////////////////////////////
+
+// GROUPWISE AUTOMATED VERSION + PUBLISH
+// Why? Lerna updates versions and dependents, but dependents need to update their package-lock AFTER their dependencies have been released with new versions.
+
+def PRERELEASE_ID = "prereleasetmp"
+
+def msg = (project.hasProperty("message")) ? project.property("message") : "publish"
+def lernaVersionCommonCmd = [
+  'lerna', 'version',
+  '--conventional-commits',
+  '--exact',
+  '--no-push',
+  '--include-merged-tags',
+  '--no-changelog'
+]
+task versionLevel1(type: Exec) {
+  def cmds = lernaVersionCommonCmd + [
+    '--conventional-prerelease=react4xp-build-components,react4xp-runtime-client,react4xp-runtime-externals,react4xp-runtime-nashornpolyfills,react4xp',
+    '--preid', "$PRERELEASE_ID",
+    '-m', "'chore(release lvl 1): $msg'"
+  ]
+
+  if (project.hasProperty("dry")) {
+    cmds = ['echo', "\"${cmds.join(' ')}\""]
+  }
+  commandLine cmds
+  doFirst {
+    if (!project.hasProperty("dry")) println cmds.join(' ')
+  }
+}
+task versionLevel2(type: Exec) {
+  def cmds = lernaVersionCommonCmd + [
+    '--conventional-graduate=react4xp-build-components,react4xp-runtime-client,react4xp-runtime-externals,react4xp-runtime-nashornpolyfills',
+    '--conventional-prerelease=react4xp',
+    '--preid', "$PRERELEASE_ID",
+    '-m', "'chore(release lvl 2): $msg'"
+  ]
+
+  if (project.hasProperty("dry")) {
+    cmds = ['echo', "\"${cmds.join(' ')}\""]
+  }
+  commandLine cmds
+  doFirst {
+    if (!project.hasProperty("dry")) println cmds.join(' ')
+  }
+}
+task versionLevel3(type: Exec) {
+  def cmds = lernaVersionCommonCmd + [
+    '--conventional-graduate=react4xp',
+    '--preid', "$PRERELEASE_ID",
+    '-m', "'chore(release lvl 3): $msg'"
+  ]
+
+  if (project.hasProperty("dry")) {
+    cmds = ['echo', "\"${cmds.join(' ')}\""]
+  }
+  commandLine cmds
+  doFirst {
+    if (!project.hasProperty("dry")) println cmds.join(' ')
+  }
+}
+
+task postLevel1(type: Exec) {
+  def cmds = [
+    'npm', 'run', 'cleanNpm', '&&',
+    'npm', 'run', 'npmInstall', '&&',
+    'git', 'add', '.', '--all', '&&',
+    'git', 'commit', "-m'Post level1 release: update package-locks'", '&&',
+    'git', 'push'
+  ]
+
+  if (project.hasProperty("dry")) {
+    cmds = ['echo', "\"${cmds.join(' ')}\""]
+  }
+  commandLine cmds
+  doFirst {
+    if (!project.hasProperty("dry")) println cmds.join(' ')
+  }
+}
+task postLevel2(type: Exec) {
+  def cmds = [
+    'npm', 'run', 'cleanNpm', '&&',
+    'npm', 'run', 'npmInstall', '&&',
+    'git', 'add', '.', '--all', '&&',
+    'git', 'commit', "-m'Post level2 release: update package-locks'", '&&',
+    'git', 'push'
+  ]
+
+  if (project.hasProperty("dry")) {
+    cmds = ['echo', "\"${cmds.join(' ')}\""]
+  }
+  commandLine cmds
+  doFirst {
+    if (!project.hasProperty("dry")) println cmds.join(' ')
+  }
+}
+
+task postLevel3(type: Exec) {
+  def cmds = [
+    // Remove all temporary tags with thw prerelease ID
+    'git', 'push', '--delete', 'origin', "\$(git tag -l \"*$PRERELEASE_ID*\")", '&&',
+    'git', 'tag', '-d', "\$(git tag -l \"*$PRERELEASE_ID*\")", '&&',
+
+    'npm', 'run', 'cleanNpm', '&&',
+    'npm', 'run', 'npmInstall', '&&',
+    'git', 'add', '.', '--all', '&&',
+    'git', 'commit', "-m'Post level3 release: update package-locks'", '&&',
+    'git', 'push'
+  ]
+
+  if (project.hasProperty("dry")) {
+    cmds = ['echo', "\"${cmds.join(' ')}\""]
+  }
+  commandLine cmds
+  doFirst {
+    if (!project.hasProperty("dry")) println cmds.join(' ')
+  }
+}
+
+
+task versionAndPublish(){}
+
+
+
+
+
+configure(subprojects.findAll {!ignoreSubprojectDirs.contains(it.name)}) {
+
+  def PACKAGE_JSON = new JsonSlurper().parseText(file('package.json').text)
+
+  // Set up 3 groups (levels) of publish, which must happen in that order.
+  // Also disable publish for each package that has the prerelease ID in the version string:
+
+  task publishLevel1(type: NpmTask) {
+    args = (!project.hasProperty("dry")) ? ['publish'] : ['publish', '--dry-run']
+    enabled = false
+    doFirst {
+      println "Level 1: ${args.join()} ${project.name}@${PACKAGE_JSON.version}"
+    }
+  }
+  task publishLevel2(type: NpmTask) {
+    args = (!project.hasProperty("dry")) ? ['publish'] : ['publish', '--dry-run']
+    enabled = false
+    doFirst {
+      println "Level 1: ${args.join()} ${project.name}@${PACKAGE_JSON.version}"
+    }
+  }
+  task publishLevel3(type: NpmTask) {
+    args = (!project.hasProperty("dry")) ? ['publish'] : ['publish', '--dry-run']
+    enabled = false
+    doFirst {
+      println "Level 1: ${args.join()} ${project.name}@${PACKAGE_JSON.version}"
+    }
+  }
+
+  def pattern = ~".*$PRERELEASE_ID.*"
+  def enablePublish = !(PACKAGE_JSON.version ==~ pattern)
+  // println "    ${project.name}@${PACKAGE_JSON.version}: enable publish (i.e. '$PRERELEASE_ID' wasn't found in version)? $enablePublish"
+
+  // regions and constants are released first, since other packages depend on them:
+  if (project.name == "regions" || project.name == "constants") {
+    publishLevel1.enabled = enablePublish
+
+    // react4xp is released last, since it depends on all the other packages:
+  } else if (project.name == "react4xp") {
+    publishLevel3.enabled = enablePublish
+
+    // All other packages are published in between:
+  } else {
+    publishLevel2.enabled = enablePublish
+  }
+
+  versionAndPublish.dependsOn postLevel3
+  postLevel3.dependsOn publishLevel3
+  publishLevel3.dependsOn versionLevel3
+  versionLevel3.dependsOn postLevel2
+  postLevel2.dependsOn publishLevel2
+  publishLevel2.dependsOn versionLevel2
+  versionLevel2.dependsOn postLevel1
+  postLevel1.dependsOn publishLevel1
+  publishLevel1.dependsOn versionLevel1
+  versionLevel1.dependsOn test
+}
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
