@@ -88,43 +88,43 @@ task versionLevel3(type: Exec) {
 ////////////////////////
 
 task wipePrereleaseTagsRemote(type: Exec) {
-  commandLine 'git', 'push', '--delete', 'origin', "\$(git tag -l \"*$PRERELEASE_ID*\")"
+  commandLine 'git', 'push', '--delete', 'origin', '$(git tag -l "*' + PRERELEASE_ID + '*")'
   enabled = !project.hasProperty("dry")
 }
 task wipePrereleaseTagsLocal(type: Exec) {
-  commandLine 'git', 'tag', '-d', "\$(git tag -l \"*$PRERELEASE_ID*\")"
+  commandLine 'git', 'tag', '-d', '$(git tag -l "*' + PRERELEASE_ID + '*")'
   enabled = !project.hasProperty("dry")
   dependsOn wipePrereleaseTagsRemote
 }
 
 
 task npmClean1(type: NpmTask) {
-  args = ['npmClean']
+  args = ['run', 'cleanNpm']
   enabled = !project.hasProperty("dry")
 }
 task npmClean2(type: NpmTask) {
-  args = ['npmClean']
+  args = ['run', 'cleanNpm']
   enabled = !project.hasProperty("dry")
 }
 task npmClean3(type: NpmTask) {
-  args = ['npmClean']
+  args = ['run', 'cleanNpm']
   enabled = !project.hasProperty("dry")
   dependsOn wipePrereleaseTagsLocal
 }
 
 
 task npmInstall1(type: NpmTask) {
-  args = ['npmInstall']
+  args = ['run', 'npmInstall']
   enabled = !project.hasProperty("dry")
   dependsOn npmClean1
 }
 task npmInstall2(type: NpmTask) {
-  args = ['npmInstall']
+  args = ['run', 'npmInstall']
   enabled = !project.hasProperty("dry")
   dependsOn npmClean2
 }
 task npmInstall3(type: NpmTask) {
-  args = ['npmInstall']
+  args = ['run', 'npmInstall']
   enabled = !project.hasProperty("dry")
   dependsOn npmClean3
 }
@@ -252,13 +252,22 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
   versionAndPublish.dependsOn postLevel3
   postLevel3.dependsOn publishLevel3
   publishLevel3.dependsOn versionLevel3
+
   versionLevel3.dependsOn postLevel2
   postLevel2.dependsOn publishLevel2
   publishLevel2.dependsOn versionLevel2
+
   versionLevel2.dependsOn postLevel1
   postLevel1.dependsOn publishLevel1
   publishLevel1.dependsOn versionLevel1
-  versionLevel1.dependsOn test
+  versionLevel1.dependsOn build
+  versionLevel1.dependsOn npmLink
+  build.shouldRunAfter npmLink
+
+
+  wipePrereleaseTagsRemote.mustRunAfter publishLevel3
+  npmClean2.mustRunAfter publishLevel2
+  npmClean1.mustRunAfter publishLevel1
 }
 
 
