@@ -21,6 +21,7 @@ import groovy.json.JsonSlurper
 //   -Pmessage=... (describes the entire multi-level publication)
 //   -Pdry (dry-run)
 //
+// TODO: I can't imagine this will work in windows. Should probably fix that.
 // TODO: less abomination, more DRY.
 
 
@@ -90,14 +91,9 @@ task versionLevel3(type: Exec) {
 
 ////////////////////////
 
-task wipePrereleaseTagsRemote(type: Exec) {
-  commandLine 'git', 'push', '--delete', 'origin', '$(git tag -l "*' + PRERELEASE_ID + '*")'
+task cleanPrereleaseTags(type: Exec) {
+  commandLine './cleanTagsContaining.sh', PRERELEASE_ID
   enabled = !project.hasProperty("dry")
-}
-task wipePrereleaseTagsLocal(type: Exec) {
-  commandLine 'git', 'tag', '-d', '$(git tag -l "*' + PRERELEASE_ID + '*")'
-  enabled = !project.hasProperty("dry")
-  dependsOn wipePrereleaseTagsRemote
 }
 
 
@@ -112,7 +108,7 @@ task npmClean2(type: NpmTask) {
 task npmClean3(type: NpmTask) {
   args = ['run', 'cleanNpm']
   enabled = !project.hasProperty("dry")
-  dependsOn wipePrereleaseTagsLocal
+  dependsOn cleanPrereleaseTags
 }
 
 
@@ -208,7 +204,7 @@ def getCurrentlyReleasedVersion(packageName) {
   println checkVersionCmd
   def proc = checkVersionCmd.execute()
   proc.consumeProcessOutput(sout, serr)
-  proc.waitForOrKill(10000)
+  proc.waitForProcessOutput()
   println "out> $sout"
   println "err> $serr"
   // TODO: Verify returned version format.
@@ -257,7 +253,7 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
         def sout = new StringBuilder(), serr = new StringBuilder()
         def proc = NPM_PUBLISH_CMD.execute()
         proc.consumeProcessOutput(sout, serr)
-        proc.waitForOrKill(10000)
+        proc.waitForProcessOutput()
         handleNpmPublishError(sout, serr)
       }
     }
@@ -272,7 +268,7 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
         def sout = new StringBuilder(), serr = new StringBuilder()
         def proc = NPM_PUBLISH_CMD.execute()
         proc.consumeProcessOutput(sout, serr)
-        proc.waitForOrKill(10000)
+        proc.waitForProcessOutput()
         handleNpmPublishError(sout, serr)
       }
     }
@@ -287,7 +283,7 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
         def sout = new StringBuilder(), serr = new StringBuilder()
         def proc = NPM_PUBLISH_CMD.execute()
         proc.consumeProcessOutput(sout, serr)
-        proc.waitForOrKill(10000)
+        proc.waitForProcessOutput()
         handleNpmPublishError(sout, serr)
       }
     }
@@ -325,7 +321,7 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
   build.shouldRunAfter npmLink
 
 
-  wipePrereleaseTagsRemote.mustRunAfter publishLevel3
+  cleanPrereleaseTags.mustRunAfter publishLevel3
   npmClean2.mustRunAfter publishLevel2
   npmClean1.mustRunAfter publishLevel1
 }
