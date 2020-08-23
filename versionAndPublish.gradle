@@ -213,9 +213,9 @@ def getCurrentlyReleasedVersion(packageName) {
   return false
 }
 
-def PRERELEASE_PATTERN = ~".*$PRERELEASE_ID.*"
+project.ext.PRERELEASE_PATTERN = ~".*$PRERELEASE_ID.*"
 def shouldPublish(PACKAGE_JSON) {
-  if (PACKAGE_JSON.version ==~ PRERELEASE_PATTERN) {
+  if (PACKAGE_JSON.version ==~ project.ext.PRERELEASE_PATTERN) {
     println "Skipping."
     return false
   }
