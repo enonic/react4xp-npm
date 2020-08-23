@@ -27,8 +27,6 @@ These packages don't need separate installation, they are bundled as dependencie
 
 You'll need Gradle 5+ (a 6.2.1 gradle wrapper is included), Java JDK 11, Enonic XP 7+, and Node.
 
-NOTE: The interdependencies below have caused problems for automatic versioning and publish of the monorepo. `lerna-version-level1.sh` can be used as a rough guide for the steps, but proceed with caution.
-
 ### Internal package dependencies
 
 All the sub-packages mentioned above are dependencies of this main react4xp package. In addition, _react4xp-regions_ and _react4xp-buildconstants_ are dependencies of _react4xp-build-components_, and  _react4xp-buildconstants_ is a dependency of _react4xp-runtime-nashornpolyfills_:
@@ -57,6 +55,7 @@ From the project root, handles the entire file structure: triggers the same task
 
   - `gradlew npmLink`: enter development linked mode: same as running [npm link](https://docs.npmjs.com/cli/link.html) in each package, but also linking up the internal dependencies between the packages. Use the cleanNpm gradle task (above) to exit linked mode. A corresponding script, `getlinks.sh`, can be run by relative path from a parent project's root folder (e.g. `sh ../../react4xp-npm/getlinks.sh`) to hook up the same links below that project's node_modules/. Sorry, no windows script yet (but it should be easy to reverse-engineer).
 
-  - `npm run version`: after committing your changes, run this to let [lerna](https://github.com/lerna/lerna) handle independent versioning in the packages, by tracking changes across them (using conventional-commits flags from your commit messages to track major:minor:patch versions), tagging the commit and auto-updating version tags everywhere. IMPORTANT: before running `version`, you should have run `setup`, `npmLink` and `build`. And after `version`, verify that the react4xp-* references in all packages/*/package-lock.json files are up-to-date (i.e. don't still refer to the previous versions for their dependencies). Finalize by running the _doPublish_ gradle task (below).
+  - `gradlew versionAndPublish [ -Pdry ] [ -Pmessage='...' ]`: Auto-versions all changed packages, and publishes to NPM, after updating internal cross-dependency references. After committing your changes, run this to let [lerna](https://github.com/lerna/lerna) handle independent versioning in the packages, by tracking changes across them (use **[conventional-commit](https://www.conventionalcommits.org/en/v1.0.0/) flags** from your commit messages to track major:minor:patch versions), tagging the commit and auto-updating version tags everywhere. IMPORTANT: before running `version`, you should have run the `test` task. And after `versionAndPublish`, verify that the react4xp-* references in all packages/*/package-lock.json files are up-to-date (i.e. don't still refer to the previous versions for their dependencies). Further description in comments in [versionAndPublish.gradle](https://github.com/enonic/react4xp-npm/blob/master/versionAndPublish.gradle). Optional parameters:
+    - `-Pdry`: dry-run
+    - `Pmessage='...'`: Common description of the entire release for all changed packages, will be used in commit messages to clarify and group the multiple commits that will occur during the process.
 
-  - `gradlew doPublish`: after running the `version` script above, run this to publish all the changed packages to NPM.
