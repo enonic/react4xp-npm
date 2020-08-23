@@ -202,54 +202,111 @@ task versionAndPublish(){
   description('Automated full-project version bumping and NPM publishing of updated packages and their dependents. See versionAndPublish.gradle')
 }
 
+def getCurrentlyReleasedVersion(packageName) {
+  def sout = new StringBuilder(), serr = new StringBuilder()
+  def checkVersionCmd = "npm view $packageName version"
+  println checkVersionCmd
+  def proc = checkVersionCmd.execute()
+  proc.consumeProcessOutput(sout, serr)
+  proc.waitForOrKill(10000)
+  println "out> $sout"
+  println "err> $serr"
+  // TODO: Verify returned version format.
+  // TODO: Handle errors.
+  // TODO: Return parsed version
+  return false
+}
+
+def PRERELEASE_PATTERN = ~".*$PRERELEASE_ID.*"
+def shouldPublish(PACKAGE_JSON) {
+  if (PACKAGE_JSON.version ==~ PRERELEASE_PATTERN) {
+    println "Skipping."
+    return false
+  }
+
+  def latestVersion = getCurrentlyReleasedVersion(PACKAGE_JSON.name)
+  // TODO: Compare latestVersion (from NPM) with PACKAGE_JSON.version. If lower, return true. If equal, return false.
+  // TODO: If latestVersion is higher throw error? If format weirdness, throw error?
+  return false
+  // println "    ${project.name}@${PACKAGE_JSON.version}: enable publish (i.e. '$PR ERELEASE_ID' wasn't found in version)? $enablePublish"
+}
 
 
+def handleNpmPublishError(sout, serr) {
+  throw GradleException("Npm Publish error handling and detection are not implemented.")
+}
 
+def NPM_PUBLISH_CMD = "npm publish${(project.hasProperty("dry")) ? "" : ' --dry-run'}"
 
 configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)}) {
 
-  def PACKAGE_JSON = new JsonSlurper().parseText(file('package.json').text)
+
 
   // Set up 3 groups (levels) of publish, which must happen in that order.
   // Also disable publish for each package that has the prerelease ID in the version string:
 
-  task publishLevel1(type: NpmTask) {
-    args = (!project.hasProperty("dry")) ? ['publish'] : ['publish', '--dry-run']
+
+
+  task publishLevel1() {
     enabled = false
-    doFirst {
-      println "Level 1: ${args.join()} ${project.name}@${PACKAGE_JSON.version}"
+    doLast {
+      def PACKAGE_JSON = new JsonSlurper().parseText(file('package.json').text)
+      println "Level 1: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version}?"
+
+      if (shouldPublish(PACKAGE_JSON)) {
+        def sout = new StringBuilder(), serr = new StringBuilder()
+        def proc = NPM_PUBLISH_CMD.execute()
+        proc.consumeProcessOutput(sout, serr)
+        proc.waitForOrKill(10000)
+        handleNpmPublishError(sout, serr)
+      }
     }
   }
-  task publishLevel2(type: NpmTask) {
-    args = (!project.hasProperty("dry")) ? ['publish'] : ['publish', '--dry-run']
+  task publishLevel2() {
     enabled = false
-    doFirst {
-      println "Level 1: ${args.join()} ${project.name}@${PACKAGE_JSON.version}"
+    doLast {
+      def PACKAGE_JSON = new JsonSlurper().parseText(file('package.json').text)
+      println "Level 2: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version}?"
+
+      if (shouldPublish(PACKAGE_JSON)) {
+        def sout = new StringBuilder(), serr = new StringBuilder()
+        def proc = NPM_PUBLISH_CMD.execute()
+        proc.consumeProcessOutput(sout, serr)
+        proc.waitForOrKill(10000)
+        handleNpmPublishError(sout, serr)
+      }
     }
   }
-  task publishLevel3(type: NpmTask) {
-    args = (!project.hasProperty("dry")) ? ['publish'] : ['publish', '--dry-run']
+  task publishLevel3() {
     enabled = false
-    doFirst {
-      println "Level 1: ${args.join()} ${project.name}@${PACKAGE_JSON.version}"
+    doLast {
+      def PACKAGE_JSON = new JsonSlurper().parseText(file('package.json').text)
+      println "Level 1: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version}?"
+
+      if (shouldPublish(PACKAGE_JSON)) {
+        def sout = new StringBuilder(), serr = new StringBuilder()
+        def proc = NPM_PUBLISH_CMD.execute()
+        proc.consumeProcessOutput(sout, serr)
+        proc.waitForOrKill(10000)
+        handleNpmPublishError(sout, serr)
+      }
     }
   }
 
-  def pattern = ~".*$PRERELEASE_ID.*"
-  def enablePublish = !(PACKAGE_JSON.version ==~ pattern)
-  // println "    ${project.name}@${PACKAGE_JSON.version}: enable publish (i.e. '$PRERELEASE_ID' wasn't found in version)? $enablePublish"
+
+  // Enables/disables based on currently configured subproject's name:
 
   // regions and constants are released first, since other packages depend on them:
   if (project.name == "regions" || project.name == "constants") {
-    publishLevel1.enabled = enablePublish
+    publishLevel1.enabled = true
 
     // react4xp is released last, since it depends on all the other packages:
   } else if (project.name == "react4xp") {
-    publishLevel3.enabled = enablePublish
+    publishLevel3.enabled = true
 
     // All other packages are published in between:
   } else {
-    publishLevel2.enabled = enablePublish
+    publishLevel2.enabled = true
   }
 
   versionAndPublish.dependsOn postLevel3
