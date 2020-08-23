@@ -149,16 +149,19 @@ task gitAdd3(type: Exec) {
 task gitCommit1(type: Exec) {
   commandLine 'git', 'commit', "-m'Post level1 release: update package-locks'"
   enabled = !project.hasProperty("dry")
+  ignoreExitValue true
   dependsOn gitAdd1
 }
 task gitCommit2(type: Exec) {
   commandLine 'git', 'commit', "-m'Post level2 release: update package-locks'"
   enabled = !project.hasProperty("dry")
+  ignoreExitValue true
   dependsOn gitAdd2
 }
 task gitCommit3(type: Exec) {
   commandLine 'git', 'commit', "-m'Post level3 release: update package-locks'"
   enabled = !project.hasProperty("dry")
+  ignoreExitValue true
   dependsOn gitAdd3
 }
 
@@ -166,16 +169,19 @@ task gitCommit3(type: Exec) {
 task gitPush1(type: Exec) {
   commandLine 'git', 'push'
   enabled = !project.hasProperty("dry")
+  ignoreExitValue true
   dependsOn gitCommit1
 }
 task gitPush2(type: Exec) {
   commandLine 'git', 'push'
   enabled = !project.hasProperty("dry")
+  ignoreExitValue true
   dependsOn gitCommit2
 }
 task gitPush3(type: Exec) {
   commandLine 'git', 'push'
   enabled = !project.hasProperty("dry")
+  ignoreExitValue true
   dependsOn gitCommit3
 }
 
