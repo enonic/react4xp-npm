@@ -26,8 +26,10 @@ import groovy.json.JsonSlurper
 
 
 def PRERELEASE_ID = "prereleasetmp"
+project.ext.SEMVER_PATTERN = ~"\\d+\\.\\d+\\.\\d+"
 
 def msg = (project.hasProperty("message")) ? project.property("message") : "publish"
+project.ext.dryRun = project.hasProperty("dry")
 
 def lernaVersionCommonCmd = [
   'lerna', 'version',
@@ -44,13 +46,13 @@ task versionLevel1(type: Exec) {
     '-m', "'chore(release lvl 1): $msg'"
   ]
 
-  if (project.hasProperty("dry")) {
+  if (project.ext.dryRun) {
     cmds = ['echo', "\"${cmds.join(' ')}\""]
   }
   standardInput = System.in
   commandLine cmds
   doFirst {
-    if (!project.hasProperty("dry")) println cmds.join(' ')
+    if (!project.ext.dryRun) println cmds.join(' ')
   }
 }
 task versionLevel2(type: Exec) {
@@ -60,13 +62,13 @@ task versionLevel2(type: Exec) {
     '-m', "'chore(release lvl 2): $msg'"
   ]
 
-  if (project.hasProperty("dry")) {
+  if (project.ext.dryRun) {
     cmds = ['echo', "\"${cmds.join(' ')}\""]
   }
   standardInput = System.in
   commandLine cmds
   doFirst {
-    if (!project.hasProperty("dry")) println cmds.join(' ')
+    if (!project.ext.dryRun) println cmds.join(' ')
   }
 }
 task versionLevel3(type: Exec) {
@@ -76,13 +78,13 @@ task versionLevel3(type: Exec) {
     '-m', "'chore(release lvl 3): $msg'"
   ]
 
-  if (project.hasProperty("dry")) {
+  if (project.ext.dryRun) {
     cmds = ['echo', "\"${cmds.join(' ')}\""]
   }
   standardInput = System.in
   commandLine cmds
   doFirst {
-    if (!project.hasProperty("dry")) println cmds.join(' ')
+    if (!project.ext.dryRun) println cmds.join(' ')
   }
 }
 
@@ -92,74 +94,74 @@ task versionLevel3(type: Exec) {
 
 task cleanPrereleaseTags(type: Exec) {
   commandLine './cleanTagsContaining.sh', PRERELEASE_ID
-  enabled = !project.hasProperty("dry")
+  enabled = !project.ext.dryRun
 }
 
 
 task npmClean1(type: NpmTask) {
   args = ['run', 'cleanNpm']
-  enabled = !project.hasProperty("dry")
+  enabled = !project.ext.dryRun
 }
 task npmClean2(type: NpmTask) {
   args = ['run', 'cleanNpm']
-  enabled = !project.hasProperty("dry")
+  enabled = !project.ext.dryRun
 }
 task npmClean3(type: NpmTask) {
   args = ['run', 'cleanNpm']
-  enabled = !project.hasProperty("dry")
+  enabled = !project.ext.dryRun
   dependsOn cleanPrereleaseTags
 }
 
 
 task npmInstall1(type: NpmTask) {
   args = ['run', 'npmInstall']
-  enabled = !project.hasProperty("dry")
+  enabled = !project.ext.dryRun
   dependsOn npmClean1
 }
 task npmInstall2(type: NpmTask) {
   args = ['run', 'npmInstall']
-  enabled = !project.hasProperty("dry")
+  enabled = !project.ext.dryRun
   dependsOn npmClean2
 }
 task npmInstall3(type: NpmTask) {
   args = ['run', 'npmInstall']
-  enabled = !project.hasProperty("dry")
+  enabled = !project.ext.dryRun
   dependsOn npmClean3
 }
 
 
 task gitAdd1(type: Exec) {
   commandLine 'git', 'add', '.', '--all'
-  enabled = !project.hasProperty("dry")
+  enabled = !project.ext.dryRun
   dependsOn npmInstall1
 }
 task gitAdd2(type: Exec) {
   commandLine 'git', 'add', '.', '--all'
-  enabled = !project.hasProperty("dry")
+  enabled = !project.ext.dryRun
   dependsOn npmInstall2
 }
 task gitAdd3(type: Exec) {
   commandLine 'git', 'add', '.', '--all'
-  enabled = !project.hasProperty("dry")
+  enabled = !project.ext.dryRun
   dependsOn npmInstall3
 }
 
 
 task gitCommit1(type: Exec) {
   commandLine 'git', 'commit', "-m'Post level1 release: update package-locks'"
-  enabled = !project.hasProperty("dry")
+  enabled = !project.ext.dryRun
   ignoreExitValue true
   dependsOn gitAdd1
 }
 task gitCommit2(type: Exec) {
   commandLine 'git', 'commit', "-m'Post level2 release: update package-locks'"
-  enabled = !project.hasProperty("dry")
+  enabled = !project.ext.dryRun
   ignoreExitValue true
   dependsOn gitAdd2
 }
 task gitCommit3(type: Exec) {
   commandLine 'git', 'commit', "-m'Post level3 release: update package-locks'"
-  enabled = !project.hasProperty("dry")
+  enabled = !project.ext.dryRun
   ignoreExitValue true
   dependsOn gitAdd3
 }
@@ -167,19 +169,19 @@ task gitCommit3(type: Exec) {
 
 task gitPush1(type: Exec) {
   commandLine 'git', 'push'
-  enabled = !project.hasProperty("dry")
+  enabled = !project.ext.dryRun
   ignoreExitValue true
   dependsOn gitCommit1
 }
 task gitPush2(type: Exec) {
   commandLine 'git', 'push'
-  enabled = !project.hasProperty("dry")
+  enabled = !project.ext.dryRun
   ignoreExitValue true
   dependsOn gitCommit2
 }
 task gitPush3(type: Exec) {
   commandLine 'git', 'push'
-  enabled = !project.hasProperty("dry")
+  enabled = !project.ext.dryRun
   ignoreExitValue true
   dependsOn gitCommit3
 }
@@ -203,41 +205,100 @@ task versionAndPublish(){
   description('Automated full-project version bumping and NPM publishing of updated packages and their dependents. See versionAndPublish.gradle')
 }
 
-def getCurrentlyReleasedVersion(packageName) {
-  def sout = new StringBuilder(), serr = new StringBuilder()
-  def checkVersionCmd = "npm view $packageName version"
-  println checkVersionCmd
-  def proc = checkVersionCmd.execute()
-  proc.consumeProcessOutput(sout, serr)
-  proc.waitForProcessOutput()
-  println "out> $sout"
-  println "err> $serr"
-  // TODO: Verify returned version format.
-  // TODO: Handle errors.
-  // TODO: Return parsed version
-  return false
+
+
+def execAndGetOutput(shellCommand) {
+  def output = ""
+  def errors = ""
+  println shellCommand
+  try {
+    def sout = new StringBuilder(), serr = new StringBuilder()
+    def proc = shellCommand.execute()
+    proc.consumeProcessOutput(sout, serr)
+    proc.waitForProcessOutput()
+    output = "$sout".trim()
+    errors = "$serr".trim()
+
+    if (errors) {
+      throw new GradleException("Error during command: $shellCommand")
+    }
+
+    return output
+
+  } catch (e) {
+    println ""
+    println "Command: $shellCommand"
+    println ""
+    if (output) {
+      println "    StdOut: $output"
+    } else {
+      println "    (no StdOut)"
+    }
+    println ""
+    if (errors) {
+      println "    StdErr: $errors"
+    } else {
+      println "    (no StdErr)"
+    }
+    println ""
+    throw e
+  }
 }
 
-project.ext.PRERELEASE_PATTERN = ~".*$PRERELEASE_ID.*"
-def shouldPublish(PACKAGE_JSON) {
-  if (PACKAGE_JSON.version ==~ project.ext.PRERELEASE_PATTERN) {
-    println "Skipping."
-    return false
+
+def getCurrentlyReleasedVersion(packageName) {
+  def output = execAndGetOutput("npm view $packageName version")
+
+  if (output ==~ project.ext.SEMVER_PATTERN) {
+    return output
   }
 
-  def latestVersion = getCurrentlyReleasedVersion(PACKAGE_JSON.name)
-  // TODO: Compare latestVersion (from NPM) with PACKAGE_JSON.version. If lower, return true. If equal, return false.
-  // TODO: If latestVersion is higher throw error? If format weirdness, throw error?
-  return false
-  // println "    ${project.name}@${PACKAGE_JSON.version}: enable publish (i.e. '$PR ERELEASE_ID' wasn't found in version)? $enablePublish"
+  throw new GradleException("Unexpected output: non-semver string returned by NPM")
+}
+
+def versionToNumber(verstionString) {
+  def versionMatcher = verstionString =~ /(\d+)\.(\d+)\.(\d+)/
+  if (!versionMatcher.matches()) {
+    throw new GradleException("Version string '$verstionString' doesn't match the semver pattern 'major.minor.patch'")
+  }
+  def major = versionMatcher[0][1].toInteger()
+  def minor = versionMatcher[0][2].toInteger()
+  def patch = versionMatcher[0][3].toInteger()
+  return major * 1000000 + minor * 1000 + patch
+}
+
+def shouldPublish(PACKAGE_JSON) {
+  if (PACKAGE_JSON.version ==~ project.ext.SEMVER_PATTERN) {
+    def latestReleasedVersion = getCurrentlyReleasedVersion(PACKAGE_JSON.name)
+    if (!latestReleasedVersion) {
+      return false
+    }
+
+    def latestReleaseValue = versionToNumber(latestReleasedVersion)
+    def localValue = versionToNumber(PACKAGE_JSON.version)
+    println "    Latest release: $latestReleasedVersion"
+    println "    Local:          $PACKAGE_JSON.version"
+
+    if (latestReleaseValue < localValue) {
+      println "    Local version is ahead. Proceeding."
+      return true
+
+    } else if (latestReleaseValue == localValue) {
+      println "    Local version is equal. Skipping."
+      return false
+
+    } else {
+      throw new GradleException("Unexpected: local version '${PACKAGE_JSON.version}' is BEHIND latest release at NPM: '$latestReleasedVersion'. This automated script assumes local version is ahead, equal or temporary. Handle manually.")
+    }
+
+  } else {
+    println "    Not publishing local ${PACKAGE_JSON.name}@${PACKAGE_JSON.version}: version is not semver (major.minor.patch)."
+    return false
+  }
 }
 
 
-def handleNpmPublishError(sout, serr) {
-  throw GradleException("Npm Publish error handling and detection are not implemented.")
-}
-
-def NPM_PUBLISH_CMD = "npm publish${(project.hasProperty("dry")) ? "" : ' --dry-run'}"
+def NPM_PUBLISH_CMD = "npm publish${(!project.ext.dryRun) ? "" : ' --dry-run'}"
 
 configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)}) {
 
@@ -255,11 +316,7 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
       println "Level 1: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version}?"
 
       if (shouldPublish(PACKAGE_JSON)) {
-        def sout = new StringBuilder(), serr = new StringBuilder()
-        def proc = NPM_PUBLISH_CMD.execute()
-        proc.consumeProcessOutput(sout, serr)
-        proc.waitForProcessOutput()
-        handleNpmPublishError(sout, serr)
+        println execAndGetOutput(NPM_PUBLISH_CMD)
       }
     }
   }
@@ -270,11 +327,7 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
       println "Level 2: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version}?"
 
       if (shouldPublish(PACKAGE_JSON)) {
-        def sout = new StringBuilder(), serr = new StringBuilder()
-        def proc = NPM_PUBLISH_CMD.execute()
-        proc.consumeProcessOutput(sout, serr)
-        proc.waitForProcessOutput()
-        handleNpmPublishError(sout, serr)
+        println execAndGetOutput(NPM_PUBLISH_CMD)
       }
     }
   }
@@ -282,14 +335,10 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
     enabled = false
     doLast {
       def PACKAGE_JSON = new JsonSlurper().parseText(file('package.json').text)
-      println "Level 1: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version}?"
+      println "Level 3: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version}?"
 
       if (shouldPublish(PACKAGE_JSON)) {
-        def sout = new StringBuilder(), serr = new StringBuilder()
-        def proc = NPM_PUBLISH_CMD.execute()
-        proc.consumeProcessOutput(sout, serr)
-        proc.waitForProcessOutput()
-        handleNpmPublishError(sout, serr)
+        println execAndGetOutput(NPM_PUBLISH_CMD)
       }
     }
   }
