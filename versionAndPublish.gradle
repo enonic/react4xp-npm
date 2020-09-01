@@ -379,17 +379,17 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
   // regions and constants are released first, since other packages depend on them:
   if (project.name == "regions" || project.name == "constants") {
     publishLevel1.enabled = true
-    maybeDiscardPublishLevel1.enabled = true
+    maybeSkipPublishLevel1.enabled = true
 
     // react4xp is released last, since it depends on all the other packages:
   } else if (project.name == "react4xp") {
     publishLevel3.enabled = true
-    maybeDiscardPublishLevel3.enabled = true
+    maybeSkipPublishLevel3.enabled = true
 
     // All other packages are published in between:
   } else {
     publishLevel2.enabled = true
-    maybeDiscardPublishLevel2.enabled = true
+    maybeSkipPublishLevel2.enabled = true
   }
 
   versionAndPublish.dependsOn postLevel3
