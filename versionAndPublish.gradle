@@ -97,52 +97,19 @@ task cleanPrereleaseTags(type: Exec) {
 }
 
 
-task npmClean1(type: NpmTask) {
-  args = ['run', 'cleanNpm']
-  enabled = !project.hasProperty("dry")
-}
-task npmClean2(type: NpmTask) {
-  args = ['run', 'cleanNpm']
-  enabled = !project.hasProperty("dry")
-}
-task npmClean3(type: NpmTask) {
-  args = ['run', 'cleanNpm']
-  enabled = !project.hasProperty("dry")
-  dependsOn cleanPrereleaseTags
-}
-
-
-task npmInstall1(type: NpmTask) {
-  args = ['run', 'npmInstall']
-  enabled = !project.hasProperty("dry")
-  dependsOn npmClean1
-}
-task npmInstall2(type: NpmTask) {
-  args = ['run', 'npmInstall']
-  enabled = !project.hasProperty("dry")
-  dependsOn npmClean2
-}
-task npmInstall3(type: NpmTask) {
-  args = ['run', 'npmInstall']
-  enabled = !project.hasProperty("dry")
-  dependsOn npmClean3
-}
 
 
 task gitAdd1(type: Exec) {
   commandLine 'git', 'add', '.', '--all'
   enabled = !project.hasProperty("dry")
-  dependsOn npmInstall1
 }
 task gitAdd2(type: Exec) {
   commandLine 'git', 'add', '.', '--all'
   enabled = !project.hasProperty("dry")
-  dependsOn npmInstall2
 }
 task gitAdd3(type: Exec) {
   commandLine 'git', 'add', '.', '--all'
   enabled = !project.hasProperty("dry")
-  dependsOn npmInstall3
 }
 
 
@@ -316,6 +283,40 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
   // Set up 3 groups (levels) of publish, which must happen in that order.
   // Also disable publish for each package that has the prerelease ID in the version string:
 
+  task npmClean1(type: NpmTask) {
+    enabled = false
+    args = ['run', 'cleanNpm']
+  }
+  task npmClean2(type: NpmTask) {
+    enabled = false
+    args = ['run', 'cleanNpm']
+  }
+  task npmClean3(type: NpmTask) {
+    enabled = false
+    args = ['run', 'cleanNpm']
+    dependsOn cleanPrereleaseTags
+  }
+
+
+  task npmInstall1(type: NpmTask) {
+    enabled = false
+    args = ['run', 'npmInstall']
+    dependsOn npmClean1
+  }
+
+  task npmInstall2(type: NpmTask) {
+    enabled = false
+    args = ['run', 'npmInstall']
+    dependsOn npmClean2
+  }
+
+  task npmInstall3(type: NpmTask) {
+    enabled = false
+    args = ['run', 'npmInstall']
+    dependsOn npmClean3
+  }
+
+
   task maybeSkipPublishLevel1 {
     enabled = false
     doLast {
@@ -374,12 +375,17 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
   }
 
 
+
   // Enables/disables based on currently configured subproject's name:
 
   // regions and constants are released first, since other packages depend on them:
   if (project.name == "regions" || project.name == "constants") {
     publishLevel1.enabled = true
     maybeSkipPublishLevel1.enabled = true
+    npmClean2.enabled = !project.hasProperty("dry")
+    npmInstall2.enabled = !project.hasProperty("dry")
+    npmClean1.enabled = !project.hasProperty("dry")
+    npmInstall1.enabled = !project.hasProperty("dry")
 
     // react4xp is released last, since it depends on all the other packages:
   } else if (project.name == "react4xp") {
@@ -390,6 +396,8 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
   } else {
     publishLevel2.enabled = true
     maybeSkipPublishLevel2.enabled = true
+    npmClean3.enabled = !project.hasProperty("dry")
+    npmInstall3.enabled = !project.hasProperty("dry")
   }
 
   versionAndPublish.dependsOn postLevel3
@@ -410,6 +418,9 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
   versionLevel1.dependsOn npmLink
   build.shouldRunAfter npmLink
 
+  gitAdd1.dependsOn npmInstall1
+  gitAdd2.dependsOn npmInstall2
+  gitAdd3.dependsOn npmInstall3
 
   cleanPrereleaseTags.mustRunAfter publishLevel3
   npmClean2.mustRunAfter publishLevel2
