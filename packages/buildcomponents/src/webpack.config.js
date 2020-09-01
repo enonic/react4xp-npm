@@ -391,14 +391,14 @@ module.exports = (env = {}) => {
     vendors: {
       name: "vendors",
       enforce: true,
-      test: "[\\/]node_modules[\\/]((?!(react4xp-regions)).)[\\/]?",
+      test: "[\\\\/]node_modules[\\\\/]((?!(react4xp-regions)).)[\\\\/]?",
       chunks: "all",
       priority: 100
     },
     templates: {
       name: "templates",
       enforce: true,
-      test: "[\\/]node_modules[\\/]react4xp-regions[\\/]?",
+      test: "[\\\\/]node_modules[\\\\/]react4xp-regions[\\\\/]?",
       chunks: "all",
       priority: 99
     },
@@ -408,7 +408,9 @@ module.exports = (env = {}) => {
       chunks: "all",
       priority: 1,
       test: `${SRC_R4X}${
-        react4xpExclusions ? `[\\/]((?!(${react4xpExclusions})).)[\\/]?` : ""
+        react4xpExclusions
+          ? `[\\\\/]((?!(${react4xpExclusions})).)[\\\\/]?`
+          : ""
       }`
     }
   };
@@ -434,7 +436,7 @@ module.exports = (env = {}) => {
       VERBOSE
     );
     const test = `${chunkDir}${
-      chunkExclusions ? `[\\/]((?!(${chunkExclusions})).)[\\/]?` : ""
+      chunkExclusions ? `[\\\\/]((?!(${chunkExclusions})).)[\\\\/]?` : ""
     }`;
 
     cacheGroups[name] = {
