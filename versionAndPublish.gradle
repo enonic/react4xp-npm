@@ -223,7 +223,7 @@ def execAndGetOutput(shellCommand, workingDir, failOnStdErr) {
       println "$errors"
       println "---"
       if (failOnStdErr) {
-        println "Command produced stderr - aborting script: $shellCommand"
+        println "Command ('$shellCommand') produced stderr - aborting script."
         throw new GradleException("Command produced stderr: $shellCommand")
       }
     }
@@ -260,8 +260,9 @@ def getCurrentlyReleasedVersion(packageName) {
     return output
   }
 
-  throw new GradleException("Unexpected output: non-semver string returned by NPM")
+  throw new GradleException("Unexpected output: non-semver string returned by NPM: '$output'")
 }
+
 
 def versionToNumber(verstionString) {
   def versionMatcher = verstionString =~ /(\d+)\.(\d+)\.(\d+)/
@@ -273,6 +274,7 @@ def versionToNumber(verstionString) {
   def patch = versionMatcher[0][3].toInteger()
   return major * 1000000 + minor * 1000 + patch
 }
+
 
 def shouldPublish(PACKAGE_JSON) {
   if (PACKAGE_JSON.version ==~ project.ext.SEMVER_PATTERN) {
@@ -320,7 +322,7 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
     enabled = false
     doLast {
       def PACKAGE_JSON = new JsonSlurper().parseText(file('package.json').text)
-      println "Level 1: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version}?"
+      println "Level 1: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version} ?"
 
       if (shouldPublish(PACKAGE_JSON)) {
         println execAndGetOutput(NPM_PUBLISH_CMD, "packages/${project.name}", !project.hasProperty("dry"))
@@ -331,23 +333,31 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
     enabled = false
     doLast {
       def PACKAGE_JSON = new JsonSlurper().parseText(file('package.json').text)
-      println "Level 2: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version}?"
+      println "Level 2: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version} ?"
 
       if (shouldPublish(PACKAGE_JSON)) {
         println execAndGetOutput(NPM_PUBLISH_CMD, "packages/${project.name}", !project.hasProperty("dry"))
       }
     }
   }
-  task publishLevel3() {
+
+  task maybeSkipPublishLevel3 {
     enabled = false
     doLast {
       def PACKAGE_JSON = new JsonSlurper().parseText(file('package.json').text)
-      println "Level 3: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version}?"
+      println "Level 3: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version} ?"
 
-      if (shouldPublish(PACKAGE_JSON)) {
-        println execAndGetOutput(NPM_PUBLISH_CMD, "packages/${project.name}", !project.hasProperty("dry"))
+      if (!shouldPublish(PACKAGE_JSON)) {
+        publishLevel3.configure {
+          enabled = false
+        }
       }
     }
+  }
+  task publishLevel3(type: Exec) {
+    enabled = false
+
+    commandLine = NPM_PUBLISH_CMD.split(" ")
   }
 
 
@@ -360,6 +370,7 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
     // react4xp is released last, since it depends on all the other packages:
   } else if (project.name == "react4xp") {
     publishLevel3.enabled = true
+    maybeDiscardPublishLevel3.enabled = true
 
     // All other packages are published in between:
   } else {
@@ -368,7 +379,8 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
 
   versionAndPublish.dependsOn postLevel3
   postLevel3.dependsOn publishLevel3
-  publishLevel3.dependsOn versionLevel3
+  publishLevel3.dependsOn maybeSkipPublishLevel3
+  maybeSkipPublishLevel3.dependsOn versionLevel3
 
   versionLevel3.dependsOn postLevel2
   postLevel2.dependsOn publishLevel2
