@@ -177,14 +177,14 @@ task versionAndPublish(){
 
 
 def getCurrentlyReleasedVersion(packageName, npmViewOutput, npmViewFailure, npmViewErrors, npmViewExitValue) {
-  if (npmViewOutput) {
-    println "--- StdOut:"
-    println npmViewOutput
-    println "-"
-  } else {
-    println "--- (no StdOut)"
-  }
   if (npmViewErrors) {
+    if (npmViewOutput) {
+      println "--- StdOut:"
+      println npmViewOutput
+      println "-"
+    } else {
+      println "--- (no StdOut)"
+    }
     println "--- StdErr:"
     println "$npmViewErrors"
     println "-"
@@ -301,7 +301,7 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
       def stdout = new ByteArrayOutputStream()
       def stderr = new ByteArrayOutputStream()
 
-      println "EXEC TEST: npm view ${PACKAGE_JSON.name} version..."
+      println "npm view ${PACKAGE_JSON.name} version"
       def result = exec {
         executable = 'npm'
         args = ['view', PACKAGE_JSON.name, 'version']
@@ -310,9 +310,6 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
       }
       def output = stdout.toString().trim()
       def errors = stderr.toString().trim()
-      println "    res: $result"
-      println "    out: $output"
-      println "    err: $errors"
 
       if (!shouldPublish(PACKAGE_JSON.name, PACKAGE_JSON.version, output, result, errors)) {
         publishLevel1.configure {
@@ -333,7 +330,20 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
       def PACKAGE_JSON = new JsonSlurper().parseText(file('package.json').text)
       println "Level 2: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version} ?"
 
-      if (!shouldPublish(PACKAGE_JSON)) {
+      def stdout = new ByteArrayOutputStream()
+      def stderr = new ByteArrayOutputStream()
+
+      println "npm view ${PACKAGE_JSON.name} version"
+      def result = exec {
+        executable = 'npm'
+        args = ['view', PACKAGE_JSON.name, 'version']
+        standardOutput = stdout
+        errorOutput = stderr
+      }
+      def output = stdout.toString().trim()
+      def errors = stderr.toString().trim()
+
+      if (!shouldPublish(PACKAGE_JSON.name, PACKAGE_JSON.version, output, result, errors)) {
         publishLevel2.configure {
           enabled = false
         }
@@ -352,7 +362,20 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
       def PACKAGE_JSON = new JsonSlurper().parseText(file('package.json').text)
       println "Level 3: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version} ?"
 
-      if (!shouldPublish(PACKAGE_JSON)) {
+      def stdout = new ByteArrayOutputStream()
+      def stderr = new ByteArrayOutputStream()
+
+      println "npm view ${PACKAGE_JSON.name} version"
+      def result = exec {
+        executable = 'npm'
+        args = ['view', PACKAGE_JSON.name, 'version']
+        standardOutput = stdout
+        errorOutput = stderr
+      }
+      def output = stdout.toString().trim()
+      def errors = stderr.toString().trim()
+
+      if (!shouldPublish(PACKAGE_JSON.name, PACKAGE_JSON.version, output, result, errors)) {
         publishLevel3.configure {
           enabled = false
         }
