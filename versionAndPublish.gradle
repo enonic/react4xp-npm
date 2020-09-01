@@ -283,36 +283,36 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
   // Set up 3 groups (levels) of publish, which must happen in that order.
   // Also disable publish for each package that has the prerelease ID in the version string:
 
-  task npmClean1(type: NpmTask) {
+  task npmClean1(type: Delete) {
     enabled = false
-    args = ['run', 'cleanNpm']
+    delete 'node_modules'
   }
-  task npmClean2(type: NpmTask) {
+  task npmClean2(type: Delete) {
     enabled = false
-    args = ['run', 'cleanNpm']
+    delete 'node_modules'
   }
-  task npmClean3(type: NpmTask) {
+  task npmClean3(type: Delete) {
     enabled = false
-    args = ['run', 'cleanNpm']
+    delete 'node_modules'
     dependsOn cleanPrereleaseTags
   }
 
 
   task npmInstall1(type: NpmTask) {
     enabled = false
-    args = ['run', 'npmInstall']
+    args = ['install']
     dependsOn npmClean1
   }
 
   task npmInstall2(type: NpmTask) {
     enabled = false
-    args = ['run', 'npmInstall']
+    args = ['install']
     dependsOn npmClean2
   }
 
   task npmInstall3(type: NpmTask) {
     enabled = false
-    args = ['run', 'npmInstall']
+    args = ['install']
     dependsOn npmClean3
   }
 
