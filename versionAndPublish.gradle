@@ -316,29 +316,42 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
   // Set up 3 groups (levels) of publish, which must happen in that order.
   // Also disable publish for each package that has the prerelease ID in the version string:
 
-
-
-  task publishLevel1() {
+  task maybeSkipPublishLevel1 {
     enabled = false
     doLast {
       def PACKAGE_JSON = new JsonSlurper().parseText(file('package.json').text)
       println "Level 1: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version} ?"
 
-      if (shouldPublish(PACKAGE_JSON)) {
-        println execAndGetOutput(NPM_PUBLISH_CMD, "packages/${project.name}", !project.hasProperty("dry"))
+      if (!shouldPublish(PACKAGE_JSON)) {
+        publishLevel1.configure {
+          enabled = false
+        }
       }
     }
   }
-  task publishLevel2() {
+  task publishLevel1(type: Exec) {
+    enabled = false
+
+    commandLine = NPM_PUBLISH_CMD.split(" ")
+  }
+
+  task maybeSkipPublishLevel2 {
     enabled = false
     doLast {
       def PACKAGE_JSON = new JsonSlurper().parseText(file('package.json').text)
       println "Level 2: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version} ?"
 
-      if (shouldPublish(PACKAGE_JSON)) {
-        println execAndGetOutput(NPM_PUBLISH_CMD, "packages/${project.name}", !project.hasProperty("dry"))
+      if (!shouldPublish(PACKAGE_JSON)) {
+        publishLevel2.configure {
+          enabled = false
+        }
       }
     }
+  }
+  task publishLevel2(type: Exec) {
+    enabled = false
+
+    commandLine = NPM_PUBLISH_CMD.split(" ")
   }
 
   task maybeSkipPublishLevel3 {
@@ -366,6 +379,7 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
   // regions and constants are released first, since other packages depend on them:
   if (project.name == "regions" || project.name == "constants") {
     publishLevel1.enabled = true
+    maybeDiscardPublishLevel1.enabled = true
 
     // react4xp is released last, since it depends on all the other packages:
   } else if (project.name == "react4xp") {
@@ -375,6 +389,7 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
     // All other packages are published in between:
   } else {
     publishLevel2.enabled = true
+    maybeDiscardPublishLevel2.enabled = true
   }
 
   versionAndPublish.dependsOn postLevel3
@@ -384,11 +399,13 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
 
   versionLevel3.dependsOn postLevel2
   postLevel2.dependsOn publishLevel2
-  publishLevel2.dependsOn versionLevel2
+  publishLevel2.dependsOn maybeSkipPublishLevel2
+  maybeSkipPublishLevel2.dependsOn versionLevel2
 
   versionLevel2.dependsOn postLevel1
   postLevel1.dependsOn publishLevel1
-  publishLevel1.dependsOn versionLevel1
+  publishLevel1.dependsOn maybeSkipPublishLevel1
+  maybeSkipPublishLevel1.dependsOn versionLevel1
   versionLevel1.dependsOn build
   versionLevel1.dependsOn npmLink
   build.shouldRunAfter npmLink
