@@ -173,61 +173,36 @@ task versionAndPublish(){
 
 
 
-def execAndGetOutput(shellCommand, workingDir, failOnStdErr) {
-  def output = ""
-  def errors = ""
-  println shellCommand
-  try {
-    def sout = new StringBuilder(), serr = new StringBuilder()
-    def proc = shellCommand.execute(null, new File(workingDir))
-    proc.consumeProcessOutput(sout, serr)
-    proc.waitForProcessOutput()
-    output = "$sout".trim()
-    errors = "$serr".trim()
 
-    if (errors) {
-      println "--- StdErr:"
-      println "$errors"
-      println "---"
-      if (failOnStdErr) {
-        println "Command ('$shellCommand') produced stderr - aborting script."
-        throw new GradleException("Command produced stderr: $shellCommand")
-      }
-    }
 
-    return output
 
-  } catch (e) {
-    println ""
-    println "Command that failed: $shellCommand"
-    if (output) {
-      println "--- StdOut:"
-      println $output
-    } else {
-      println "--- (no StdOut)"
-    }
-    if (errors) {
-      println "--- StdErr:"
-      println
-    } else {
-      println "--- (no StdErr)"
-    }
-    println "---"
-
-    println "Re-throwing"
-    throw new GradleException(e.message)
+def getCurrentlyReleasedVersion(packageName, npmViewOutput, npmViewFailure, npmViewErrors, npmViewExitValue) {
+  if (npmViewOutput) {
+    println "--- StdOut:"
+    println npmViewOutput
+    println "-"
+  } else {
+    println "--- (no StdOut)"
   }
-}
-
-
-def getCurrentlyReleasedVersion(packageName) {
-  def output = execAndGetOutput("npm view $packageName version", ".", true)
-
-  if (output ==~ project.ext.SEMVER_PATTERN) {
-    return output
+  if (npmViewErrors) {
+    println "--- StdErr:"
+    println "$npmViewErrors"
+    println "-"
   }
 
-  throw new GradleException("Unexpected output: non-semver string returned by NPM: '$output'")
+  if (npmViewFailure || npmViewExitValue != 0) {
+    println "--- exitValue: $npmViewExitValue"
+    println "--- failure: $npmViewFailure"
+    println "Command ('npm view $packageName version') produced stderr - aborting script."
+    throw new GradleException("Command produced stderr: npm view $packageName version")
+  }
+
+
+  if (npmViewOutput ==~ project.ext.SEMVER_PATTERN) {
+    return npmViewOutput
+  }
+
+  throw new GradleException("Unexpected output: non-semver string returned by NPM: '$npmViewOutput'")
 }
 
 
@@ -243,17 +218,17 @@ def versionToNumber(verstionString) {
 }
 
 
-def shouldPublish(PACKAGE_JSON) {
-  if (PACKAGE_JSON.version ==~ project.ext.SEMVER_PATTERN) {
-    def latestReleasedVersion = getCurrentlyReleasedVersion(PACKAGE_JSON.name)
+def shouldPublish(packageName, localVersion, npmViewOutput, npmViewResult, npmViewErrors) {
+  if (localVersion ==~ project.ext.SEMVER_PATTERN) {
+    def latestReleasedVersion = getCurrentlyReleasedVersion(packageName, npmViewOutput, npmViewResult.failure, npmViewErrors, npmViewResult.exitValue)
     if (!latestReleasedVersion) {
       return false
     }
 
     def latestReleaseValue = versionToNumber(latestReleasedVersion)
-    def localValue = versionToNumber(PACKAGE_JSON.version)
+    def localValue = versionToNumber(localVersion)
     println "    Latest release: $latestReleasedVersion"
-    println "    Local:          $PACKAGE_JSON.version"
+    println "    Local:          $localVersion"
 
     if (latestReleaseValue < localValue) {
       println "    Local version is ahead. Proceeding."
@@ -264,11 +239,11 @@ def shouldPublish(PACKAGE_JSON) {
       return false
 
     } else {
-      throw new GradleException("Unexpected: local version '${PACKAGE_JSON.version}' is BEHIND latest release at NPM: '$latestReleasedVersion'. This automated script assumes local version is ahead, equal or temporary. Handle manually.")
+      throw new GradleException("Unexpected: local version '${localVersion}' is BEHIND latest release at NPM: '$latestReleasedVersion'. This automated script assumes local version is ahead, equal or temporary. Handle manually.")
     }
 
   } else {
-    println "    Not publishing local ${PACKAGE_JSON.name}@${PACKAGE_JSON.version}: version is not semver (major.minor.patch)."
+    println "    Not publishing local ${packageName}@${localVersion}: version is not semver (major.minor.patch)."
     return false
   }
 }
@@ -327,20 +302,19 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
       def stderr = new ByteArrayOutputStream()
 
       println "EXEC TEST: npm view ${PACKAGE_JSON.name} version..."
-      def res = exec {
+      def result = exec {
         executable = 'npm'
         args = ['view', PACKAGE_JSON.name, 'version']
         standardOutput = stdout
         errorOutput = stderr
       }
-      def output = stdout.toString()
-      def errors = stderr.toString()
-      def result = res.toString()
+      def output = stdout.toString().trim()
+      def errors = stderr.toString().trim()
       println "    res: $result"
       println "    out: $output"
       println "    err: $errors"
 
-      if (!shouldPublish(PACKAGE_JSON)) {
+      if (!shouldPublish(PACKAGE_JSON.name, PACKAGE_JSON.version, output, result, errors)) {
         publishLevel1.configure {
           enabled = false
         }
