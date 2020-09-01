@@ -323,6 +323,23 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
       def PACKAGE_JSON = new JsonSlurper().parseText(file('package.json').text)
       println "Level 1: $NPM_PUBLISH_CMD ${project.name}@${PACKAGE_JSON.version} ?"
 
+      def stdout = new ByteArrayOutputStream()
+      def stderr = new ByteArrayOutputStream()
+
+      println "EXEC TEST: npm view ${PACKAGE_JSON.name} version..."
+      def res = exec {
+        executable = 'npm'
+        args = ['view', PACKAGE_JSON.name, 'version']
+        standardOutput = stdout
+        errorOutput = stderr
+      }
+      def output = stdout.toString()
+      def errors = stderr.toString()
+      def result = res.toString()
+      println "    res: $result"
+      println "    out: $output"
+      println "    err: $errors"
+
       if (!shouldPublish(PACKAGE_JSON)) {
         publishLevel1.configure {
           enabled = false
