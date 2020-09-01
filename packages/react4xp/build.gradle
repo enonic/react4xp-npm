@@ -11,7 +11,7 @@ task copyFiles(type: Copy) {
   into '.'
 }
 build.dependsOn += copyFiles
-doPublish.dependsOn += copyFiles
+//doPublish.dependsOn += copyFiles
 
 cleanBuilt.delete './npmInstall.gradle', './react4xp.gradle', './updaters.gradle', 'lib', './npmLinked.marker'
 

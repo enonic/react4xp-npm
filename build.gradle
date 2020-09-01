@@ -6,7 +6,6 @@
  */
 
 plugins {
-  // id "com.enonic.xp.app" version "2.0.0"
   id "com.moowork.node" version "1.3.1"
 }
 
@@ -17,16 +16,12 @@ allprojects {
   }
 }
 
-/*app {
-  systemVersion = "${xpVersion}"
-}*/
 
-def ignoreSubprojectDirs = [
-        'packages'
+project.ext.SUBPROJS_TO_IGNORE = [
+  'packages'
 ]
-configure(subprojects.findAll {!ignoreSubprojectDirs.contains(it.name)}) {
+configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)}) {
   apply plugin: "com.moowork.node" // version "1.3.1"
-
 
   task cleanNpm(type: Delete) {
     delete 'node_modules'
@@ -60,7 +55,7 @@ Marker file, indicating that node_module is locally linked - faster than travers
     npmInstall.dependsOn nsiInstall
 
   } else {
-    println "$linkMarkerName not found."
+    // println "$linkMarkerName not found."
     npmInstall.enabled = true
     npmInstall.inputs.files('package.json', 'package-lock.json')
     npmInstall.outputs.file('package-lock.json')
@@ -99,30 +94,6 @@ Marker file, indicating that the npmInstall gradle task has been run in this sub
   build.shouldRunAfter ":packages:${project.name}:lint"
 
 
-
-  task doPublish(type: NpmTask) {
-    args=['publish']
-  }
-  doPublish.enabled = false
-  if (project.hasProperty("lvl")) {
-    if (project.name == "regions" || project.name == "constants") {
-      if (project.property("lvl") == "1") {
-        doPublish.enabled = true
-      }
-    } else if (project.name == "react4xp") {
-      if (project.property("lvl") == "3") {
-        doPublish.enabled = true
-      }
-    } else {
-      if (project.property("lvl") == "2") {
-        doPublish.enabled = true
-      }
-    }
-  }
-  if (project.hasProperty("dry")) {
-    doPublish.args = ['publish', '--dry-run']
-  }
-
   task npmLink(type: NpmTask) {
     args=['link']
     doLast {
@@ -141,7 +112,7 @@ Marker file, indicating that node_module is locally linked - faster than travers
   test.inputs.files('package.json')
   test.inputs.dir('src')
   test.inputs.dir('test')
-  test.dependsOn ":packages:${project.name}:npmClean"
+  // test.dependsOn ":packages:${project.name}:npmClean"
   test.dependsOn ":packages:${project.name}:npmInstall"
   test.dependsOn ":packages:${project.name}:lint"
   test.dependsOn ":packages:${project.name}:npmLink"
@@ -151,11 +122,6 @@ Marker file, indicating that node_module is locally linked - faster than travers
   npmLink.shouldRunAfter lint
   build.shouldRunAfter npmLink
 }
-
-/*dependencies {
-  include project(":packages:constants")
-  include project(":packages:buildcomponents")
-}*/
 
 def slash = File.separator
 def markerName = ".${slash}node_modules${slash}react4xp${slash}npmInstalled.txt"
@@ -169,3 +135,8 @@ npmInstall.doLast {
 Marker file, indicating that the npmInstall gradle task has been run in the root project - faster than traversing the entire node_modules tree for changes.
 """
 }
+
+
+///////////////////////////////////////////////////
+
+apply from: 'versionAndPublish.gradle'
