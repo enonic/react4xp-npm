@@ -9,6 +9,7 @@ import ReactDOM from 'react-dom';
   * @param urls Mandatory array (or single string) of urls to load as scripts and run
   * @param callback Optional function to run once all scripts are complete */
 function loadScripts(urls, callback) {
+    // console.log("loadScripts - urls:", urls);
 
     let scriptsToComplete = 0;
     function maybeCallback() {
@@ -46,26 +47,54 @@ function loadScripts(urls, callback) {
 
     try {
         urls.forEach(url => {
-            try {
-                const script = document.createElement("script");
-                script.type = "text/javascript";
+            if (url.toLowerCase().endsWith('.css')) {
+                // console.log("Adding stylesheet:", url);
+                const styles = document.createElement("link");
+                styles.rel = "stylesheet";
+                styles.type = "text/css";
 
-                if (script.readyState) {  //IE
-                    script.onreadystatechange = () => {
-                        if (script.readyState == "loaded" || script.readyState == "complete") {
-                            script.onreadystatechange = null;
+                if (styles.readyState) {  //IE
+                    styles.onreadystatechange = () => {
+                        if (styles.readyState == "loaded" || styles.readyState == "complete") {
+                            styles.onreadystatechange = null;
                             maybeCallback();
                         }
                     };
                 } else {  //Others
-                    script.onload = maybeCallback;
+                    styles.onload = maybeCallback;
                 }
 
-                script.src = url;
-                document.getElementsByTagName("head")[0].appendChild(script);
+                styles.href = url;
+                document.getElementsByTagName("head")[0].appendChild(styles);
 
-            } catch (e) {
-                throw Error("Error occurred while trying to load script from url [ " + url + " ]: " + e.message);
+            } else if (url.toLowerCase().endsWith('.js')) {
+                // console.log("Adding script:", url);
+                try {
+                    const script = document.createElement("script");
+                    script.type = "text/javascript";
+
+                    if (script.readyState) {  //IE
+                        script.onreadystatechange = () => {
+                            if (script.readyState == "loaded" || script.readyState == "complete") {
+                                script.onreadystatechange = null;
+                                maybeCallback();
+                            }
+                        };
+                    } else {  //Others
+                        script.onload = maybeCallback;
+                    }
+
+                    script.src = url;
+                    document.getElementsByTagName("head")[0].appendChild(script);
+
+                } catch (e) {
+                    throw Error("Error occurred while trying to load script from url [ " + url + " ]: " + e.message);
+                }
+
+            } else {
+                console.error("Unexpected asset type:", url,"\n\nreact4xp.CLIENT.renderWithDependencies will currently only " +
+                  "handle chunks (secondary assets) of type .JS and .CSS, see https://github.com/enonic/lib-react4xp/issues/103");
+                maybeCallback();
             }
         });
 
@@ -78,6 +107,7 @@ function loadScripts(urls, callback) {
 /** After all the dependency and entry source scripts have been loaded and run, it's time to add a script tag that calls
   * the render method on each entry, and finally runs the callback */
 function runEntryCalls(entriesWithTargetIdsAndProps, entryNames, callback) {
+    //console.log("Calling entries that are by now loaded from assets:", entryNames);
 
     const script = document.createElement("script");
     script.type = "text/javascript";
@@ -137,12 +167,17 @@ export function renderWithDependencies(entriesWithTargetIdsAndProps, callback, s
                 return data.json();
             })
             .then(dependencyUrls => {
+                // console.log("dependency URLs:", dependencyUrls);
                 loadScripts(
                     dependencyUrls,
-                    () => loadScripts(
-                        entryNames.map(name => `${serviceUrlRoot}/react4xp/${name}`),
-                        () => runEntryCalls(entriesWithTargetIdsAndProps, entryNames, callback),
-                    )
+                    () => {
+
+                        // console.log("entry URLs:", entryNames.map(name => `${serviceUrlRoot}/react4xp/${name}`));
+                        loadScripts(
+                            entryNames.map(name => `${serviceUrlRoot}/react4xp/${name}.js`),
+                            () => runEntryCalls(entriesWithTargetIdsAndProps, entryNames, callback),
+                        );
+                    }
                 );
             })
             .catch(error => {
