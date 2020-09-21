@@ -46,26 +46,35 @@ function loadScripts(urls, callback) {
 
     try {
         urls.forEach(url => {
-            try {
-                const script = document.createElement("script");
-                script.type = "text/javascript";
+            if (url.toLowerCase().endsWith('.css')) {
+                console.log("Should load stylesheet:", url);
 
-                if (script.readyState) {  //IE
-                    script.onreadystatechange = () => {
-                        if (script.readyState == "loaded" || script.readyState == "complete") {
-                            script.onreadystatechange = null;
-                            maybeCallback();
-                        }
-                    };
-                } else {  //Others
-                    script.onload = maybeCallback;
+            } else if (url.toLowerCase().endsWith('.js')) {
+                try {
+                    const script = document.createElement("script");
+                    script.type = "text/javascript";
+
+                    if (script.readyState) {  //IE
+                        script.onreadystatechange = () => {
+                            if (script.readyState == "loaded" || script.readyState == "complete") {
+                                script.onreadystatechange = null;
+                                maybeCallback();
+                            }
+                        };
+                    } else {  //Others
+                        script.onload = maybeCallback;
+                    }
+
+                    script.src = url;
+                    document.getElementsByTagName("head")[0].appendChild(script);
+
+                } catch (e) {
+                    throw Error("Error occurred while trying to load script from url [ " + url + " ]: " + e.message);
                 }
 
-                script.src = url;
-                document.getElementsByTagName("head")[0].appendChild(script);
-
-            } catch (e) {
-                throw Error("Error occurred while trying to load script from url [ " + url + " ]: " + e.message);
+            } else {
+                console.log("Unexpected asset type:", url,"\n\nreact4xp.CLIENT.renderWithDependencies will currently only " +
+                  "handle chunks (secondary assets) of type .JS and .CSS, see https://github.com/enonic/lib-react4xp/issues/103");
             }
         });
 
