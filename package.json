@@ -28,8 +28,8 @@
   "author": "Espen Norderud",
   "license": "Apache-2.0",
   "devDependencies": {
-    "lerna": "^3.20.2",
-    "run-script-os": "^1.1.1"
+    "lerna": "^3.22.1",
+    "run-script-os": "^1.1.4"
   },
   "repository": {
     "type": "git",

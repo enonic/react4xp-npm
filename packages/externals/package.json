@@ -1,6 +1,6 @@
 {
   "name": "react4xp-runtime-externals",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "React4xp helper: using webpack externals as input, generates a runnable externals chunk for shared external libraries",
   "main": "webpack.config.js",
   "files": [
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/enonic/react4xp-runtime-externals/",
   "dependencies": {
-    "chunks-2-json-webpack-plugin": "^1.0.0"
+    "chunks-2-json-webpack-plugin": "^1.0.4"
   },
   "peerDependencies": {
     "@babel/cli": "^7",
@@ -41,24 +41,24 @@
     "webpack-cli": "^3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.7",
-    "@babel/core": "^7.7.7",
-    "@babel/preset-env": "^7.7.7",
-    "@babel/register": "^7.7.7",
-    "babel-loader": "^8.0.6",
-    "copyfiles": "^2.1.0",
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/register": "^7.12.10",
+    "babel-loader": "^8.2.2",
+    "copyfiles": "^2.4.1",
     "eslint": "^6.1.0",
-    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^3.3.0",
-    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-json": "^1.4.0",
-    "eslint-plugin-prettier": "^3.0.0",
+    "eslint-plugin-prettier": "^3.3.1",
     "husky": "^1.2.0",
     "lint-staged": "^8.1.7",
     "npm-safe-install": "^1.1.0",
     "prettier": "^1.18.2",
-    "webpack": "^4",
-    "webpack-cli": "^3"
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
   },
   "babel": {
     "presets": [

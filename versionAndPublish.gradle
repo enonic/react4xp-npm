@@ -31,7 +31,7 @@ project.ext.SEMVER_PATTERN = ~"\\d+\\.\\d+\\.\\d+"
 def msg = (project.hasProperty("message")) ? project.property("message") : "publish"
 
 def lernaVersionCommonCmd = [
-  'lerna', 'version',
+  'node_modules/.bin/lerna', 'version',
   '--conventional-commits',
   '--exact',
   '--no-push',
