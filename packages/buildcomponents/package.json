@@ -79,7 +79,7 @@
     "react4xp-buildconstants": "0.8.9",
     "react4xp-regions": "1.0.5",
     "redux": "^4.0.1",
-    "webpack": "^4.44.2",
+    "webpack": "^4.46.0",
     "webpack-cli": "^3.3.12"
   },
   "babel": {

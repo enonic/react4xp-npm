@@ -29,7 +29,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "lerna": "^3.22.1",
-    "run-script-os": "^1.1.4"
+    "run-script-os": "^1.1.5"
   },
   "repository": {
     "type": "git",
