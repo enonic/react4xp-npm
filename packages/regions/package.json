@@ -51,7 +51,7 @@
     "lint-staged": "^8.1.7",
     "npm-safe-install": "^1.1.0",
     "prettier": "^1.18.2",
-    "run-script-os": "^1.1.4"
+    "run-script-os": "^1.1.5"
   },
   "peerDependencies": {
     "prop-types": "^15",
