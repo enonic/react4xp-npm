@@ -37,6 +37,7 @@ task makeConstants(type: NodeTask) {
 makeConstants.inputs.file('node_modules/react4xp-buildconstants/bin/cli.js')
 makeConstants.outputs.dir('build')
 makeConstants.dependsOn project.npmInstall
+
 makeConstants.dependsOn copyFiles
 
 
@@ -84,6 +85,18 @@ task makeRegionsSubLink(type: NpmTask) {
   args = ['link', 'react4xp-regions']
 }
 makeRegionsSubLink.dependsOn ":packages:regions:npmLink"
+
+
+testEntriesAndChunks.dependsOn makeConstantsSubLink
+testRaw.dependsOn makeConstantsSubLink
+makeConstants.dependsOn makeConstantsSubLink
+testOverride.dependsOn makeConstantsSubLink
+makeConstantsSubLink.dependsOn npmInstall
+testEntriesAndChunks.dependsOn makeRegionsSubLink
+testRaw.dependsOn makeRegionsSubLink
+makeConstants.dependsOn makeRegionsSubLink
+testOverride.dependsOn makeRegionsSubLink
+makeRegionsSubLink.dependsOn npmInstall
 
 task makeMainLink(type: NpmTask) {
   args = ['link']

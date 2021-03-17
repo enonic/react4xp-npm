@@ -1,6 +1,9 @@
 {
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6"
+  },
   "presets": [
-    "@babel/preset-env",
-    "@babel/preset-react"
+    ["@babel/preset-env"]
   ]
 }
