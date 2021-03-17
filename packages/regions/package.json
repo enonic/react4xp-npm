@@ -20,7 +20,6 @@
   ],
   "scripts": {
     "lint": "eslint src/**/*.* --fix",
-    "nsi:install": "npm-safe-install",
     "postversion": "cd ../.. && ./copytag.js regions",
     "_TEMP_DISABLED_prepublish": "npm run copyFiles",
     "copyFiles": "run-script-os",

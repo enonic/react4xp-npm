@@ -17,7 +17,6 @@
     "compile": "NODE_PATH=. npx babel src -d . --no-comments",
     "lint": "NODE_PATH=. npx eslint src/*.es6",
     "test:mocha": "NODE_PATH=. npx mocha --require @babel/register --require @babel/polyfill --require test/test_helper.js \"test/**/*@(spec.js)\" && mkdir test/output/cli; bin/cli.js test/output/cli && node_modules/path-exists-cli/cli.js test/output/cli/react4xp_constants.json && node_modules/path-exists-cli/cli.js test/output/cli/build/resources/main/lib/enonic/react4xp/react4xp_constants.json",
-    "nsi:install": "npm-safe-install",
     "postversion": "cd ../.. && ./copytag.js constants",
     "_TEMP_DISABLED_prepublish": "npm run compile"
   },

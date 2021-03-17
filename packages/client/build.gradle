@@ -6,18 +6,10 @@ clean.delete './react4xpClient.es6', './webpack.config.js', 'build', 'test/outpu
 
 compileJS.enabled = false
 
-task prepareTest(type: NpmTask) {
-  args=['run', 'test:prepare']
-}
 task runTest(type: NpmTask) {
   args=['run', 'test:webpack']
 }
-task cleanupTest(type: NpmTask) {
-  args=['run', 'test:cleanup']
-}
-runTest.dependsOn prepareTest
-cleanupTest.dependsOn runTest
-test.dependsOn cleanupTest
+test.dependsOn runTest
 
 test.args=['run', 'test:main']
 test.outputs.dir('test/output')
