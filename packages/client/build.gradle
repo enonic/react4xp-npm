@@ -1,8 +1,8 @@
-plugins {
+/*plugins {
   id "com.moowork.node" // version "1.3.1"
-}
+}*/
 
-cleanBuilt.delete './react4xpClient.es6', './webpack.config.js', 'build', 'test/output'
+clean.delete './react4xpClient.es6', './webpack.config.js', 'build', 'test/output'
 
 compileJS.enabled = false
 
@@ -30,3 +30,4 @@ task copyFiles(type: Copy) {
 copyFiles.inputs.dir('src')
 copyFiles.outputs.files('./react4xpClient.es6', './webpack.config.js')
 build.dependsOn project.copyFiles
+

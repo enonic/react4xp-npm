@@ -37,22 +37,7 @@
     "url": "https://github.com/enonic/lib-react4xp/issues"
   },
   "homepage": "https://github.com/enonic/react4xp-regions",
-  "devDependencies": {
-    "babel-eslint": "^10.0.3",
-    "copyfiles": "^2.4.1",
-    "eslint": "^6.1.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-json": "^2.1.2",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-prettier": "^3.3.1",
-    "eslint-plugin-react": "^7.22.0",
-    "eslint-plugin-react-hooks": "^1.7.0",
-    "husky": "^1.2.0",
-    "lint-staged": "^8.1.7",
-    "npm-safe-install": "^1.1.0",
-    "prettier": "^1.18.2",
-    "run-script-os": "^1.1.5"
-  },
+  "devDependencies": {},
   "peerDependencies": {
     "prop-types": "^15",
     "react": "^16"

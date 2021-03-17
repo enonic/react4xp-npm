@@ -93,8 +93,10 @@
 **/*.css.map
 
 
-# Node modules
+# Node modules folders
 **/node_modules/
+# Node modules symlinks
+**/node_modules
 
 # Visual studio code project files
 **/bin/

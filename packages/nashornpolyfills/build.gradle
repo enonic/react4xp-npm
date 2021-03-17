@@ -1,8 +1,8 @@
-plugins {
+/*plugins {
   id "com.moowork.node" // version "1.3.1"
-}
+}*/
 
-cleanBuilt.delete './nashornpolyfills.es6', './webpack.config.js', 'test/output', 'build'
+clean.delete './nashornpolyfills.es6', './webpack.config.js', 'test/output', 'build'
 
 compileJS.enabled = false
 
@@ -13,7 +13,7 @@ task buildTestPolyfilled(type: NodeTask) {
 buildTestPolyfilled.inputs.dir('src')
 buildTestPolyfilled.inputs.file('test/testPolyfiller.es6')
 buildTestPolyfilled.outputs.file(project.PROJDIR + '/test/output/testPolyfilled.js')
-buildTestPolyfilled.dependsOn project.npmInstall
+//buildTestPolyfilled.dependsOn project.npmInstall
 
 task runTestPolyfilled(type: NodeTask) {
   script = file(project.PROJDIR + '/test/output/testPolyfilled.js')
@@ -49,25 +49,3 @@ task copyFiles(type: Copy) {
 copyFiles.inputs.dir('src')
 copyFiles.outputs.files('./nashornpolyfills.es6', './webpack.config.js')
 build.dependsOn project.copyFiles
-
-
-
-task makeConstantsSubLink(type: NpmTask) {
-  args = ['link', 'react4xp-buildconstants']
-}
-makeConstantsSubLink.dependsOn ":packages:constants:npmLink"
-
-
-task makeMainLink(type: NpmTask) {
-  args = ['link']
-}
-task makeSubLinks {}
-makeSubLinks.dependsOn makeConstantsSubLink
-
-npmLink.dependsOn makeSubLinks
-npmLink.dependsOn makeMainLink
-makeSubLinks.mustRunAfter makeMainLink
-
-npmLink.args = ['version']
-
-//doPublish.shouldRunAfter ":packages:constants:doPublish"

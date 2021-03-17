@@ -26,20 +26,15 @@
   },
   "homepage": "https://github.com/enonic/react4xp#readme",
   "peerDependencies": {
-    "@babel/cli": "^7",
-    "@babel/core": "^7",
     "@babel/plugin-proposal-class-properties": "^7",
-    "@babel/plugin-proposal-object-rest-spread": "^7",
-    "@babel/plugin-transform-arrow-functions": "^7",
-    "@babel/preset-env": "^7",
-    "@babel/preset-react": "^7",
-    "babel-loader": "^8",
     "react": "*",
     "react-dom": "*",
     "webpack": "^4",
     "webpack-cli": "^3"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "chunks-2-json-webpack-plugin": "^1.0.4",
     "@babel/cli": "^7.13.10",
     "@babel/core": "^7.13.10",
     "@babel/plugin-proposal-object-rest-spread": "^7.13.8",
@@ -49,12 +44,12 @@
     "@babel/register": "^7.13.8",
     "babel-loader": "^8.2.2",
     "npm-safe-install": "^1.1.0",
-    "react4xp-build-components": "^1.0.13",
-    "react4xp-buildconstants": "^0.8.9",
-    "react4xp-regions": "^1.0.6",
-    "react4xp-runtime-client": "^1.0.7",
-    "react4xp-runtime-externals": "^1.0.6",
-    "react4xp-runtime-nashornpolyfills": "^1.0.10"
+    "react4xp-build-components": "1.0.13",
+    "react4xp-buildconstants": "0.8.9",
+    "react4xp-regions": "1.0.6",
+    "react4xp-runtime-client": "1.0.7",
+    "react4xp-runtime-externals": "1.0.6",
+    "react4xp-runtime-nashornpolyfills": "1.0.10"
   },
   "directories": {
     "lib": "lib",

@@ -12,8 +12,8 @@
     "lint": "eslint --fix src/**/*.js",
     "test:main": "echo \"(Placeholder necessary for task dependencies)\"",
     "test:webpack": "webpack --config ./webpack.config.js --env.REACT4XP_CONFIG_FILE=/test/react4xpConstants.json --env.BUILD_R4X=$(pwd)/build && echo \"\" && echo \"--> build/\" && ls build && echo \"-------------- react4xp-runtime-externals builds. ADD SOME ACTUAL TESTS PLZ?\"",
-    "test:prepare": "npm i react react-dom",
-    "test:cleanup": "npm remove react react-dom",
+    "test:prepare": "echo \"(Placeholder: test:prepare script deprecated)\"",
+    "test:cleanup": "echo \"(Placeholder: test:cleanup script deprecated)\"",
     "nsi:install": "npm-safe-install",
     "postversion": "cd ../.. && ./copytag.js externals"
   },
@@ -40,26 +40,7 @@
     "webpack": "^4",
     "webpack-cli": "^3"
   },
-  "devDependencies": {
-    "@babel/cli": "^7.13.10",
-    "@babel/core": "^7.13.10",
-    "@babel/preset-env": "^7.13.10",
-    "@babel/register": "^7.13.8",
-    "babel-loader": "^8.2.2",
-    "copyfiles": "^2.4.1",
-    "eslint": "^6.1.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-config-prettier": "^3.3.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-json": "^2.1.2",
-    "eslint-plugin-prettier": "^3.3.1",
-    "husky": "^1.2.0",
-    "lint-staged": "^8.1.7",
-    "npm-safe-install": "^1.1.0",
-    "prettier": "^1.18.2",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12"
-  },
+  "devDependencies": {},
   "babel": {
     "presets": [
       "@babel/preset-env"
