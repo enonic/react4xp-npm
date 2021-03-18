@@ -1,6 +1,6 @@
 {
   "name": "react4xp-buildconstants",
-  "version": "0.8.9",
+  "version": "0.8.10",
   "description": "React4xp helper: creates a JSON file with shared constants that define and setup a React4xp project.",
   "main": "index.js",
   "files": [
@@ -30,7 +30,6 @@
     "url": "https://github.com/enonic/lib-react4xp/issues"
   },
   "homepage": "https://github.com/enonic/react4xp-build-constants",
-  "devDependencies": {},
   "directories": {
     "lib": "lib",
     "test": "__tests__"

@@ -1,6 +1,6 @@
 {
   "name": "react4xp-regions",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Ready-made React4xp templates for handling XP regions, and bare-bone page/layout templates with regions supported/included",
   "files": [
     "LICENCE",
@@ -36,7 +36,6 @@
     "url": "https://github.com/enonic/lib-react4xp/issues"
   },
   "homepage": "https://github.com/enonic/react4xp-regions",
-  "devDependencies": {},
   "peerDependencies": {
     "prop-types": "^15",
     "react": "^16"
