@@ -1,6 +1,6 @@
-plugins {
+/*plugins {
   id "com.moowork.node" // version "1.3.1"
-}
+}*/
 
 compileJS.enabled = false
 test.enabled = false
@@ -13,95 +13,7 @@ task copyFiles(type: Copy) {
 build.dependsOn += copyFiles
 //doPublish.dependsOn += copyFiles
 
-cleanBuilt.delete './npmInstall.gradle', './react4xp.gradle', './updaters.gradle', 'lib', './npmLinked.marker'
-
-task makeConstantsSubLink(type: NpmTask) {
-  args = ['link', 'react4xp-buildconstants']
-}
-makeConstantsSubLink.dependsOn ":packages:constants:npmLink"
-// makeConstantsSubLink.mustRunAfter npmInstall
-// makeConstantsSubLink.mustRunAfter project.npmInstall
-
-
-task makeRegionsSubLink(type: NpmTask) {
-  args = ['link', 'react4xp-regions']
-}
-makeRegionsSubLink.dependsOn ":packages:regions:npmLink"
-// makeRegionsSubLink.mustRunAfter npmInstall
-// makeRegionsSubLink.mustRunAfter project.npmInstall
-makeRegionsSubLink.mustRunAfter makeConstantsSubLink
-
-
-task makeComponentSubLink(type: NpmTask) {
-  args = ['link', 'react4xp-build-components']
-}
-makeComponentSubLink.dependsOn ":packages:buildcomponents:npmLink"
-// makeComponentSubLink.mustRunAfter npmInstall
-// makeComponentSubLink.mustRunAfter project.npmInstall
-makeComponentSubLink.mustRunAfter makeConstantsSubLink
-makeComponentSubLink.mustRunAfter makeRegionsSubLink
-
-
-task makeNashornSubLink(type: NpmTask) {
-  args = ['link', 'react4xp-runtime-nashornpolyfills']
-}
-makeNashornSubLink.dependsOn ":packages:nashornpolyfills:npmLink"
-// makeNashornSubLink.mustRunAfter npmInstall
-// makeNashornSubLink.mustRunAfter project.npmInstall
-makeNashornSubLink.mustRunAfter makeConstantsSubLink
-
-
-task makeClientSubLink(type: NpmTask) {
-  args = ['link', 'react4xp-runtime-client']
-}
-makeClientSubLink.dependsOn ":packages:client:npmLink"
-// makeClientSubLink.mustRunAfter npmInstall
-// makeClientSubLink.mustRunAfter project.npmInstall
-
-
-task makeExternalsSubLink(type: NpmTask) {
-  args = ['link', 'react4xp-runtime-externals']
-}
-makeExternalsSubLink.dependsOn ":packages:externals:npmLink"
-// makeExternalsSubLink.mustRunAfter npmInstall
-// makeExternalsSubLink.mustRunAfter project.npmInstall
-
-
-task makeMainLink(type: NpmTask) {
-  args = ['link']
-  doLast {
-    // Make internal marker
-    def linkMarkerName = "${project.ext.PROJDIR}npmLinked.marker"
-    def marker = new File(linkMarkerName)
-    new File(marker.getParent()).mkdirs()
-    marker.text = """
-Marker file, indicating that react4xp in node_module is locally linked - faster than traversing node_modules.
-"""
-    println "Created: $linkMarkerName"
-
-    // Make external marker
-    linkMarkerName = "${project.ext.PROJDIR}node_modules/react4xp/npmLinked.marker"
-    marker = new File(linkMarkerName)
-    new File(marker.getParent()).mkdirs()
-    marker.text = """
-Marker file, indicating that react4xp in node_module is locally linked - faster than traversing node_modules.
-"""
-    println "Created: $linkMarkerName"
-  }
-}
-task makeSubLinks {}
-makeSubLinks.dependsOn makeComponentSubLink
-makeSubLinks.dependsOn makeNashornSubLink
-makeSubLinks.dependsOn makeClientSubLink
-makeSubLinks.dependsOn makeExternalsSubLink
-makeSubLinks.dependsOn makeConstantsSubLink
-makeSubLinks.dependsOn makeRegionsSubLink
-
-npmLink.dependsOn makeSubLinks
-npmLink.dependsOn makeMainLink
-makeSubLinks.mustRunAfter makeMainLink
-
-npmLink.enabled = false
+clean.delete './npmInstall.gradle', './react4xp.gradle', './updaters.gradle', 'lib', './npmLinked.marker'
 
 /*
 doPublish.shouldRunAfter ":packages:buildcomponents:doPublish"

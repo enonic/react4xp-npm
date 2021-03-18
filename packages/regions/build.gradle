@@ -1,16 +1,16 @@
-plugins {
+/*plugins {
   id "com.moowork.node" // version "1.3.1"
-}
+}*/
 
-cleanBuilt.delete fileTree('.') { include '*.jsx' }
-cleanBuilt.delete fileTree('.') { include '*.ts' }
-cleanBuilt.delete fileTree('.') { include '*.tsx' }
-cleanBuilt.delete fileTree('.') { include '*.es' }
-cleanBuilt.delete fileTree('.') { include '*.es6' }
-cleanBuilt.delete fileTree('.') { include '*.*ss' }
-cleanBuilt.delete fileTree('.') { include '*.*g' }
-cleanBuilt.delete fileTree('.') { include '*.gif' }
-cleanBuilt.delete fileTree('.') { include '*.ico' }
+clean.delete fileTree('.') { include '*.jsx' }
+clean.delete fileTree('.') { include '*.ts' }
+clean.delete fileTree('.') { include '*.tsx' }
+clean.delete fileTree('.') { include '*.es' }
+clean.delete fileTree('.') { include '*.es6' }
+clean.delete fileTree('.') { include '*.*ss' }
+clean.delete fileTree('.') { include '*.*g' }
+clean.delete fileTree('.') { include '*.gif' }
+clean.delete fileTree('.') { include '*.ico' }
 /* TODO: THE ABOVE WORKS. THE BELOW DOESN'T - SHOULDN'T IT? WOULD BE A BIT CLEANER:
 [
   '*.js',
@@ -24,17 +24,17 @@ cleanBuilt.delete fileTree('.') { include '*.ico' }
   '*.gif',
   '*.ico'
 ].each {
-  cleanBuilt.delete fileTree('.') { include "${it.toString()}" }
+  clean.delete fileTree('.') { include "${it.toString()}" }
 }
 */
-cleanBuilt.delete 'entries'
+clean.delete 'entries'
 
 compileJS.enabled = false
 
 lint.args=['run', 'lint']
 lint.inputs.file('package.json')
 lint.inputs.dir('src')
-lint.dependsOn project.npmInstall
+//lint.dependsOn project.npmInstall
 
 test.enabled = false
 //test.args=['run', 'ADD SOME TESTS PLZ?']
@@ -56,3 +56,4 @@ copyFiles.outputs.dir('entries')
 build.dependsOn project.copyFiles
 
 //project.doPublish.shouldRunAfter ":packages:constants:doPublish"
+

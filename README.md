@@ -51,7 +51,7 @@ From the project root, handles the entire file structure: triggers the same task
 
   - `gradlew cleanNpm`: delete node_modules/ folders in all packages. Cancels the linked mode (see `npmLink` below).
 
-  - `gradlew cleanBuilt`: delete build/ folders in all packages
+  - `gradlew clean`: delete build/ folders in all packages
 
   - `gradlew npmLink`: enter development linked mode: same as running [npm link](https://docs.npmjs.com/cli/link.html) in each package, but also linking up the internal dependencies between the packages. Use the cleanNpm gradle task (above) to exit linked mode. A corresponding script, `getlinks.sh`, can be run by relative path from a parent project's root folder (e.g. `sh ../../react4xp-npm/getlinks.sh`) to hook up the same links below that project's node_modules/. Sorry, no windows script yet (but it should be easy to reverse-engineer).
 

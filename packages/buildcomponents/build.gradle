@@ -1,18 +1,8 @@
-plugins {
-  // id "com.enonic.xp.app"
-  id "com.moowork.node"
-}
-
-/*dependencies {
-  include ":packages:constants"
-  include ":packages:regions"
-}
-
-app {
-  systemVersion = "${xpVersion}"
+/*plugins {
+  id "com.moowork.node" // version "1.3.1"
 }*/
 
-cleanBuilt.delete './webpack.config.js', './build', './entriesandchunks.js', 'test/dummy-build', "test/output"
+clean.delete './webpack.config.js', './build', './entriesandchunks.js', 'test/dummy-build', "test/output"
 
 compileJS.args = ['run', 'babel']
 compileJS.inputs.files('package.json', 'src/entriesandchunks.js')
@@ -36,9 +26,8 @@ task makeConstants(type: NodeTask) {
 }
 makeConstants.inputs.file('node_modules/react4xp-buildconstants/bin/cli.js')
 makeConstants.outputs.dir('build')
-makeConstants.dependsOn project.npmInstall
-makeConstants.dependsOn copyFiles
 
+makeConstants.dependsOn build
 
 task testEntriesAndChunks(type: NpmTask) {
   args=['run', 'test:entriesAndChunks']
@@ -68,45 +57,6 @@ makeConstants.dependsOn copyFiles
 testOverride.dependsOn copyFiles
 test.outputs.dir('test/build')
 test.outputs.dir('test/output')
-
-
-
-
-
-
-task makeConstantsSubLink(type: NpmTask) {
-  args = ['link', 'react4xp-buildconstants']
-}
-makeConstantsSubLink.dependsOn ":packages:constants:npmLink"
-
-
-task makeRegionsSubLink(type: NpmTask) {
-  args = ['link', 'react4xp-regions']
-}
-makeRegionsSubLink.dependsOn ":packages:regions:npmLink"
-
-task makeMainLink(type: NpmTask) {
-  args = ['link']
-  doLast {
-    // Make marker
-    def linkMarkerName = "${project.ext.PROJDIR}node_modules/react4xp/npmLinked.marker"
-    def marker = new File(linkMarkerName)
-    new File(marker.getParent()).mkdirs()
-    marker.text = """
-Marker file, indicating that react4xp in node_module is locally linked - faster than traversing node_modules.
-"""
-    println "Created: $linkMarkerName"
-  }
-}
-task makeSubLinks {}
-makeSubLinks.dependsOn makeConstantsSubLink
-makeSubLinks.dependsOn makeRegionsSubLink
-
-npmLink.dependsOn makeSubLinks
-npmLink.dependsOn makeMainLink
-makeSubLinks.mustRunAfter makeMainLink
-
-npmLink.enabled = false
 
 //doPublish.shouldRunAfter ":packages:constants:doPublish"
 //doPublish.shouldRunAfter ":packages:regions:doPublish"

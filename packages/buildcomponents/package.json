@@ -11,13 +11,12 @@
   ],
   "scripts": {
     "test:main": "echo \"(Placeholder necessary for task dependencies)\"",
-    "test:entriesAndChunks": "NODE_PATH=./ mocha --compilers js:@babel/register --require @babel/polyfill --require test/test_helper.js \"test/**/*@(spec.js)\"",
-    "test:raw": "webpack --config webpack.config.js --env.ENTRY_DIRS=entries --env.CHUNK_DIRS=sharedComps,redux --env.OVERRIDE_COMPONENT_WEBPACK=test/webpack.config.symlinks.override.js --env.REACT4XP_CONFIG_FILE=build/constants.json --env.VERBOSE=true ",
-    "test:override": "webpack --config webpack.config.js --env.OVERRIDE_COMPONENT_WEBPACK=test/webpack.config.override.js --env.VERBOSE=true --env.REACT4XP_CONFIG_FILE=build/constants.json ",
-    "babel-min": "babel src/entriesandchunks.js -o ./entriesandchunks.js --no-comments --minified --compact true",
-    "babel": "babel src/entriesandchunks.js -o ./entriesandchunks.js --no-comments",
-    "lint": "node_modules/eslint/bin/eslint.js src/*.js --fix",
-    "nsi:install": "npm-safe-install",
+    "test:entriesAndChunks": "NODE_PATH=. npx mocha --require @babel/register --require @babel/polyfill --require test/test_helper.js \"test/**/*@(spec.js)\"",
+    "test:raw": "NODE_PATH=. npx webpack --config webpack.config.js --env.ENTRY_DIRS=entries --env.CHUNK_DIRS=sharedComps,redux --env.OVERRIDE_COMPONENT_WEBPACK=test/webpack.config.symlinks.override.js --env.REACT4XP_CONFIG_FILE=build/constants.json --env.VERBOSE=true ",
+    "test:override": "NODE_PATH=. npx webpack --config webpack.config.js --env.OVERRIDE_COMPONENT_WEBPACK=test/webpack.config.override.js --env.VERBOSE=true --env.REACT4XP_CONFIG_FILE=build/constants.json ",
+    "babel-min": "NODE_PATH=. npx babel src/entriesandchunks.js -o entriesandchunks.js --no-comments --minified --compact true",
+    "babel": "NODE_PATH=.npx babel src/entriesandchunks.js -o entriesandchunks.js --no-comments",
+    "lint": "NODE_PATH=. node_modules/eslint/bin/eslint.js src/*.js --fix",
     "postversion": "cd ../.. && ./copytag.js buildcomponents"
   },
   "repository": {
@@ -45,60 +44,12 @@
     "webpack": "^4",
     "webpack-cli": "^3"
   },
-  "devDependencies": {
-    "@babel/cli": "^7.12.10",
-    "@babel/core": "^7.12.10",
-    "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
-    "@babel/plugin-transform-arrow-functions": "^7.12.1",
-    "@babel/polyfill": "^7.12.1",
-    "@babel/preset-env": "^7.12.11",
-    "@babel/preset-react": "^7.12.10",
-    "@babel/register": "^7.12.10",
-    "babel-eslint": "^10.0.3",
-    "babel-loader": "^8.2.2",
-    "chai": "^3.5.0",
-    "copyfiles": "^2.4.1",
-    "deep-freeze": "0.0.1",
-    "duckfactory": "^1.3.5",
-    "eslint": "^6.1.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-config-prettier": "^3.3.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-json": "^2.1.2",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-prettier": "^3.3.1",
-    "eslint-plugin-react": "^7.22.0",
-    "eslint-plugin-react-hooks": "^1.7.0",
-    "husky": "^1.2.0",
-    "lint-staged": "^8.1.7",
-    "mocha": "^5.2.0",
-    "npm-safe-install": "^1.1.0",
-    "prettier": "^1.18.2",
-    "prop-types": "^15.7.2",
-    "react-redux": "^6.0.1",
-    "react4xp-buildconstants": "0.8.9",
-    "react4xp-regions": "1.0.6",
-    "redux": "^4.0.1",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12"
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env",
-      "@babel/preset-react"
-    ]
-  },
+  "devDependencies": {},
   "lint-staged": {
     "src/webpack.config.js": [
       "eslint --fix",
       "git add"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "_TEMP_DISABLED_pre-commit": "lint-staged",
-      "pre-push": "npm run test"
-    }
   },
   "directories": {
     "lib": "lib",

@@ -11,16 +11,14 @@
   ],
   "scripts": {
     "test:main": "echo \"(Placeholder necessary for task dependencies)\"",
-    "test:prepare": "npm i react",
     "test:webpack": "webpack --config webpack.config.js --env.BUILD_R4X=$(pwd)/test/output --env.LIBRARY_NAME=React4xp --env.CHUNK_CONTENTHASH=9 --env.CLIENT_CHUNKS_FILENAME=chunky.json && echo \"-------------- react4xp-runtimeclient builds. ADD SOME ACTUAL TESTS PLZ?\"",
-    "test:cleanup": "npm remove react",
     "lint": "eslint src/**/*.* --fix",
-    "nsi:install": "npm-safe-install",
     "postversion": "cd ../.. && ./copytag.js client",
     "_TEMP_DISABLED_prepublish": "npm run copyFiles",
     "copyFiles": "run-script-os",
     "copyFiles:win32": "cd .. && cd .. && gradlew :packages:client:copyFiles --info",
-    "copyFiles:default": "cd .. && cd .. && ./gradlew :packages:client:copyFiles --info"
+    "copyFiles:default": "cd .. && cd .. && ./gradlew :packages:client:copyFiles --info",
+    "npmLink": ""
   },
   "repository": {
     "type": "git",
@@ -33,8 +31,6 @@
   },
   "homepage": "https://github.com/enonic/react4xp-runtime-client",
   "dependencies": {
-    "@babel/polyfill": "^7.12.1",
-    "chunks-2-json-webpack-plugin": "^1.0.4",
     "fetch-timeout": "0.0.2",
     "node-fetch": "^2.3.0"
   },
@@ -53,23 +49,7 @@
     "webpack": "^4",
     "webpack-cli": "^3"
   },
-  "devDependencies": {
-    "@babel/cli": "^7.12.10",
-    "@babel/core": "^7.12.10",
-    "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
-    "@babel/plugin-transform-arrow-functions": "^7.12.1",
-    "@babel/preset-env": "^7.12.11",
-    "@babel/preset-react": "^7.12.10",
-    "@babel/register": "^7.12.10",
-    "babel-eslint": "^10.0.3",
-    "babel-loader": "^8.2.2",
-    "eslint": "^6.8.0",
-    "npm-safe-install": "^1.1.0",
-    "react-dom": "^16.14.0",
-    "run-script-os": "^1.1.5",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12"
-  },
+  "devDependencies": {},
   "babel": {
     "presets": [
       "@babel/preset-env"
