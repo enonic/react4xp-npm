@@ -16,7 +16,6 @@ allprojects {
   }
 }
 
-
 project.ext.SUBPROJS_TO_IGNORE = [
   'packages'
 ]

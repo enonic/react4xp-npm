@@ -16,7 +16,7 @@ import groovy.json.JsonSlurper
 //   - Level 3: The react4xp package is released LAST, since it depends on all the other packages,
 //   - Level 2: All other packages are published in between.
 // Before all this, building/linting/tests are run.
-// And finally, temporary (prerelease) tags created by lerna are wiped, based on PRERELEASE_ID
+// And finally, temporary (prerelease) tags created by lerna are wiped, based on project.ext.PRERELEASE_ID
 //
 // Usage, always from project root: gradlew versionAndPublish
 // CLI options:
@@ -27,27 +27,29 @@ import groovy.json.JsonSlurper
 //    npmInstall
 //    build
 //    test
-//                              (for packages in level 1:)
+//                              For packages in level 1:
 //    versionLevel1             (lerna version - tick versions in level1 packages and update version numbers in lavel 2/3 packages that depend on them if they were updated)
 //    maybeSkipPublishLevel1
 //    publishLevel1             (npm publish, if not disabled by maybeSkipPublishLevel1)
+//    wait1                     (wait for user input, opportunity to verify interdependencies)
 //    npmClean1                 (delete node_modules)
-//    npmInstall1               (npm i)
+//    npmInstall1               (npm i - to refresh package-lock.json)
 //    gitAdd1                   (git add, if not dry-run)
 //    gitCommit1                (git commit, if not dry-run)
 //    gitPush1                  (git push, if not dry-run)
 //    postLevel1
-//
+//                              Same for packages in level 2:
 //    versionLevel2
 //    maybeSkipPublishLevel2
 //    publishLevel2
+//    wait2
 //    npmClean2
 //    npmInstall2
 //    gitAdd2
 //    gitCommit2
 //    gitPush2
 //    postLevel2
-//
+//                              Similar for packages in level 3:
 //    versionLevel3
 //    maybeSkipPublishLevel3
 //    publishLevel3
@@ -65,7 +67,7 @@ import groovy.json.JsonSlurper
 // TODO: less abomination, more DRY.
 
 
-def PRERELEASE_ID = "prereleasetmp"
+project.ext.PRERELEASE_ID = "prereleasetmp"
 project.ext.SEMVER_PATTERN = ~"\\d+\\.\\d+\\.\\d+"
 
 def msg = (project.hasProperty("message")) ? project.property("message") : "publish"
@@ -81,7 +83,7 @@ def lernaVersionCommonCmd = [
 task versionLevel1(type: Exec) {
   def cmds = lernaVersionCommonCmd + [
     '--conventional-prerelease=react4xp-build-components,react4xp-runtime-client,react4xp-runtime-externals,react4xp-runtime-nashornpolyfills,react4xp',
-    '--preid', "$PRERELEASE_ID",
+    '--preid', "$project.ext.PRERELEASE_ID",
     '-m', "'chore(release lvl 1): $msg'"
   ]
 
@@ -97,7 +99,7 @@ task versionLevel1(type: Exec) {
 task versionLevel2(type: Exec) {
   def cmds = lernaVersionCommonCmd + [
     '--conventional-graduate=react4xp-build-components,react4xp-runtime-client,react4xp-runtime-externals,react4xp-runtime-nashornpolyfills',
-    '--preid', "$PRERELEASE_ID",
+    '--preid', "$project.ext.PRERELEASE_ID",
     '-m', "'chore(release lvl 2): $msg'"
   ]
 
@@ -113,7 +115,7 @@ task versionLevel2(type: Exec) {
 task versionLevel3(type: Exec) {
   def cmds = lernaVersionCommonCmd + [
     '--conventional-graduate=react4xp',
-    '--preid', "$PRERELEASE_ID",
+    '--preid', "$project.ext.PRERELEASE_ID",
     '-m', "'chore(release lvl 3): $msg'"
   ]
 
@@ -132,7 +134,7 @@ task versionLevel3(type: Exec) {
 ////////////////////////
 
 task cleanPrereleaseTags(type: Exec) {
-  commandLine './cleanTagsContaining.sh', PRERELEASE_ID
+  commandLine './cleanTagsContaining.sh', project.ext.PRERELEASE_ID
   enabled = !project.hasProperty("dry")
 }
 
@@ -290,6 +292,42 @@ def shouldPublish(packageName, localVersion, npmViewOutput, npmViewResult, npmVi
 }
 
 
+def getWaitMessage(currentLevel) {
+  return "\n-----------------------------------\n\n" +
+    "Package versions in level ${currentLevel} may have been updated. Before proceeding, ensure that packages aren't being committed and published with wrong interdependencies!\n\n" +
+    "Here's how: check updated versions in level ${currentLevel} packages (see below). " +
+    "Then, compare with <dependencies> in package.json in level ${currentLevel + 1} packages and verify that they match the updated versions from level ${currentLevel}. " +
+    "If not, update dependencies manually, but ignore versions with '${project.ext.PRERELEASE_ID}'.\n\n" +
+    "    - Level 1: The regions + constants packages are released FIRST, since other packages depend on them\n" +
+    "    - Level 3 (THREE): The react4xp package is released LAST, since it depends on all the other packages\n" +
+    "    - Level 2 (TWO): All other packages are published in between.\n\n" +
+    "When you're ready, TYPE 'y' TO CONTINUE (git commit/push and npm publish).\n\n"
+}
+task wait1 {
+  doLast {
+    println getWaitMessage(1)
+    def response = "";
+    while (response != "y") {
+      response = System.in.read()
+      if (response != "y") {
+        println "Type 'y' and Enter to continue"
+      }
+    }
+  }
+}
+task wait2 {
+  doLast {
+    println getWaitMessage(2)
+    def response = "";
+    while (response != "y") {
+      response = System.in.read()
+      if (response != "y") {
+        println "Type 'y' and Enter to continue"
+      }
+    }
+  }
+}
+
 def NPM_PUBLISH_CMD = "npm publish${(!project.hasProperty("dry")) ? "" : ' --dry-run'}"
 
 configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)}) {
@@ -312,6 +350,9 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
     delete 'node_modules'
   }
   npmClean3.dependsOn cleanPrereleaseTags
+
+
+
 
 
   task npmInstall1(type: NpmTask) {
@@ -478,8 +519,10 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
   gitAdd3.dependsOn npmInstall3
 
   cleanPrereleaseTags.dependsOn publishLevel3
-  npmClean2.dependsOn publishLevel2
-  npmClean1.dependsOn publishLevel1
+  npmClean2.dependsOn wait2
+  wait2.dependsOn publishLevel2
+  npmClean1.dependsOn wait1
+  wait1.dependsOn publishLevel1
 }
 
 
