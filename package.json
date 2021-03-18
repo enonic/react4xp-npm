@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "React4xp monorepo for all NPM dependencies",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "_TEMP_DISABLED_version": "npm run test && lerna version --conventional-commits --exact && lerna run postversion && echo \"Versioning done, using conventional commits. Publish to NPM with: 'gradlew doPublish'.\"",
     "setup": "npm run npmInstall",

@@ -49,7 +49,7 @@ import groovy.json.JsonSlurper
 //    gitCommit2
 //    gitPush2
 //    postLevel2
-//                              Similar for packages in level 3:
+//                              Similar for packages in level 3 (but prerelease git tag cleanup instead of manual version verification)
 //    versionLevel3
 //    maybeSkipPublishLevel3
 //    publishLevel3
