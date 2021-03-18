@@ -1,6 +1,6 @@
 {
   "name": "react4xp-runtime-client",
-  "version": "1.0.8-prereleasetmp.0",
+  "version": "1.0.7",
   "description": "React4xp helper: Webpack setup for building React4xp's client-side wrapper",
   "main": "webpack.config.js",
   "files": [
