@@ -75,6 +75,9 @@ Marker file, indicating that the npmInstall gradle task has been run in the root
   }
 }
 
+task npmPreInstall(type: NpmTask) {
+  args=['run', 'npmUnlink']
+}
 task npmPostInstall(type: NpmTask) {
   args=['run', 'npmLink']
 }
@@ -82,6 +85,7 @@ task npmPostInstall(type: NpmTask) {
 npmInstall.enabled = false;
 npmInstall.dependsOn npmPostInstall
 npmPostInstall.dependsOn npmDoInstall
+npmDoInstall.dependsOn npmPreInstall
 
 
 ///////////////////////////////////////////////////
