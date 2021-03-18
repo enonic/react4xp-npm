@@ -12,9 +12,8 @@
 
 const { exec } = require('child_process');
 
-const targetPackage = process.argv[process.argv.length -1];
-const package = require(`./packages/${targetPackage}/package.json`);
-const { name, version } = package;
+const targetPackage = process.argv[process.argv.length - 1];
+const { name, version } = require(`./packages/${targetPackage}/package.json`);
 
 const oldTag = `${name}@${version}`;
 const newTag = `${name.replace('react4xp', '_react4xp/react4xp').replace('_react4xp/react4xp-', '_react4xp/')}/${version}`;
