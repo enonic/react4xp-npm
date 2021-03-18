@@ -78,7 +78,7 @@
     "node-fetch": "^2.6.1",
     "npm-safe-install": "^1.1.0",
     "path-exists-cli": "^1.0.0",
-    "prettier": "^1.19.1",
+    "prettier": "^2.2.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
