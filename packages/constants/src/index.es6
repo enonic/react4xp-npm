@@ -15,6 +15,7 @@ const STANDARD_OUTPUT_FILENAME = "react4xp_constants.json";
  *          EXTERNALS, BUILD_MAIN, R4X_TARGETSUBDIR, SRC_R4X, BUILD_R4X, RELATIVE_BUILD_R4X, SRC_SITE,
  *          NASHORNPOLYFILLS_SOURCE, NASHORNPOLYFILLS_FILENAME,
  *          CLIENT_CHUNKS_FILENAME, EXTERNALS_CHUNKS_FILENAME, COMPONENT_CHUNKS_FILENAME,
+ *          SSR_LAZYLOAD, SSR_ENGINE_SETTINGS
  *      }
  *  Overrides can also have a "verbose" parameter, which will cause logging of the values if true.
  *  Overrides can also have a "outputFileName" parameter, controlling the path and name of the output constants JSON files
@@ -34,6 +35,7 @@ const STANDARD_OUTPUT_FILENAME = "react4xp_constants.json";
         NASHORNPOLYFILLS_SOURCE, NASHORNPOLYFILLS_FILENAME,
         CLIENT_CHUNKS_FILENAME, EXTERNALS_CHUNKS_FILENAME, COMPONENT_CHUNKS_FILENAME, ENTRIES_FILENAME,
         EXTERNALS,
+        SSR_LAZYLOAD, SSR_ENGINE_SETTINGS
         recommended,
  *      }
  */
@@ -147,6 +149,9 @@ const buildConstants = (rootDir, overrides) => {
             "react-dom": "ReactDOM",
             "react-dom/server": "ReactDOMServer",
         },
+
+        SSR_LAZYLOAD: true,
+        SSR_ENGINE_SETTINGS: 1000,
     };
 
     const constants = Object.assign(defaultConstants, overrides);
@@ -181,6 +186,7 @@ const buildConstants = (rootDir, overrides) => {
         RELATIVE_BUILD_R4X, BUILD_MAIN, BUILD_R4X,
         CHUNK_CONTENTHASH,
         CLIENT_CHUNKS_FILENAME, EXTERNALS_CHUNKS_FILENAME, ENTRIES_FILENAME, COMPONENT_STATS_FILENAME,
+        SSR_LAZYLOAD, SSR_ENGINE_SETTINGS,
         EXTERNALS,
         recommended,
     } = constants;
@@ -193,6 +199,7 @@ const buildConstants = (rootDir, overrides) => {
         RELATIVE_BUILD_R4X, BUILD_MAIN, BUILD_R4X,
         CHUNK_CONTENTHASH,
         CLIENT_CHUNKS_FILENAME, EXTERNALS_CHUNKS_FILENAME, ENTRIES_FILENAME, COMPONENT_STATS_FILENAME,
+        SSR_LAZYLOAD, SSR_ENGINE_SETTINGS,
         EXTERNALS,
         recommended,
     };
