@@ -1,6 +1,6 @@
 {
   "name": "react4xp",
-  "version": "1.1.13-prereleasetmp.0",
+  "version": "1.1.12",
   "description": "Single package wrapping all of React4xp's NPM dependencies",
   "main": "react4xp.gradle",
   "scripts": {
@@ -43,12 +43,12 @@
     "babel-loader": "^8.2.2",
     "chunks-2-json-webpack-plugin": "^1.0.4",
     "npm-safe-install": "^1.1.0",
-    "react4xp-build-components": "1.0.15-prereleasetmp.0",
+    "react4xp-build-components": "1.0.14",
     "react4xp-buildconstants": "0.8.11",
     "react4xp-regions": "1.0.7",
     "react4xp-runtime-client": "1.0.8",
-    "react4xp-runtime-externals": "1.0.8-prereleasetmp.0",
-    "react4xp-runtime-nashornpolyfills": "1.0.12-prereleasetmp.0"
+    "react4xp-runtime-externals": "1.0.7",
+    "react4xp-runtime-nashornpolyfills": "1.0.11"
   },
   "directories": {
     "lib": "lib",
