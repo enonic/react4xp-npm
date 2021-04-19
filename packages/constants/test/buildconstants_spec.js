@@ -10,7 +10,6 @@ const ensureTargetOutputPath = require('../ensureTargetOutputPath');
 const DIR_NAME = __dirname; // eslint-disable-line no-undef
 
 
-
 describe("constants", ()=>{
     describe(".buildConstants", ()=> {
 
@@ -33,6 +32,9 @@ describe("constants", ()=>{
             COMPONENT_STATS_FILENAME: "stats.components.json",
 
             CHUNK_CONTENTHASH: 9,
+
+            SSR_LAZYLOAD: true,
+            SSR_ENGINE_SETTINGS: 1000,
 
             EXTERNALS: {
                 "react": "React",
@@ -105,7 +107,7 @@ describe("constants", ()=>{
         });
         it("builds a constants file with the specified output name, if the output file or path doesn't exist", () => {
             const outputFileName = path.join(TEST_OUTPUT_ROOT, "deep", "path", "built_constants.json");
-            
+
             buildConstants(
                 DIR_NAME,
                 {
@@ -113,7 +115,7 @@ describe("constants", ()=>{
                     // verbose: true,
                 }
             );
-            
+
             const actualOutput = require(outputFileName);
 
             delete actualOutput['__meta__'];
@@ -139,10 +141,10 @@ describe("constants", ()=>{
 
         it("leaves an existing output file intact instead of replacing it, and also skips the copy", () => {
             const outputFileName = path.join(TEST_OUTPUT_ROOT, "deep", "path", "existing_constants.json");
-            
+
             ensureTargetOutputPath(outputFileName);
             fs.writeFileSync(outputFileName, '{"thisIsThe":"previousContent"}');
-            
+
             buildConstants(
                 DIR_NAME,
                 {
@@ -150,7 +152,7 @@ describe("constants", ()=>{
                     // verbose: true,
                 }
             );
-            
+
             const actualOutput = deepFreeze(require(outputFileName));
 
             const expectedOutput = deepFreeze(
@@ -162,7 +164,7 @@ describe("constants", ()=>{
 
         it("overwrites any existing output file and the copy, iff 'overwriteConstantsFile' in the overrides object is set to true", () => {
             const outputFileName = path.join(TEST_OUTPUT_ROOT, "deep", "path", "overwrite_constants.json");
-            
+
             ensureTargetOutputPath(outputFileName);
             fs.writeFileSync(outputFileName, '{"thisIsThe":"previousContent"}');
 
@@ -177,7 +179,7 @@ describe("constants", ()=>{
                     // verbose: true,
                 }
             );
-            
+
             const actualOutput = require(outputFileName);
             const copiedOutput = require(COPY_OUTPUT_NAME);
 

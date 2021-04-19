@@ -24,10 +24,10 @@ const normalizeDirList = (
             .replace(/[´`'"]/g, "")
             .split(",")
 
-            .map(item => (item || "").trim())
-            .filter(item => !!item)
-            .map(item => item.replace(/[\\/]$/, ""))
-            .map(orig => {
+            .map((item) => (item || "").trim())
+            .filter((item) => !!item)
+            .map((item) => item.replace(/[\\/]$/, ""))
+            .map((orig) => {
               let dir = path.resolve(path.join(SRC_R4X, orig));
 
               let realDir = null;
@@ -66,7 +66,7 @@ const normalizeDirList = (
                   lstat = fs.lstatSync(dir);
                 } else {
                   throw Error(
-                    `${singularLabel.replace(/^\w/, c =>
+                    `${singularLabel.replace(/^\w/, (c) =>
                       c.toUpperCase()
                     )} '${orig}' from react4xp.properties leads by resolved symlink(s) to '${dir}', which was not found.`
                   );
@@ -82,16 +82,16 @@ const normalizeDirList = (
 
               return realDir;
             })
-            .filter(dir => !!dir)
+            .filter((dir) => !!dir)
         )
       )
     : [];
 
 const makeExclusionsRegexpString = (currentDir, otherDirs, VERBOSE) =>
   otherDirs
-    .filter(dir => dir !== currentDir && dir.startsWith(currentDir))
-    .map(dir => dir.slice(currentDir.length))
-    .map(d => {
+    .filter((dir) => dir !== currentDir && dir.startsWith(currentDir))
+    .map((dir) => dir.slice(currentDir.length))
+    .map((d) => {
       let dir = d;
       if (dir.startsWith(path.sep)) {
         dir = dir.slice(1);
@@ -119,7 +119,7 @@ module.exports = (env = {}) => {
     EXTERNALS,
     COMPONENT_STATS_FILENAME,
     CHUNK_CONTENTHASH,
-    ENTRIES_FILENAME
+    ENTRIES_FILENAME,
     // eslint-disable-next-line import/no-dynamic-require, global-require
   } = require(path.join(process.cwd(), env.REACT4XP_CONFIG_FILE));
 
@@ -129,8 +129,9 @@ module.exports = (env = {}) => {
   const ROOT = env.ROOT || __dirname;
 
   // TODO: Probably more consistent if this too is a master config file property. Add to react4xp-buildconstants and import above from env.REACT4XP_CONFIG_FILE.
-  let OVERRIDE_COMPONENT_WEBPACK = `${env.OVERRIDE_COMPONENT_WEBPACK ||
-    ""}`.trim();
+  let OVERRIDE_COMPONENT_WEBPACK = `${
+    env.OVERRIDE_COMPONENT_WEBPACK || ""
+  }`.trim();
   let overrideCallback = (_, config) => config;
   if (OVERRIDE_COMPONENT_WEBPACK) {
     OVERRIDE_COMPONENT_WEBPACK = path.join(
@@ -220,7 +221,7 @@ module.exports = (env = {}) => {
   // -----------------------------------------------------------  Catching some likely troublemakers:
 
   symlinksUnderReact4xpRoot = Object.keys(symlinksUnderReact4xpRoot).filter(
-    key => !!symlinksUnderReact4xpRoot[key]
+    (key) => !!symlinksUnderReact4xpRoot[key]
   );
   if (symlinksUnderReact4xpRoot.length) {
     console.warn(
@@ -231,7 +232,7 @@ module.exports = (env = {}) => {
       )}'`
     );
   }
-  const duplicates = chunkDirs.filter(dir => entryDirs.indexOf(dir) !== -1);
+  const duplicates = chunkDirs.filter((dir) => entryDirs.indexOf(dir) !== -1);
   if (duplicates.length) {
     throw Error(
       `${
@@ -256,7 +257,7 @@ module.exports = (env = {}) => {
   }, []);
 
   const badChunkDirs = chunkDirs.filter(
-    dir =>
+    (dir) =>
       dir === SRC_SITE ||
       dir.startsWith(SRC_SITE) ||
       tooGeneralPaths.indexOf(dir) !== -1
@@ -271,7 +272,7 @@ module.exports = (env = {}) => {
     );
   }
   const badEntryDirs = entryDirs.filter(
-    dir => tooGeneralPaths.indexOf(dir) !== -1
+    (dir) => tooGeneralPaths.indexOf(dir) !== -1
   );
   if (badEntryDirs.length) {
     throw Error(
@@ -290,16 +291,16 @@ module.exports = (env = {}) => {
     .trim()
     .replace(/[´`'"]/g, "")
     .split(",")
-    .map(ext => ext.trim())
-    .map(ext => ext.replace(/^\./, ""))
-    .filter(ext => !!ext);
+    .map((ext) => ext.trim())
+    .map((ext) => ext.replace(/^\./, ""))
+    .filter((ext) => !!ext);
 
   // Build the entries
   const entrySets = [
     {
       sourcePath: SRC_SITE,
       sourceExtensions: ["jsx", "tsx"],
-      targetSubDir: "site"
+      targetSubDir: "site",
     },
     {
       sourcePath: path.join(
@@ -308,12 +309,12 @@ module.exports = (env = {}) => {
         "react4xp-regions",
         "entries"
       ),
-      sourceExtensions: ["jsx", "tsx", "js", "ts", "es6", "es"]
+      sourceExtensions: ["jsx", "tsx", "js", "ts", "es6", "es"],
     },
-    ...entryDirs.map(entryDir => ({
+    ...entryDirs.map((entryDir) => ({
       sourcePath: entryDir,
-      sourceExtensions: entryExtensions
-    }))
+      sourceExtensions: entryExtensions,
+    })),
   ];
 
   const entries = React4xpEntriesAndChunks.getEntries(
@@ -393,14 +394,14 @@ module.exports = (env = {}) => {
       enforce: true,
       test: "[\\\\/]node_modules[\\\\/]((?!(react4xp-regions)).)[\\\\/]?",
       chunks: "all",
-      priority: 100
+      priority: 100,
     },
     templates: {
       name: "templates",
       enforce: true,
       test: "[\\\\/]node_modules[\\\\/]react4xp-regions[\\\\/]?",
       chunks: "all",
-      priority: 99
+      priority: 99,
     },
     react4xp: {
       name: "react4xp",
@@ -411,13 +412,13 @@ module.exports = (env = {}) => {
         react4xpExclusions
           ? `[\\\\/]((?!(${react4xpExclusions})).)[\\\\/]?`
           : ""
-      }`
-    }
+      }`,
+    },
   };
 
   // Add new cacheGroups, excluding (by regexp) both other chunknames and entrydirs
   const takenNames = ["vendors", "templates", "react4xp"];
-  chunkDirs.forEach(chunkDir => {
+  chunkDirs.forEach((chunkDir) => {
     let name = chunkDir.split(path.sep).slice(-1)[0];
     if (takenNames.indexOf(name) !== -1) {
       name = `react4xp_${chunkDir
@@ -444,7 +445,7 @@ module.exports = (env = {}) => {
       test,
       enforce: true,
       chunks: "all",
-      priority: 1
+      priority: 1,
     };
   });
 
@@ -460,13 +461,13 @@ module.exports = (env = {}) => {
   }
 
   // Finally, turn all generated regexp strings in each .test attribute into actual RegExp's:
-  Object.keys(cacheGroups).forEach(key => {
+  Object.keys(cacheGroups).forEach((key) => {
     cacheGroups[key] = {
       ...cacheGroups[key],
       test:
         typeof cacheGroups[key].test === "string"
           ? new RegExp(cacheGroups[key].test)
-          : cacheGroups[key].test
+          : cacheGroups[key].test,
     };
   });
 
@@ -495,12 +496,12 @@ module.exports = (env = {}) => {
       filename: "[name].js", // <-- Does not hash entry component filenames
       chunkFilename: chunkFileName,
       libraryTarget: "var",
-      library: [LIBRARY_NAME, "[name]"]
+      library: [LIBRARY_NAME, "[name]"],
     },
 
     resolve: {
       extensions: [".es6", ".js", ".jsx"],
-      modules: [path.resolve(ROOT, "node_modules")]
+      modules: [path.resolve(ROOT, "node_modules")],
     },
 
     devtool: DEVMODE ? "source-map" : false,
@@ -517,11 +518,11 @@ module.exports = (env = {}) => {
             presets: ["@babel/preset-react", "@babel/preset-env"],
             plugins: [
               "@babel/plugin-transform-arrow-functions",
-              "@babel/plugin-proposal-object-rest-spread"
-            ]
-          }
-        }
-      ]
+              "@babel/plugin-proposal-object-rest-spread",
+            ],
+          },
+        },
+      ],
     },
 
     externals: EXTERNALS,
@@ -529,8 +530,8 @@ module.exports = (env = {}) => {
     optimization: {
       splitChunks: {
         name: false,
-        cacheGroups
-      }
+        cacheGroups,
+      },
     },
 
     plugins: [
@@ -563,9 +564,9 @@ module.exports = (env = {}) => {
         source: false,
         timings: false,
         usedExports: false,
-        version: false
-      })
-    ]
+        version: false,
+      }),
+    ],
   };
 
   const outputConfig = overrideCallback(env, config);

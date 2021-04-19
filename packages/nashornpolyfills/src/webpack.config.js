@@ -2,7 +2,7 @@
 
 const path = require("path");
 
-module.exports = env => {
+module.exports = (env) => {
   env = env || {}; // eslint-disable-line no-param-reassign
 
   let { BUILD_R4X } = env;
@@ -76,16 +76,16 @@ module.exports = env => {
       [NASHORNPOLYFILLS_FILENAME]: path.join(
         process.cwd(),
         NASHORNPOLYFILLS_SOURCE
-      )
+      ),
     },
 
     output: {
       path: BUILD_R4X,
-      filename: "[name].js"
+      filename: "[name].js",
     },
 
     resolve: {
-      extensions: [".es6", ".js", ".jsx"]
+      extensions: [".es6", ".js", ".jsx"],
     },
     module: {
       rules: [
@@ -98,11 +98,11 @@ module.exports = env => {
             presets: ["@babel/preset-react", "@babel/preset-env"],
             plugins: [
               "@babel/plugin-transform-arrow-functions",
-              "@babel/plugin-proposal-object-rest-spread"
-            ]
-          }
-        }
-      ]
-    }
+              "@babel/plugin-proposal-object-rest-spread",
+            ],
+          },
+        },
+      ],
+    },
   };
 };
