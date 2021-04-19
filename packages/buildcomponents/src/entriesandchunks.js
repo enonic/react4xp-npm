@@ -14,7 +14,7 @@ exports.SLASH = process.platform === "win32" ? "\\" : "/";
 // If it starts with 'X:\' (where X is any letter), it's fairly safe to assume it's an absolute windows path and backslashes are fair game.
 // If not, it's probably impossible to know for sure that the path is not a valid POSIX path with a backslash in it?
 // If so, log a warning.
-exports.normalizePath = pathString => {
+exports.normalizePath = (pathString) => {
   if (
     !new RegExp("^[a-zA-Z]:\\\\", "i").test(pathString) &&
     new RegExp("\\\\", "i").test(pathString)
@@ -61,7 +61,7 @@ function buildEntriesToSubfolder(entrySet, verboseLog) {
 
               // UGLY HACK: Platform-independent forced-forwardslash version of path.join
               const name = [targetPath, subdir, parsedEl.name]
-                .filter(a => (a || "").trim())
+                .filter((a) => (a || "").trim())
                 .join("/");
 
               verboseLog("\tEntry: ", name, "->", normalizedEntry);
@@ -83,7 +83,7 @@ function makeEntriesFile(entries, outputPath, entriesFilename, verboseLog) {
 
   const dirs = outputPath.split(exports.SLASH);
   let accum = "";
-  dirs.forEach(dir => {
+  dirs.forEach((dir) => {
     accum += dir + exports.SLASH;
     if (!fs.existsSync(accum)) {
       verboseLog(`\tCreate: ${accum}`);
@@ -100,7 +100,7 @@ function makeEntriesFile(entries, outputPath, entriesFilename, verboseLog) {
 // This function builds the entries AND entries.json, which lists the first-level components that shouldn't be counted
 // as general dependencies.
 exports.getEntries = (entrySets, outputPath, entriesFilename, verbose) => {
-  const verboseLog = verbose ? console.log : function() {};
+  const verboseLog = verbose ? console.log : function () {};
   const entries = entrySets.reduce(
     (accumulator, entrySet) =>
       Object.assign(accumulator, buildEntriesToSubfolder(entrySet, verboseLog)),
