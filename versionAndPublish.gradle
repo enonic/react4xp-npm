@@ -27,6 +27,7 @@ import groovy.json.JsonSlurper
 //    npmInstall
 //    build
 //    test
+//    npmRebuildForProd
 //                              For packages in level 1:
 //    versionLevel1             (lerna version - tick versions in level1 packages and update version numbers in lavel 2/3 packages that depend on them if they were updated)
 //    maybeSkipPublishLevel1
@@ -332,7 +333,16 @@ def NPM_PUBLISH_CMD = "npm publish${(!project.hasProperty("dry")) ? "" : ' --dry
 
 configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)}) {
 
+  task npmCleanForProd(type: Delete) {
+    delete 'node_modules'
+    followSymlinks = false
+  }
+  task npmRebuildForProd(type: NodeTask) {
+    args=['install']
 
+
+  }
+  npmRebuildForProd.dependsOn npmCleanForProd
 
   // Set up 3 groups (levels) of publish, which must happen in that order.
   // Also disable publish for each package that has the prerelease ID in the version string:
@@ -512,7 +522,8 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
   maybeSkipPublishLevel1.dependsOn versionLevel1
   versionLevel1.dependsOn test
   versionLevel1.dependsOn build
-  versionLevel1.dependsOn npmInstall
+  versionLevel1.dependsOn npmRebuildForProd
+  npmRebuildForProd.mustRunAfter test
 
   gitAdd1.dependsOn npmInstall1
   gitAdd2.dependsOn npmInstall2

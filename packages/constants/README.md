@@ -15,7 +15,7 @@ In Node context:
 ```javascript
 const buildConstants = require('react4xp-buildconstants');
 buildConstants(rootDir, overrides);
-```
+``` 
 
 CLI context:
 ```
