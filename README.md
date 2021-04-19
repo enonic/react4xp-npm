@@ -66,7 +66,7 @@ Thins ready state should be:
   - A marker file, _npmLinked.marker_, is created under _packages/react4xp_. This only serves to speed up the NPM istall: gradle skips this step if this marker exists.
   > NOTE:
   >
-  > This creates a **circular symlink graph**. This is important for two reasons:
+  > This creates a **circular graph** of symlinks under _node_modules_ in the different packages. This is fine most of the time, but important to know for two reasons:
   > 1.  Occasionally, this will cause the error message `Maximum call stack size exceeded`, preventing further progress. If this happens, rebuild completely, in this order:
   >   - `gradlew clean`
   >   - `npm run clean`
