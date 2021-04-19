@@ -73,6 +73,10 @@ project.ext.SEMVER_PATTERN = ~"\\d+\\.\\d+\\.\\d+"
 
 def msg = (project.hasProperty("message")) ? project.property("message") : "publish"
 
+task preVersionCleanNpm(type: NpmTask) {
+  args=['run', 'clean']
+}
+
 def lernaVersionCommonCmd = [
   'node_modules/.bin/lerna', 'version',
   '--conventional-commits',
@@ -332,18 +336,6 @@ task wait2 {
 def NPM_PUBLISH_CMD = "npm publish${(!project.hasProperty("dry")) ? "" : ' --dry-run'}"
 
 configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)}) {
-
-  task npmCleanForProd(type: Delete) {
-    delete 'node_modules'
-    followSymlinks = false
-  }
-  task npmRebuildForProd(type: NodeTask) {
-    args=['install']
-
-
-  }
-  npmRebuildForProd.dependsOn npmCleanForProd
-
   // Set up 3 groups (levels) of publish, which must happen in that order.
   // Also disable publish for each package that has the prerelease ID in the version string:
 
@@ -520,10 +512,7 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
   postLevel1.dependsOn publishLevel1
   publishLevel1.dependsOn maybeSkipPublishLevel1
   maybeSkipPublishLevel1.dependsOn versionLevel1
-  versionLevel1.dependsOn test
-  versionLevel1.dependsOn build
-  versionLevel1.dependsOn npmRebuildForProd
-  npmRebuildForProd.mustRunAfter test
+  versionLevel1.dependsOn preVersionCleanNpm
 
   gitAdd1.dependsOn npmInstall1
   gitAdd2.dependsOn npmInstall2
