@@ -57,13 +57,48 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
 
 
 def slash = File.separator
-def markerName = ".${slash}node_modules${slash}react4xp${slash}npmInstalled.txt"
+def markerName = ".${slash}packages${slash}react4xp${slash}npmLinked.marker"
 
+
+npmInstall.inputs.files('package.json', 'package-lock.json', 'build.gradle')
+npmInstall.outputs.file('package-lock.json')
+npmInstall.outputs.file file(markerName)
+
+// Replace npmInstall with npmDoInstall in order to ensure than npmLink is run afterwards!
 task npmDoInstall(type: NpmTask) {
   args=['install']
 
   inputs.files('package.json', 'package-lock.json', 'build.gradle')
-  outputs.file('package-lock.json')
+  inputs.files('package.json', 'build.gradle')
+  outputs.file file(markerName)
+}
+
+task clean(type: Delete) {
+    delete 'build'
+    followSymlinks = false
+
+    doLast {
+      def marker = new File(markerName)
+      marker.delete()
+    }
+}
+
+task npmUnlink(type: NpmTask) {
+  args=['run', 'npmUnlink']
+
+  npmInstall.inputs.files('package.json', 'package-lock.json', 'build.gradle')
+  outputs.file file(markerName)
+
+  doLast {
+    def marker = new File(markerName)
+    marker.delete()
+  }
+}
+task npmLink(type: NpmTask) {
+  args=['run', 'npmLink']
+
+  npmInstall.inputs.files('package.json', 'package-lock.json', 'build.gradle')
+  inputs.files('package.json', 'build.gradle')
   outputs.file file(markerName)
 
   doLast {
@@ -72,22 +107,28 @@ task npmDoInstall(type: NpmTask) {
     marker.text = """
 Marker file, indicating that the npmInstall gradle task has been run in the root project - faster than traversing the entire node_modules tree for changes.
 """
+    println "\nNPM marker installed --> $markerName"
   }
 }
 
-task npmPreInstall(type: NpmTask) {
-  args=['run', 'npmUnlink']
-}
-task npmPostInstall(type: NpmTask) {
-  args=['run', 'npmLink']
-}
-
 npmInstall.enabled = false;
-npmInstall.dependsOn npmPostInstall
-npmPostInstall.dependsOn npmDoInstall
-npmDoInstall.dependsOn npmPreInstall
+npmInstall.dependsOn npmDoInstall
+npmInstall.dependsOn npmLink
+npmLink.mustRunAfter npmDoInstall
+npmDoInstall.dependsOn npmUnlink
 
+
+task setup(type: NpmTask) {
+  doFirst {
+    def marker = new File(markerName)
+    marker.delete()
+  }
+
+  args=['run', 'setup']
+}
 
 ///////////////////////////////////////////////////
 
 apply from: 'versionAndPublish.gradle'
+
+
