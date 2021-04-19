@@ -78,7 +78,7 @@ function generateTempES6SourceAndGetFilename(_externals, outputFileName) {
   let externalsImports = "";
   let externalsExports = "";
 
-  Object.keys(externals).forEach(key => {
+  Object.keys(externals).forEach((key) => {
     externalsImports += `import ${externals[key]} from '${key}';\n`;
   });
 
@@ -86,7 +86,7 @@ function generateTempES6SourceAndGetFilename(_externals, outputFileName) {
         externalsImports += `console.log('${externals[key]}: ' + ${externals[key]});\n`;
     }); // */
 
-  Object.keys(externals).forEach(key => {
+  Object.keys(externals).forEach((key) => {
     externalsExports += `\twindow.${externals[key]} = ${externals[key]};\n`;
   });
 
@@ -140,8 +140,8 @@ module.exports = (env = {}) => {
     ? [
         new Chunks2json({
           outputDir: BUILD_R4X,
-          filename: EXT_CHUNKS_FILENAME
-        })
+          filename: EXT_CHUNKS_FILENAME,
+        }),
       ]
     : undefined;
 
@@ -166,12 +166,12 @@ module.exports = (env = {}) => {
 
     output: {
       path: BUILD_R4X, // <-- Sets the base url for plugins and other target dirs.
-      filename: chunkFileName
+      filename: chunkFileName,
     },
 
     resolve: {
       extensions: [".es6", ".js", ".jsx"],
-      modules: [path.resolve(ROOT, "node_modules")]
+      modules: [path.resolve(ROOT, "node_modules")],
     },
     module: {
       rules: [
@@ -180,12 +180,12 @@ module.exports = (env = {}) => {
           exclude: /node_modules/,
           loader: "babel-loader",
           query: {
-            compact: true // (BUILD_ENV === 'production'),
-          }
-        }
-      ]
+            compact: true, // (BUILD_ENV === 'production'),
+          },
+        },
+      ],
     },
 
-    plugins
+    plugins,
   };
 };
