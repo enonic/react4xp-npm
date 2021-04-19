@@ -64,7 +64,18 @@ Thins ready state should be:
   - _node_modules_ in all subpackages ar symlinked to _(project root)/node_modules_ (using [symlink-dir](https://www.npmjs.com/package/symlink-dir) for cross-platform symlinking).
   - Each of the subprojects have their own symlink under _(project root)/node_modules_ - taking care of cross-dependencies.
   - A marker file, _npmLinked.marker_, is created under _packages/react4xp_. This only serves to speed up the NPM istall: gradle skips this step if this marker exists.
-  - NOTE: this creates a **circular symlink graph**. So far this has not been a problem as long as these CLI commands are used. But be aware of it.
+  > NOTE:
+  >
+  > This creates a **circular graph** of symlinks under _node_modules_ in the different packages. This is fine most of the time, but important to know for two reasons:
+  > 1.  Occasionally, this will cause the error message `Maximum call stack size exceeded`, preventing further progress. If this happens, rebuild completely, in this order:
+  >   - `gradlew clean`
+  >   - `npm run clean`
+  >   - `rm -rf node_modules build .gradle`
+  >   - `npm run setup`
+  >   - `gradlew build`
+  >
+  >     (or if these steps are hampered too, do it manually: delete _node_modules_ at root and in all packages and preferrably built files as described in each package's _package.json_, under `files`, before finally running setup and build again)
+  > 2. The packages must never be published with this circular graph. For this reason, the `versionAndPublish` task assumes it's at a ready-to-publish state (where everything is built and tested already: run `gradlew build test` first), and starts by wiping all these symlinks before proceding to publish.
 
 
 <a name="project-building"></a>
