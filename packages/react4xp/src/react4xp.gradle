@@ -27,6 +27,7 @@ if (project.hasProperty("dev") || project.hasProperty("development")) {
   project.ext.react4xp.BUILD_ENV = project.ext.react4xp.buildEnv
 }
 
+
 project.ext.react4xp.verbose = project.hasProperty("verbose") || (project.ext.react4xp.BUILD_ENV == 'development')
 
 println "react4xp build mode: ${project.ext.react4xp.BUILD_ENV}"
@@ -42,6 +43,14 @@ project.ext.react4xp.outputFileName = ROOT + '/' + project.ext.react4xp.masterCo
 project.ext.react4xp.buildRuntimeClient = project.ext.react4xp.buildRuntimeClient != null && project.ext.react4xp.buildRuntimeClient.toBoolean()
 project.ext.react4xp.buildExternals = project.ext.react4xp.buildExternals != null && project.ext.react4xp.buildExternals.toBoolean()
 project.ext.react4xp.overwriteConstantsFile = project.ext.react4xp.overwriteConstantsFile != null && project.ext.react4xp.overwriteConstantsFile.toBoolean()
+
+if (project.ext.react4xp.ssrLazyload != null) {
+  project.ext.react4xp.SSR_LAZYLOAD = project.ext.react4xp.ssrLazyload.toBoolean()
+  println "Use react4xp.properties.ssrLazyload=${project.ext.react4xp.ssrLazyload}: SSR_LAZYLOAD=${project.ext.react4xp.SSR_LAZYLOAD}"
+} else {
+  project.ext.react4xp.SSR_LAZYLOAD = (project.ext.react4xp.BUILD_ENV == 'development')
+  println "Because BUILD_ENV='${project.ext.react4xp.BUILD_ENV}' --> SSR_LAZYLOAD=${project.ext.react4xp.SSR_LAZYLOAD}"
+}
 
 if (project.ext.react4xp.verbose) {
   println "React4xp project config: ${project.ext.react4xp}"
