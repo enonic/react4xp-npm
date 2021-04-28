@@ -30,7 +30,7 @@ if (project.hasProperty("dev") || project.hasProperty("development")) {
 
 project.ext.react4xp.verbose = project.hasProperty("verbose") || (project.ext.react4xp.BUILD_ENV == 'development')
 
-println "react4xp build mode: ${project.ext.react4xp.BUILD_ENV}"
+println "React4xp build mode: ${project.ext.react4xp.BUILD_ENV}"
 
 /////////////////////////////////////////////////////
 
@@ -46,10 +46,14 @@ project.ext.react4xp.overwriteConstantsFile = project.ext.react4xp.overwriteCons
 
 if (project.ext.react4xp.ssrLazyload != null) {
   project.ext.react4xp.SSR_LAZYLOAD = project.ext.react4xp.ssrLazyload.toBoolean()
-  println "Use react4xp.properties.ssrLazyload=${project.ext.react4xp.ssrLazyload}: SSR_LAZYLOAD=${project.ext.react4xp.SSR_LAZYLOAD}"
+  if (project.ext.react4xp.verbose) {
+    println "Use react4xp.properties.ssrLazyload=${project.ext.react4xp.ssrLazyload} --> SSR_LAZYLOAD=${project.ext.react4xp.SSR_LAZYLOAD}"
+  }
 } else {
   project.ext.react4xp.SSR_LAZYLOAD = (project.ext.react4xp.BUILD_ENV == 'development')
-  println "Because BUILD_ENV='${project.ext.react4xp.BUILD_ENV}' --> SSR_LAZYLOAD=${project.ext.react4xp.SSR_LAZYLOAD}"
+  if (project.ext.react4xp.verbose) {
+    println "Because BUILD_ENV='${project.ext.react4xp.BUILD_ENV}' --> SSR_LAZYLOAD=${project.ext.react4xp.SSR_LAZYLOAD}"
+  }
 }
 
 if (project.ext.react4xp.verbose) {
