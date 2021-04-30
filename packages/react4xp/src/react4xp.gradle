@@ -56,6 +56,18 @@ if (project.ext.react4xp.ssrLazyload != null) {
   }
 }
 
+if (project.ext.react4xp.ssrSettings != null) {
+  project.ext.react4xp.SSR_ENGINE_SETTINGS = project.ext.react4xp.ssrSettings
+  if (project.ext.react4xp.verbose) {
+    println "Use react4xp.properties.ssrSettings=${project.ext.react4xp.ssrSettings} --> SSR_ENGINE_SETTINGS=${project.ext.react4xp.SSR_ENGINE_SETTINGS}"
+  }
+} else {
+  project.ext.react4xp.SSR_ENGINE_SETTINGS = "\"--persistent-code-cache\", \"--class-cache-size=1000\""
+  if (project.ext.react4xp.verbose) {
+    println "SSR_ENGINE_SETTINGS=${project.ext.react4xp.SSR_ENGINE_SETTINGS}"
+  }
+}
+
 if (project.ext.react4xp.verbose) {
   println "React4xp project config: ${project.ext.react4xp}"
 }
