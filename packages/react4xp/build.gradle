@@ -5,15 +5,21 @@
 compileJS.enabled = false
 test.enabled = false
 
-task copyFiles(type: Copy) {
+task copyGradle(type: Copy) {
   from 'src'
   include "*.gradle"
   into '.'
 }
-build.dependsOn += copyFiles
+task copyReact4xpProps(type: Copy) {
+  from 'src'
+  include "react4xp.properties"
+  into '.'
+}
+copyGradle.dependsOn += copyReact4xpProps
+build.dependsOn += copyGradle
 //doPublish.dependsOn += copyFiles
 
-clean.delete './npmInstall.gradle', './react4xp.gradle', './updaters.gradle', 'lib', './npmLinked.marker'
+clean.delete './npmInstall.gradle', './react4xp.gradle', './updaters.gradle', './react4xp.properties', 'lib', './npmLinked.marker'
 
 /*
 doPublish.shouldRunAfter ":packages:buildcomponents:doPublish"

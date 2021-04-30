@@ -57,6 +57,7 @@
   "files": [
     "npmInstall.gradle",
     "react4xp.gradle",
-    "updaters.gradle"
+    "updaters.gradle",
+    "react4xp.properties"
   ]
 }

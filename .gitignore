@@ -115,6 +115,7 @@ packages/regions/entries/
 packages/react4xp/npmInstall.gradle
 packages/react4xp/react4xp.gradle
 packages/react4xp/updaters.gradle
+packages/react4xp/react4xp.properties
 !packages/constants/src/bin/
 packages/*/*.js
 packages/*/*.jsx
