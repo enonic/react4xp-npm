@@ -48,10 +48,10 @@ function generateTempES6SourceAndGetFilename(_externals, outputFileName) {
   ) {
     console.warn(`${__filename} - Skipping generation of the externals chunk:
         \tThe outputFileName parameter must be a non-empty string: ${JSON.stringify(
-      outputFileName,
-      null,
-      2
-    )}`);
+          outputFileName,
+          null,
+          2
+        )}`);
     return null;
   }
 
@@ -68,10 +68,10 @@ function generateTempES6SourceAndGetFilename(_externals, outputFileName) {
   ) {
     console.warn(`${__filename} - Skipping generation of the externals chunk:
         \tThe externals parameter must be an object (or JSON-string object) with at least one entry: ${JSON.stringify(
-      externals,
-      null,
-      2
-    )}`);
+          externals,
+          null,
+          2
+        )}`);
     return null;
   }
 
@@ -138,11 +138,11 @@ module.exports = (env = {}) => {
 
   const plugins = tempFileName
     ? [
-      new Chunks2json({
-        outputDir: BUILD_R4X,
-        filename: EXT_CHUNKS_FILENAME,
-      }),
-    ]
+        new Chunks2json({
+          outputDir: BUILD_R4X,
+          filename: EXT_CHUNKS_FILENAME,
+        }),
+      ]
     : undefined;
 
   // Decides whether or not to hash filenames of common-component chunk files, and the length
@@ -161,9 +161,7 @@ module.exports = (env = {}) => {
 
   return {
     mode: BUILD_ENV,
-    devtool: (BUILD_ENV === 'production')
-      ? undefined
-      : 'cheap-module-source-map',
+    devtool: BUILD_ENV === "production" ? undefined : "cheap-module-source-map",
 
     entry,
 
@@ -183,7 +181,7 @@ module.exports = (env = {}) => {
           exclude: /node_modules/,
           loader: "babel-loader",
           query: {
-            compact: (BUILD_ENV === 'production'),
+            compact: BUILD_ENV === "production",
           },
         },
       ],
