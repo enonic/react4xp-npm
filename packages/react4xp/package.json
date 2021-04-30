@@ -1,6 +1,6 @@
 {
   "name": "react4xp",
-  "version": "1.3.1",
+  "version": "1.4.0-prereleasetmp.0",
   "description": "Single package wrapping all of React4xp's NPM dependencies",
   "main": "react4xp.gradle",
   "scripts": {
@@ -47,7 +47,7 @@
     "react4xp-buildconstants": "4.0.2",
     "react4xp-regions": "1.0.7",
     "react4xp-runtime-client": "1.0.8",
-    "react4xp-runtime-externals": "1.0.8",
+    "react4xp-runtime-externals": "1.0.9-prereleasetmp.0",
     "react4xp-runtime-nashornpolyfills": "1.0.12"
   },
   "directories": {
