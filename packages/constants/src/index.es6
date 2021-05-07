@@ -35,7 +35,7 @@ const STANDARD_OUTPUT_FILENAME = "react4xp_constants.json";
         NASHORNPOLYFILLS_SOURCE, NASHORNPOLYFILLS_FILENAME,
         CLIENT_CHUNKS_FILENAME, EXTERNALS_CHUNKS_FILENAME, COMPONENT_CHUNKS_FILENAME, ENTRIES_FILENAME,
         EXTERNALS,
-        SSR_LAZYLOAD, SSR_ENGINE_SETTINGS
+        SSR_LAZYLOAD, SSR_ENGINE_SETTINGS, SSR_MAX_THREADS,
         recommended,
  *      }
  */
@@ -152,6 +152,7 @@ const buildConstants = (rootDir, overrides) => {
 
         SSR_LAZYLOAD: true,
         SSR_ENGINE_SETTINGS: 1000,
+        SSR_MAX_THREADS: null,
     };
 
     const constants = Object.assign(defaultConstants, overrides);
@@ -186,7 +187,7 @@ const buildConstants = (rootDir, overrides) => {
         RELATIVE_BUILD_R4X, BUILD_MAIN, BUILD_R4X,
         CHUNK_CONTENTHASH,
         CLIENT_CHUNKS_FILENAME, EXTERNALS_CHUNKS_FILENAME, ENTRIES_FILENAME, COMPONENT_STATS_FILENAME,
-        SSR_LAZYLOAD, SSR_ENGINE_SETTINGS,
+        SSR_LAZYLOAD, SSR_ENGINE_SETTINGS, SSR_MAX_THREADS,
         EXTERNALS,
         recommended,
     } = constants;
@@ -199,7 +200,7 @@ const buildConstants = (rootDir, overrides) => {
         RELATIVE_BUILD_R4X, BUILD_MAIN, BUILD_R4X,
         CHUNK_CONTENTHASH,
         CLIENT_CHUNKS_FILENAME, EXTERNALS_CHUNKS_FILENAME, ENTRIES_FILENAME, COMPONENT_STATS_FILENAME,
-        SSR_LAZYLOAD, SSR_ENGINE_SETTINGS,
+        SSR_LAZYLOAD, SSR_ENGINE_SETTINGS, SSR_MAX_THREADS,
         EXTERNALS,
         recommended,
     };

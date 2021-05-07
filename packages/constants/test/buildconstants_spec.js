@@ -35,6 +35,7 @@ describe("constants", ()=>{
 
             SSR_LAZYLOAD: true,
             SSR_ENGINE_SETTINGS: 1000,
+            SSR_MAX_THREADS: null,
 
             EXTERNALS: {
                 "react": "React",

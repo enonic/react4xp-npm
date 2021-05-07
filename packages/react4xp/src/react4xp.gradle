@@ -47,7 +47,7 @@ project.ext.react4xp.overwriteConstantsFile = project.ext.react4xp.overwriteCons
 if (project.ext.react4xp.ssrLazyload != null) {
   project.ext.react4xp.SSR_LAZYLOAD = project.ext.react4xp.ssrLazyload.toBoolean()
   if (project.ext.react4xp.verbose) {
-    println "Use react4xp.properties.ssrLazyload=${project.ext.react4xp.ssrLazyload} --> SSR_LAZYLOAD=${project.ext.react4xp.SSR_LAZYLOAD}"
+    println "react4xp.properties.ssrLazyload=${project.ext.react4xp.ssrLazyload} --> SSR_LAZYLOAD=${project.ext.react4xp.SSR_LAZYLOAD}"
   }
 } else {
   project.ext.react4xp.SSR_LAZYLOAD = (project.ext.react4xp.BUILD_ENV == 'development')
@@ -59,12 +59,24 @@ if (project.ext.react4xp.ssrLazyload != null) {
 if (project.ext.react4xp.ssrSettings != null) {
   project.ext.react4xp.SSR_ENGINE_SETTINGS = project.ext.react4xp.ssrSettings
   if (project.ext.react4xp.verbose) {
-    println "Use react4xp.properties.ssrSettings=${project.ext.react4xp.ssrSettings} --> SSR_ENGINE_SETTINGS=${project.ext.react4xp.SSR_ENGINE_SETTINGS}"
+    println "react4xp.properties.ssrSettings=${project.ext.react4xp.ssrSettings} --> SSR_ENGINE_SETTINGS=${project.ext.react4xp.SSR_ENGINE_SETTINGS}"
   }
 } else {
   project.ext.react4xp.SSR_ENGINE_SETTINGS = "\"--persistent-code-cache\", \"--class-cache-size=1000\""
   if (project.ext.react4xp.verbose) {
     println "SSR_ENGINE_SETTINGS=${project.ext.react4xp.SSR_ENGINE_SETTINGS}"
+  }
+}
+
+if (project.ext.react4xp.ssrMaxThreads != null) {
+  project.ext.react4xp.SSR_MAX_THREADS = project.ext.react4xp.ssrMaxThreads
+  if (project.ext.react4xp.verbose) {
+    println "react4xp.properties.ssrMaxThreads=${project.ext.react4xp.ssrMaxThreads} --> SSR_MAX_THREADS=${project.ext.react4xp.SSR_MAX_THREADS}"
+  }
+} else {
+  project.ext.react4xp.SSR_MAX_THREADS = null
+  if (project.ext.react4xp.verbose) {
+    println "SSR_MAX_THREADS: unlimited"
   }
 }
 
