@@ -1,6 +1,6 @@
 {
   "name": "react4xp",
-  "version": "1.5.0-prereleasetmp.1",
+  "version": "1.5.0",
   "description": "Single package wrapping all of React4xp's NPM dependencies",
   "main": "react4xp.gradle",
   "scripts": {
