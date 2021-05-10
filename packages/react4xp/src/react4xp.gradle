@@ -74,7 +74,7 @@ if (project.ext.react4xp.ssrMaxThreads != null) {
     println "react4xp.properties.ssrMaxThreads=${project.ext.react4xp.ssrMaxThreads} --> SSR_MAX_THREADS=${project.ext.react4xp.SSR_MAX_THREADS}"
   }
 } else {
-  project.ext.react4xp.SSR_MAX_THREADS = null
+  project.ext.react4xp.SSR_MAX_THREADS = 0
   if (project.ext.react4xp.verbose) {
     println "SSR_MAX_THREADS: unlimited"
   }
