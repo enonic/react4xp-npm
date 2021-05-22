@@ -34,7 +34,7 @@ describe("constants", ()=>{
             CHUNK_CONTENTHASH: 9,
 
             SSR_LAZYLOAD: true,
-            SSR_ENGINE_SETTINGS: 1000,
+            SSR_ENGINE_SETTINGS: 0,
             SSR_MAX_THREADS: null,
 
             EXTERNALS: {
