@@ -15,7 +15,7 @@ In Node context:
 ```javascript
 const buildConstants = require('react4xp-buildconstants');
 buildConstants(rootDir, overrides);
-``` 
+```
 
 CLI context:
 ```
@@ -43,7 +43,7 @@ Keys in the `overrides` object (and the default values they'll get if not overri
 - `BUILD_R4X` (derived: `BUILD_MAIN` + `R4X_TARGETSUBDIR`, usually "<rootDir>/build/resources/main/assets/react4xp"): absolute path to target folder into which the React4xp core assets and all React components will be built - both entries and shared chunks - along with the "housekeeping files".
 - `CHUNK_CONTENTHASH` (9): Content hash length in the dependency chunk filenames, sets webpack's output.chunkFilename. Set to something falsy to omit hashing entirely. Can also be an integer-parseable string such as "9", or a full webpack's output.chunkFilename setting string such as "[name].[hash:8].js".
 - `SSR_LAZYLOAD` (`true`) Main switch for SSR nashorn asset lazy-loading.
-- `SSR_ENGINE_SETTINGS` (`1000`) SSR [nashorn engine settings](https://github.com/JetBrains/jdk8u_nashorn/blob/master/src/jdk/nashorn/internal/runtime/resources/Options.properties). A pure number sets only caching size: for example, the default number 1000 yields the setting string `"--persistent-code-cache --class-cache-size=1000"`. Set to 0 (or less) to skip these settings entirely and run with zero caching. Or set a non-number string to completely override. In that case, comma/space-separated: don't use spaces/commas within each setting item.
+- `SSR_ENGINE_SETTINGS` (`0`) [Nashorn engine settings](https://github.com/JetBrains/jdk8u_nashorn/blob/master/src/jdk/nashorn/internal/runtime/resources/Options.properties) for the SSR renderer. A pure number above 0 sets only caching size, changing the number X in the setting string `"--persistent-code-cache --class-cache-size=X"`. 0 (or less) however switches the persistent code cache and **all other engine settings off**, running with no caching. Can also be a non-number string to completely override the settings strings and add your own from scratch. `0` is chosen as the default value because this is an experimental java feature, and has shown signs of instability in some react4xp projects - as well as not really delivering that much performance gain.
 - `EXTERNALS` (`{ "react": "React", "react-dom": "ReactDOM", "react-dom/server": "ReactDOMServer" }`): [webpack externals](https://webpack.js.org/configuration/externals/) JSON object. These are libraries you want react4xp to rely on, runtime-available in the client by these names, but _also_ available to other (non-react4xp) client-side code. Adding them like this makes react4xp build a single `externals.<contenthash>.js` chunk asset - which react4xp _also_ runs as part of the server-side rendering engine. The advantage to this over just using CDN's: the parent XP project gets to decide the react(-dom) versions in one single place, ensuring that react is kept in sync: the server alsways renders react components with the same react version as the client side.
 
 Some more attributes are names for some "housekeeping files" that sync up the buildtime with the runtime. The first four are auto-built files that summarize the dynamic output from different React4xp built steps, allowing the runtime to handle dependencies that have hashed and unpredictable names, as well as tracing chunk dependencies for each specific entry component...

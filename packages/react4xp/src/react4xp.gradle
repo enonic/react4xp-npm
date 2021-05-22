@@ -1,10 +1,20 @@
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+//   Config section - handles react4xp.properties                             //
+//   and uses those values to both configure build tasks here as well as      //
+//   write a JSON config file that's used at runtime                          //
+//   (also see react4xp-buildconstants under packages/constants               //
+////////////////////////////////////////////////////////////////////////////////
+
 // Resolves the project folder root
 def ROOT = project.projectDir.toString()
 
-////////////////////////////////////////////////////////
 // Set react4xp build mode from react4xp.properties,
 // overridable by CLI arg, e.g -Pdev etc.:
 // If none are set, 'production' is default.
@@ -32,7 +42,8 @@ project.ext.react4xp.verbose = project.hasProperty("verbose") || (project.ext.re
 
 println "React4xp build mode: ${project.ext.react4xp.BUILD_ENV}"
 
-/////////////////////////////////////////////////////
+
+
 
 if(project.ext.react4xp.nashornPolyfillsSource != null) {
   project.ext.react4xp.NASHORNPOLYFILLS_SOURCE = project.ext.react4xp.nashornPolyfillsSource
@@ -62,9 +73,9 @@ if (project.ext.react4xp.ssrSettings != null) {
     println "react4xp.properties.ssrSettings=${project.ext.react4xp.ssrSettings} --> SSR_ENGINE_SETTINGS=${project.ext.react4xp.SSR_ENGINE_SETTINGS}"
   }
 } else {
-  project.ext.react4xp.SSR_ENGINE_SETTINGS = "\"--persistent-code-cache\", \"--class-cache-size=1000\""
+  //project.ext.react4xp.SSR_ENGINE_SETTINGS = null
   if (project.ext.react4xp.verbose) {
-    println "SSR_ENGINE_SETTINGS=${project.ext.react4xp.SSR_ENGINE_SETTINGS}"
+    println "SSR_ENGINE_SETTINGS: none"
   }
 }
 
@@ -90,7 +101,7 @@ task config_react4xp(type: NodeTask) {
     description 'Build the master config JSON file and its copy'
 
     script = file('node_modules/react4xp-buildconstants/bin/cli.js')       // react4xp-buildconstants comes with react4xp@^0.2.0
-    args = [ ROOT, JsonOutput.toJson(JsonOutput.toJson(react4xp)) ]
+    args = [ ROOT, JsonOutput.toJson(JsonOutput.toJson(project.ext.react4xp)) ]
 }
 config_react4xp.inputs.file("react4xp.properties")
 config_react4xp.outputs.file(project.ext.react4xp.masterConfigFileName)
@@ -126,6 +137,16 @@ task config_tasks {
 config_tasks.dependsOn += 'config_react4xp'
 
 
+
+
+
+
+
+
+
+
+// Config is done. Actual build steps follow:
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Compile:
 task react4xp_components(type: NodeTask) {

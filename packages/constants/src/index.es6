@@ -151,7 +151,7 @@ const buildConstants = (rootDir, overrides) => {
         },
 
         SSR_LAZYLOAD: true,
-        SSR_ENGINE_SETTINGS: 1000,
+        SSR_ENGINE_SETTINGS: 0,
         SSR_MAX_THREADS: null,
     };
 
