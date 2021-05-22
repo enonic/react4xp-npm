@@ -1,6 +1,6 @@
 {
   "name": "react4xp",
-  "version": "1.5.4",
+  "version": "1.5.5-prereleasetmp.0",
   "description": "Single package wrapping all of React4xp's NPM dependencies",
   "main": "react4xp.gradle",
   "scripts": {
@@ -44,7 +44,7 @@
     "chunks-2-json-webpack-plugin": "^1.0.4",
     "npm-safe-install": "^1.1.0",
     "react4xp-build-components": "1.0.17",
-    "react4xp-buildconstants": "4.1.0",
+    "react4xp-buildconstants": "4.1.1",
     "react4xp-regions": "1.0.7",
     "react4xp-runtime-client": "1.0.8",
     "react4xp-runtime-externals": "1.0.9",
