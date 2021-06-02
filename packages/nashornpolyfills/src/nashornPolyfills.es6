@@ -126,4 +126,46 @@ var Set = require( 'es6-set-and-map' ).set;
 
 })(context);
 
+
+
+// Object.assign
+// Polyfill from: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#polyfill
+if (typeof Object.assign !== 'function') {
+  Object.defineProperty(Object, "assign", {
+    value: function assign(target, varArgs) {
+      'use strict';
+      if (target === null || target === undefined) {
+        throw new TypeError('Cannot convert undefined or null to object');
+      }
+
+      var to = Object(target);
+
+      for (var index = 1; index < arguments.length; index++) {
+        var nextSource = arguments[index];
+
+        if (nextSource !== null && nextSource !== undefined) {
+          for (var nextKey in nextSource) {
+            // Avoid bugs when hasOwnProperty is shadowed
+            if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+              to[nextKey] = nextSource[nextKey];
+            }
+          }
+        }
+      }
+      return to;
+    },
+    writable: true,
+    configurable: true
+  });
+}
+
+
+
+
+
+
+// KEEP THIS LAST:
+// NOTE from https://gist.github.com/josmardias/20493bd205e24e31c0a406472330515a:
+// At least one timeout needs to be set, larger then your code bootstrap or Nashorn will run forever.
+// Preferably, put a timeout 0 after your code bootstrap.
 context.setTimeout(function(){}, 1);
