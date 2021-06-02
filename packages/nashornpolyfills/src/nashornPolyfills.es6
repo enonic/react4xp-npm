@@ -126,7 +126,6 @@ var Set = require( 'es6-set-and-map' ).set;
 
 })(context);
 
-context.setTimeout(function(){}, 1);
 
 
 // Object.assign
@@ -159,3 +158,14 @@ if (typeof Object.assign !== 'function') {
     configurable: true
   });
 }
+
+
+
+
+
+
+// KEEP THIS LAST:
+// NOTE from https://gist.github.com/josmardias/20493bd205e24e31c0a406472330515a:
+// At least one timeout needs to be set, larger then your code bootstrap or Nashorn will run forever.
+// Preferably, put a timeout 0 after your code bootstrap.
+context.setTimeout(function(){}, 1);
