@@ -89,7 +89,7 @@
     "stats-webpack-plugin": "^0.7.0",
     "symlink-dir": "^5.0.1",
     "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^4.7.2"
   },
   "repository": {
     "type": "git",
