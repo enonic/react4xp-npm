@@ -190,12 +190,6 @@ react4xp_components.dependsOn += 'config_tasks'
 jar.dependsOn += "react4xp_components"
 
 
-task node_check(type: NodeTask) {
-  script = file('heyo.js')
-  args = []
-}
-react4xp_components.dependsOn += node_check
-
 task react4xp_externals(type: NodeTask) {
   group 'React4xp'
   description 'Compile the externals (react and react-dom'
