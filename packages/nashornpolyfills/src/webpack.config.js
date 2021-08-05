@@ -93,7 +93,7 @@ module.exports = (env) => {
           test: /\.es6$/,
           exclude: /node_modules/,
           loader: "babel-loader",
-          query: {
+          options: {
             compact: BUILD_ENV !== "development",
             presets: ["@babel/preset-react", "@babel/preset-env"],
             plugins: [

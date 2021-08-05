@@ -28,12 +28,11 @@ module.exports = env => {
 
     // Optional root from which to look for node_modules
     let ROOT = env.ROOT || __dirname;
-
     try {
         // env.ROOT may enter wrapped in double-quotes
         ROOT = JSON.parse(ROOT);
     } catch (e) {
-        // Guess it wasn't wrapped then.
+        // Guess not.
     }
 
     if  (overridden) {
@@ -75,7 +74,7 @@ module.exports = env => {
                     test: /\.es6$/,
                     exclude: /[\\/]node_modules[\\/]/,
                     loader: 'babel-loader',
-                    query: {
+                    options: {
                         compact: (BUILD_ENV === 'production'),
                         presets: [
                             "@babel/preset-react",

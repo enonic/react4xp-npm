@@ -112,7 +112,13 @@ module.exports = (env = {}) => {
   const BUILD_ENV = env.BUILD_ENV || config.BUILD_ENV;
   const BUILD_R4X = env.BUILD_R4X || config.BUILD_R4X;
 
-  const ROOT = env.ROOT || __dirname;
+  let ROOT = env.ROOT || __dirname;
+  try {
+    // env.ROOT may enter wrapped in double-quotes
+    ROOT = JSON.parse(ROOT);
+  } catch (e) {
+    // Guess not.
+  }
 
   /* EXTERNALS is the main object handled here. By default it looks like this:
       {
@@ -180,7 +186,7 @@ module.exports = (env = {}) => {
           test: /\.((jsx?)|(es6))$/,
           exclude: /node_modules/,
           loader: "babel-loader",
-          query: {
+          options: {
             compact: BUILD_ENV === "production",
           },
         },

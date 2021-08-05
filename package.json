@@ -4,7 +4,7 @@
   "description": "React4xp monorepo for all NPM dependencies",
   "main": "index.js",
   "scripts": {
-    "_TEMP_DISABLED_version": "npm run test && lerna version --conventional-commits --exact && lerna run postversion && echo \"Versioning done, using conventional commits. Publish to NPM with: 'gradlew doPublish'.\"",
+    "_DEPRECATED_version": "npm run test && lerna version --conventional-commits --exact && lerna run postversion && echo \"Versioning done, using conventional commits. Publish to NPM with: 'gradlew doPublish'.\"",
     "setup": "npm i run-script-os rimraf && npm run npmInstall",
     "npmInstall": "run-script-os",
     "npmInstall:win32": "gradlew npmInstall --info",
@@ -12,7 +12,9 @@
     "cleanBuilt": "run-script-os",
     "cleanBuilt:win32": "gradlew clean --info",
     "cleanBuilt:default": "./gradlew clean --info",
-    "clean": "(npm run npmUnlink && rimraf packages/react4xp/npmInstalled.marker) || exit 0",
+    "clean": "npm run cleanRoot && npm i rimraf && npm run cleanPackages && rimraf node_modules",
+    "cleanRoot": "(npm run npmUnlink && rimraf packages/react4xp/npmInstalled.marker) || exit 0",
+    "cleanPackages": "rimraf packages/buildcomponents/node_modules && rimraf packages/client/node_modules && rimraf packages/constants/node_modules && rimraf packages/externals/node_modules && rimraf packages/nashornpolyfills/node_modules && rimraf packages/react4xp/node_modules && rimraf packages/regions/node_modules",
     "test": "run-script-os",
     "test:win32": "gradlew test --info",
     "test:default": "./gradlew test --info",
@@ -88,8 +90,8 @@
     "run-script-os": "^1.1.6",
     "stats-webpack-plugin": "^0.7.0",
     "symlink-dir": "^5.0.1",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12"
+    "webpack": "^5.16.0",
+    "webpack-cli": "^4.7.2"
   },
   "repository": {
     "type": "git",
