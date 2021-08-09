@@ -9,6 +9,22 @@ const path = require('path');
 const Chunks2json = require('chunks-2-json-webpack-plugin');
 const webpack = require('webpack');
 
+
+const cleanAnyDoublequotes = (label, val) => {
+    if (val.startsWith('"')) {
+        if (!val.endsWith('"')) {
+            throw Error(`Inconsistent double-quote-wrapping on '${label}' value: ${JSON.stringify(val)}`);
+        }
+        return val.substring(1, val.length - 1);
+    }
+    if (val.endsWith('"')) {
+        throw Error(`Inconsistent double-quote-wrapping on '${label}' value: ${JSON.stringify(val)}`);
+    }
+    return val;
+};
+
+
+
 module.exports = env => {
     env = env || {};
 
@@ -27,17 +43,44 @@ module.exports = env => {
     );
 
     // Optional root from which to look for node_modules
-    let ROOT = env.ROOT || __dirname;
-    try {
-        // env.ROOT may enter wrapped in double-quotes
-        ROOT = JSON.parse(ROOT);
-    } catch (e) {
-        // Guess not.
-    }
+    /*  let ROOT = env.ROOT || __dirname;
+  try {
+    // env.ROOT may enter wrapped in double-quotes
+    ROOT = JSON.parse(ROOT);
+  } catch (e) {
+    console.warn("Couldn't JSON.parse(" + JSON.stringify(ROOT) + ")");
+    // Guess not.
+  }*/
+    const ROOT = cleanAnyDoublequotes("ROOT", env.ROOT || __dirname);
+    console.log("ROOT:" + JSON.stringify(ROOT));
 
-    if  (overridden) {
+    /*
+  let buildR4X = BUILD_R4X;
+  try {
+    // env.ROOT may enter wrapped in double-quotes
+    buildR4X = JSON.parse(buildR4X);
+  } catch (e) {
+    console.warn("Couldn't JSON.parse(" + JSON.stringify(buildR4X) + ")");
+    // Guess not.
+  }*/
+    const buildR4X = cleanAnyDoublequotes("BUILD_R4X", BUILD_R4X);
+    console.log("buildR4X:" + JSON.stringify(buildR4X));
+
+
+    /*  let libraryName = LIBRARY_NAME;
+  try {
+    // env.ROOT may enter wrapped in double-quotes
+    libraryName = JSON.parse(libraryName);
+  } catch (e) {
+    console.warn("Couldn't JSON.parse(" + JSON.stringify(libraryName) + ")");
+    // Guess not.
+  }*/
+    const libraryName = cleanAnyDoublequotes("LIBRARY_NAME", LIBRARY_NAME);
+    console.log("libraryName:" + JSON.stringify(libraryName));
+
+    if (overridden) {
         console.log(__filename, "overridden config: " + JSON.stringify({
-            BUILD_R4X, LIBRARY_NAME, BUILD_ENV, CHUNK_CONTENTHASH, CLIENT_CHUNKS_FILENAME, ROOT,
+            buildR4X, libraryName, BUILD_ENV, CHUNK_CONTENTHASH, CLIENT_CHUNKS_FILENAME, ROOT,
         }, null, 2));
     }
 
@@ -48,7 +91,7 @@ module.exports = env => {
             CHUNK_CONTENTHASH :
             `[name].[contenthash:${parseInt(CHUNK_CONTENTHASH)}].js`;
 
-    return {
+    const outputConfig = {
         mode: BUILD_ENV,
 
         entry: {
@@ -56,10 +99,10 @@ module.exports = env => {
         },
 
         output: {
-            path: BUILD_R4X,  // <-- Sets the base url for plugins and other target dirs.
+            path: buildR4X,  // <-- Sets the base url for plugins and other target dirs.
             filename: chunkFileName,
             libraryTarget: 'var',
-            library: [LIBRARY_NAME, 'CLIENT'],
+            library: [libraryName, 'CLIENT'],
         },
 
         resolve: {
@@ -97,22 +140,26 @@ module.exports = env => {
         },
 
         plugins: [
-            new Chunks2json({outputDir: BUILD_R4X, filename: CLIENT_CHUNKS_FILENAME}),
+            new Chunks2json({outputDir: buildR4X, filename: CLIENT_CHUNKS_FILENAME}),
             new webpack.DefinePlugin({
-                LIBRARY_NAME: JSON.stringify(LIBRARY_NAME),
+                LIBRARY_NAME: JSON.stringify(libraryName),
                 DEVMODE_WARN_AGAINST_CLIENTRENDERED_REGIONS: BUILD_ENV === 'production' ?
                     '' :
                     '\nregionPathsPostfilled.push(component.path);\n' +
-                    'if (!regionsRemaining[regionName] && regionPathsPostfilled.length) {\n' +
-                    '\tconsole.warn(`React4xp postfilled ${regionPathsPostfilled.length} component(s) because a region-containing ' +
-                    'React4xp entry was client-side rendered from an XP controller. Path(s): ' +
-                    '${JSON.stringify(regionPathsPostfilled.join(", "))}.\\n' +
-                    '\\nNOTE: This version of React4xp and/or XP don\'t support XP components that need page contributions inside ' +
-                    'client-rendered Regions. This includes React4xp entries in parts, etc. For now, avoid using React4xp client-side-' +
-                    'rendering for entries with Regions, or avoid inserting XP components that need page contributions to work into ' +
-                    'those Regions.\\n\\n' +
-                    'See: https://github.com/enonic/lib-react4xp/issues/38`);\n}',
+          'if (!regionsRemaining[regionName] && regionPathsPostfilled.length) {\n' +
+          '\tconsole.warn(`React4xp postfilled ${regionPathsPostfilled.length} component(s) because a region-containing ' +
+          'React4xp entry was client-side rendered from an XP controller. Path(s): ' +
+          '${JSON.stringify(regionPathsPostfilled.join(", "))}.\\n' +
+          '\\nNOTE: This version of React4xp and/or XP don\'t support XP components that need page contributions inside ' +
+          'client-rendered Regions. This includes React4xp entries in parts, etc. For now, avoid using React4xp client-side-' +
+          'rendering for entries with Regions, or avoid inserting XP components that need page contributions to work into ' +
+          'those Regions.\\n\\n' +
+          'See: https://github.com/enonic/lib-react4xp/issues/38`);\n}',
             }),
         ],
     };
+
+    console.log("outputConfig: " + JSON.stringify(outputConfig, null, 4));
+
+    return outputConfig;
 };

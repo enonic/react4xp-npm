@@ -34,6 +34,27 @@ const fs = require("fs");
 
 const Chunks2json = require("chunks-2-json-webpack-plugin");
 
+const cleanAnyDoublequotes = (label, val) => {
+  if (val.startsWith('"')) {
+    if (!val.endsWith('"')) {
+      throw Error(
+        `Inconsistent double-quote-wrapping on '${label}' value: ${JSON.stringify(
+          val
+        )}`
+      );
+    }
+    return val.substring(1, val.length - 1);
+  }
+  if (val.endsWith('"')) {
+    throw Error(
+      `Inconsistent double-quote-wrapping on '${label}' value: ${JSON.stringify(
+        val
+      )}`
+    );
+  }
+  return val;
+};
+
 // TODO: Find a good pattern to control output name for chunks,
 // allowing for multi-chunks and still doing it in one pass (only one chunks.externals.json)
 // TODO: Allowing build path (where BUILD_R4X today must be absolute)
@@ -110,15 +131,12 @@ module.exports = (env = {}) => {
   }
 
   const BUILD_ENV = env.BUILD_ENV || config.BUILD_ENV;
-  const BUILD_R4X = env.BUILD_R4X || config.BUILD_R4X;
 
-  let ROOT = env.ROOT || __dirname;
-  try {
-    // env.ROOT may enter wrapped in double-quotes
-    ROOT = JSON.parse(ROOT);
-  } catch (e) {
-    // Guess not.
-  }
+  const BUILD_R4X = cleanAnyDoublequotes(
+    "BUILD_R4X",
+    env.BUILD_R4X || config.BUILD_R4X
+  );
+  const ROOT = cleanAnyDoublequotes("ROOT", env.ROOT || __dirname);
 
   /* EXTERNALS is the main object handled here. By default it looks like this:
       {

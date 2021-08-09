@@ -2,6 +2,27 @@
 
 const path = require("path");
 
+const cleanAnyDoublequotes = (label, val) => {
+  if (val.startsWith('"')) {
+    if (!val.endsWith('"')) {
+      throw Error(
+        `Inconsistent double-quote-wrapping on '${label}' value: ${JSON.stringify(
+          val
+        )}`
+      );
+    }
+    return val.substring(1, val.length - 1);
+  }
+  if (val.endsWith('"')) {
+    throw Error(
+      `Inconsistent double-quote-wrapping on '${label}' value: ${JSON.stringify(
+        val
+      )}`
+    );
+  }
+  return val;
+};
+
 module.exports = (env) => {
   env = env || {}; // eslint-disable-line no-param-reassign
 
@@ -19,7 +40,10 @@ module.exports = (env) => {
         process.cwd(),
         env.REACT4XP_CONFIG_FILE
       ));
-      BUILD_R4X = BUILD_R4X || config.BUILD_R4X;
+      BUILD_R4X = cleanAnyDoublequotes(
+        "BUILD_R4X",
+        BUILD_R4X || config.BUILD_R4X
+      );
       BUILD_ENV = BUILD_ENV || config.BUILD_ENV;
       NASHORNPOLYFILLS_SOURCE =
         NASHORNPOLYFILLS_SOURCE || config.NASHORNPOLYFILLS_SOURCE;
@@ -29,6 +53,8 @@ module.exports = (env) => {
       console.error(e);
     }
   }
+
+  const buildR4X = cleanAnyDoublequotes("BUILD_R4X", BUILD_R4X);
 
   if (`${NASHORNPOLYFILLS_SOURCE || ""}`.trim() === "") {
     throw Error(
@@ -40,7 +66,7 @@ module.exports = (env) => {
     );
   }
 
-  if (`${BUILD_R4X || ""}`.trim() === "") {
+  if (`${buildR4X || ""}`.trim() === "") {
     throw Error(
       `Can't build nashorn polyfills from source (${NASHORNPOLYFILLS_SOURCE}): missing build path (BUILD_R4X). Check react4xp-runtime-nashornpolyfills build setup, for env parameters${
         env.REACT4XP_CONFIG_FILE
@@ -65,7 +91,7 @@ module.exports = (env) => {
       `Adding custom nashorn polyfills: compiling ${path.join(
         process.cwd(),
         NASHORNPOLYFILLS_SOURCE
-      )} --> ${path.join(BUILD_R4X, NASHORNPOLYFILLS_FILENAME)}`
+      )} --> ${path.join(buildR4X, NASHORNPOLYFILLS_FILENAME)}`
     );
   }
 
@@ -80,7 +106,7 @@ module.exports = (env) => {
     },
 
     output: {
-      path: BUILD_R4X,
+      path: buildR4X,
       filename: "[name].js",
       environment: {
         arrowFunction: false,

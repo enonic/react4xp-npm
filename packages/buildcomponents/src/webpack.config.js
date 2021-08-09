@@ -5,6 +5,27 @@ const path = require("path");
 const fs = require("fs");
 const React4xpEntriesAndChunks = require("./entriesandchunks");
 
+const cleanAnyDoublequotes = (label, val) => {
+  if (val.startsWith('"')) {
+    if (!val.endsWith('"')) {
+      throw Error(
+        `Inconsistent double-quote-wrapping on '${label}' value: ${JSON.stringify(
+          val
+        )}`
+      );
+    }
+    return val.substring(1, val.length - 1);
+  }
+  if (val.endsWith('"')) {
+    throw Error(
+      `Inconsistent double-quote-wrapping on '${label}' value: ${JSON.stringify(
+        val
+      )}`
+    );
+  }
+  return val;
+};
+
 // Turns a comma-separated list of subdirectories below the root React4xp source folder (SRC_R4X, usually .../resources/react4xp/)
 // into an array of unique, verified, absolute-path'd and OS-compliant folder names.
 // Halts on errors, displays warnings, skips items that are not found.
@@ -17,74 +38,74 @@ const normalizeDirList = (
 ) =>
   (commaSepDirList || "").trim()
     ? Array.from(
-    new Set(
-      commaSepDirList
-        .trim()
-        .replace(/[\\/]/g, path.sep)
-        .replace(/[´`'"]/g, "")
-        .split(",")
+        new Set(
+          commaSepDirList
+            .trim()
+            .replace(/[\\/]/g, path.sep)
+            .replace(/[´`'"]/g, "")
+            .split(",")
 
-        .map((item) => (item || "").trim())
-        .filter((item) => !!item)
-        .map((item) => item.replace(/[\\/]$/, ""))
-        .map((orig) => {
-          let dir = path.resolve(path.join(SRC_R4X, orig));
+            .map((item) => (item || "").trim())
+            .filter((item) => !!item)
+            .map((item) => item.replace(/[\\/]$/, ""))
+            .map((orig) => {
+              let dir = path.resolve(path.join(SRC_R4X, orig));
 
-          let realDir = null;
-          try {
-            realDir = fs.realpathSync(dir);
-          } catch (e) {
-            if (VERBOSE) {
-              console.warn(
-                `Warning - error message dump for ${singularLabel} '${orig}':\n--------`
-              );
-              console.warn(e);
-            }
-            console.warn(
-              `${
-                VERBOSE ? "-------->" : "Warning:"
-              } skipping ${singularLabel} '${orig}' from react4xp.properties${
-                !VERBOSE
-                  ? " - it probably just doesn't exist. If you're sure it exists, there may be another problem - run the build again with verbose option in react4xp.properties for full error dump"
-                  : ""
-              }.`
-            );
-            return null;
-          }
-
-          let symlinkTargetDir = null;
-          let lstat = fs.lstatSync(dir);
-          while (lstat.isSymbolicLink()) {
-            symlinkTargetDir = fs.readlinkSync(dir);
-            dir = path.resolve(dir, "..", symlinkTargetDir);
-
-            if (fs.existsSync(dir)) {
-              if (dir.startsWith(SRC_R4X)) {
-                // eslint-disable-next-line no-param-reassign
-                symlinksUnderReact4xpRoot[orig] = true;
+              let realDir = null;
+              try {
+                realDir = fs.realpathSync(dir);
+              } catch (e) {
+                if (VERBOSE) {
+                  console.warn(
+                    `Warning - error message dump for ${singularLabel} '${orig}':\n--------`
+                  );
+                  console.warn(e);
+                }
+                console.warn(
+                  `${
+                    VERBOSE ? "-------->" : "Warning:"
+                  } skipping ${singularLabel} '${orig}' from react4xp.properties${
+                    !VERBOSE
+                      ? " - it probably just doesn't exist. If you're sure it exists, there may be another problem - run the build again with verbose option in react4xp.properties for full error dump"
+                      : ""
+                  }.`
+                );
+                return null;
               }
-              lstat = fs.lstatSync(dir);
-            } else {
-              throw Error(
-                `${singularLabel.replace(/^\w/, (c) =>
-                  c.toUpperCase()
-                )} '${orig}' from react4xp.properties leads by resolved symlink(s) to '${dir}', which was not found.`
-              );
-            }
-          }
 
-          lstat = fs.lstatSync(realDir);
-          if (!lstat.isDirectory()) {
-            throw Error(
-              `Can't add ${singularLabel} '${orig}' from react4xp.properties - ${realDir} was found but is not a directory.`
-            );
-          }
+              let symlinkTargetDir = null;
+              let lstat = fs.lstatSync(dir);
+              while (lstat.isSymbolicLink()) {
+                symlinkTargetDir = fs.readlinkSync(dir);
+                dir = path.resolve(dir, "..", symlinkTargetDir);
 
-          return realDir;
-        })
-        .filter((dir) => !!dir)
-    )
-    )
+                if (fs.existsSync(dir)) {
+                  if (dir.startsWith(SRC_R4X)) {
+                    // eslint-disable-next-line no-param-reassign
+                    symlinksUnderReact4xpRoot[orig] = true;
+                  }
+                  lstat = fs.lstatSync(dir);
+                } else {
+                  throw Error(
+                    `${singularLabel.replace(/^\w/, (c) =>
+                      c.toUpperCase()
+                    )} '${orig}' from react4xp.properties leads by resolved symlink(s) to '${dir}', which was not found.`
+                  );
+                }
+              }
+
+              lstat = fs.lstatSync(realDir);
+              if (!lstat.isDirectory()) {
+                throw Error(
+                  `Can't add ${singularLabel} '${orig}' from react4xp.properties - ${realDir} was found but is not a directory.`
+                );
+              }
+
+              return realDir;
+            })
+            .filter((dir) => !!dir)
+        )
+      )
     : [];
 
 const makeExclusionsRegexpString = (currentDir, otherDirs, VERBOSE) =>
@@ -126,15 +147,16 @@ module.exports = (env = {}) => {
   const DEVMODE = BUILD_ENV !== "production";
   const VERBOSE = `${env.VERBOSE || ""}`.trim().toLowerCase() === "true";
 
-  let ROOT = env.ROOT || __dirname;
-  try {
-    // env.ROOT may enter wrapped in double-quotes
-    ROOT = JSON.parse(ROOT);
-  } catch (e) {
-    // Guess not.
-  }
+  /*  let ROOT = env.ROOT || __dirname;
+    try {
+      // env.ROOT may enter wrapped in double-quotes
+      ROOT = JSON.parse(ROOT);
+    } catch (e) {
+      // Guess not.
+    } */
+  const ROOT = cleanAnyDoublequotes("ROOT", env.ROOT || __dirname);
   if (VERBOSE) {
-    console.log("ROOT: '" + ROOT + "'\n\n");
+    console.log(`ROOT: '${ROOT}'\n\n`);
   }
 
   // TODO: Probably more consistent if this too is a master config file property. Add to react4xp-buildconstants and import above from env.REACT4XP_CONFIG_FILE.
@@ -188,9 +210,9 @@ module.exports = (env = {}) => {
         Array.isArray(env.CHUNK_DIRS)
           ? `array[${env.CHUNK_DIRS.length}]`
           : typeof env.CHUNK_DIRS +
-          (env.CHUNK_DIRS && typeof env.CHUNK_DIRS === "object"
-            ? ` with keys: ${JSON.stringify(Object.keys(env.CHUNK_DIRS))}`
-            : "")
+            (env.CHUNK_DIRS && typeof env.CHUNK_DIRS === "object"
+              ? ` with keys: ${JSON.stringify(Object.keys(env.CHUNK_DIRS))}`
+              : "")
       }): ${JSON.stringify(env.CHUNK_DIRS, null, 2)}`
     );
     console.log(
@@ -198,9 +220,9 @@ module.exports = (env = {}) => {
         Array.isArray(chunkDirs)
           ? `array[${chunkDirs.length}]`
           : typeof chunkDirs +
-          (chunkDirs && typeof chunkDirs === "object"
-            ? ` with keys: ${JSON.stringify(Object.keys(chunkDirs))}`
-            : "")
+            (chunkDirs && typeof chunkDirs === "object"
+              ? ` with keys: ${JSON.stringify(Object.keys(chunkDirs))}`
+              : "")
       }): ${JSON.stringify(chunkDirs, null, 2)}`
     );
 
@@ -209,9 +231,9 @@ module.exports = (env = {}) => {
         Array.isArray(env.ENTRY_DIRS)
           ? `array[${env.ENTRY_DIRS.length}]`
           : typeof env.ENTRY_DIRS +
-          (env.ENTRY_DIRS && typeof env.ENTRY_DIRS === "object"
-            ? ` with keys: ${JSON.stringify(Object.keys(env.ENTRY_DIRS))}`
-            : "")
+            (env.ENTRY_DIRS && typeof env.ENTRY_DIRS === "object"
+              ? ` with keys: ${JSON.stringify(Object.keys(env.ENTRY_DIRS))}`
+              : "")
       }): ${JSON.stringify(env.ENTRY_DIRS, null, 2)}`
     );
     console.log(
@@ -219,9 +241,9 @@ module.exports = (env = {}) => {
         Array.isArray(entryDirs)
           ? `array[${entryDirs.length}]`
           : typeof entryDirs +
-          (entryDirs && typeof entryDirs === "object"
-            ? ` with keys: ${JSON.stringify(Object.keys(entryDirs))}`
-            : "")
+            (entryDirs && typeof entryDirs === "object"
+              ? ` with keys: ${JSON.stringify(Object.keys(entryDirs))}`
+              : "")
       }): ${JSON.stringify(entryDirs, null, 2)}`
     );
     console.log("\n---\n");
@@ -341,9 +363,9 @@ module.exports = (env = {}) => {
         Array.isArray(entrySets)
           ? `array[${entrySets.length}]`
           : typeof entrySets +
-          (entrySets && typeof entrySets === "object"
-            ? ` with keys: ${JSON.stringify(Object.keys(entrySets))}`
-            : "")
+            (entrySets && typeof entrySets === "object"
+              ? ` with keys: ${JSON.stringify(Object.keys(entrySets))}`
+              : "")
       }): ${JSON.stringify(entrySets, null, 2)}`
     );
     throw Error(
@@ -351,9 +373,9 @@ module.exports = (env = {}) => {
         Array.isArray(entries)
           ? `array[${entries.length}]`
           : typeof entries +
-          (entries && typeof entries === "object"
-            ? ` with keys: ${JSON.stringify(Object.keys(entries))}`
-            : "")
+            (entries && typeof entries === "object"
+              ? ` with keys: ${JSON.stringify(Object.keys(entries))}`
+              : "")
       }: ${JSON.stringify(entries)}`
     );
   }
@@ -364,9 +386,9 @@ module.exports = (env = {}) => {
         Array.isArray(entrySets)
           ? `array[${entrySets.length}]`
           : typeof entrySets +
-          (entrySets && typeof entrySets === "object"
-            ? ` with keys: ${JSON.stringify(Object.keys(entrySets))}`
-            : "")
+            (entrySets && typeof entrySets === "object"
+              ? ` with keys: ${JSON.stringify(Object.keys(entrySets))}`
+              : "")
       }): ${JSON.stringify(entrySets, null, 2)}`
     );
     throw Error(
@@ -382,9 +404,9 @@ module.exports = (env = {}) => {
         Array.isArray(entries)
           ? `array[${entries.length}]`
           : typeof entries +
-          (entries && typeof entries === "object"
-            ? ` with keys: ${JSON.stringify(Object.keys(entries))}`
-            : "")
+            (entries && typeof entries === "object"
+              ? ` with keys: ${JSON.stringify(Object.keys(entries))}`
+              : "")
       }) = ${JSON.stringify(entries, null, 2)}`
     );
   }
