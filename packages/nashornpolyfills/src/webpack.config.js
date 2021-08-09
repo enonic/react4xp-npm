@@ -82,6 +82,15 @@ module.exports = (env) => {
     output: {
       path: BUILD_R4X,
       filename: "[name].js",
+      environment: {
+        arrowFunction: false,
+        bigIntLiteral: false,
+        const: false,
+        destructuring: false,
+        dynamicImport: false,
+        forOf: false,
+        module: false,
+      },
     },
 
     resolve: {
