@@ -528,6 +528,15 @@ module.exports = (env = {}) => {
       chunkFilename: chunkFileName,
       libraryTarget: "var",
       library: [LIBRARY_NAME, "[name]"],
+      environment: {
+        arrowFunction: false,
+        bigIntLiteral: false,
+        const: false,
+        destructuring: false,
+        dynamicImport: false,
+        forOf: false,
+        module: false,
+      },
     },
 
     resolve: {

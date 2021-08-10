@@ -192,6 +192,15 @@ module.exports = (env = {}) => {
     output: {
       path: BUILD_R4X, // <-- Sets the base url for plugins and other target dirs.
       filename: chunkFileName,
+      environment: {
+        arrowFunction: false,
+        bigIntLiteral: false,
+        const: false,
+        destructuring: false,
+        dynamicImport: false,
+        forOf: false,
+        module: false,
+      },
     },
 
     resolve: {
