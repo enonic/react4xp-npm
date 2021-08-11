@@ -212,9 +212,11 @@ module.exports = (env = {}) => {
         {
           test: /\.((jsx?)|(es6))$/,
           exclude: /node_modules/,
-          loader: "babel-loader",
-          options: {
-            compact: BUILD_ENV === "production",
+          use: {
+            loader: "babel-loader",
+            options: {
+              compact: BUILD_ENV === "production",
+            },
           },
         },
       ],

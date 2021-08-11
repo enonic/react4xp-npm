@@ -24,7 +24,6 @@ const cleanAnyDoublequotes = (label, val) => {
 };
 
 
-
 module.exports = env => {
     env = env || {};
 
@@ -44,37 +43,37 @@ module.exports = env => {
 
     // Optional root from which to look for node_modules
     /*  let ROOT = env.ROOT || __dirname;
-  try {
-    // env.ROOT may enter wrapped in double-quotes
-    ROOT = JSON.parse(ROOT);
-  } catch (e) {
-    console.warn("Couldn't JSON.parse(" + JSON.stringify(ROOT) + ")");
-    // Guess not.
-  }*/
+try {
+  // env.ROOT may enter wrapped in double-quotes
+  ROOT = JSON.parse(ROOT);
+} catch (e) {
+  console.warn("Couldn't JSON.parse(" + JSON.stringify(ROOT) + ")");
+  // Guess not.
+}*/
     const ROOT = cleanAnyDoublequotes("ROOT", env.ROOT || __dirname);
     console.log("ROOT:" + JSON.stringify(ROOT));
 
     /*
-  let buildR4X = BUILD_R4X;
-  try {
-    // env.ROOT may enter wrapped in double-quotes
-    buildR4X = JSON.parse(buildR4X);
-  } catch (e) {
-    console.warn("Couldn't JSON.parse(" + JSON.stringify(buildR4X) + ")");
-    // Guess not.
-  }*/
+let buildR4X = BUILD_R4X;
+try {
+  // env.ROOT may enter wrapped in double-quotes
+  buildR4X = JSON.parse(buildR4X);
+} catch (e) {
+  console.warn("Couldn't JSON.parse(" + JSON.stringify(buildR4X) + ")");
+  // Guess not.
+}*/
     const buildR4X = cleanAnyDoublequotes("BUILD_R4X", BUILD_R4X);
     console.log("buildR4X:" + JSON.stringify(buildR4X));
 
 
     /*  let libraryName = LIBRARY_NAME;
-  try {
-    // env.ROOT may enter wrapped in double-quotes
-    libraryName = JSON.parse(libraryName);
-  } catch (e) {
-    console.warn("Couldn't JSON.parse(" + JSON.stringify(libraryName) + ")");
-    // Guess not.
-  }*/
+try {
+  // env.ROOT may enter wrapped in double-quotes
+  libraryName = JSON.parse(libraryName);
+} catch (e) {
+  console.warn("Couldn't JSON.parse(" + JSON.stringify(libraryName) + ")");
+  // Guess not.
+}*/
     const libraryName = cleanAnyDoublequotes("LIBRARY_NAME", LIBRARY_NAME);
     console.log("libraryName:" + JSON.stringify(libraryName));
 
@@ -116,17 +115,19 @@ module.exports = env => {
                     // Babel for building static assets
                     test: /\.es6$/,
                     exclude: /[\\/]node_modules[\\/]/,
-                    loader: 'babel-loader',
-                    options: {
-                        compact: (BUILD_ENV === 'production'),
-                        presets: [
-                            "@babel/preset-react",
-                            "@babel/preset-env",
-                        ],
-                        plugins: [
-                            "@babel/plugin-transform-arrow-functions",
-                            "@babel/plugin-proposal-object-rest-spread",
-                        ],
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            compact: (BUILD_ENV === 'production'),
+                            presets: [
+                                "@babel/preset-react",
+                                "@babel/preset-env",
+                            ],
+                            plugins: [
+                                "@babel/plugin-transform-arrow-functions",
+                                "@babel/plugin-proposal-object-rest-spread",
+                            ],
+                        },
                     },
                 },
             ],

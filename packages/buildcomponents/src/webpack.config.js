@@ -553,14 +553,16 @@ module.exports = (env = {}) => {
           // Babel for building static assets. Excluding node_modules BUT ALLOWING node_modules/react4xp-regions
           test: /\.((jsx?)|(es6))$/,
           exclude: /(?=.*[\\/]node_modules[\\/](?!react4xp-regions))^(\w+)$/,
-          loader: "babel-loader",
-          options: {
-            compact: !DEVMODE,
-            presets: ["@babel/preset-react", "@babel/preset-env"],
-            plugins: [
-              "@babel/plugin-transform-arrow-functions",
-              "@babel/plugin-proposal-object-rest-spread",
-            ],
+          use: {
+            loader: "babel-loader",
+            options: {
+              compact: !DEVMODE,
+              presets: ["@babel/preset-react", "@babel/preset-env"],
+              plugins: [
+                "@babel/plugin-transform-arrow-functions",
+                "@babel/plugin-proposal-object-rest-spread",
+              ],
+            },
           },
         },
       ],
