@@ -12,8 +12,8 @@
   "scripts": {
     "test:main": "echo \"(Placeholder necessary for task dependencies)\"",
     "test:entriesAndChunks": "NODE_PATH=. npx mocha --require @babel/register --require @babel/polyfill --require test/test_helper.js \"test/**/*@(spec.js)\"",
-    "test:raw": "NODE_PATH=. npx webpack --config webpack.config.js --env.ENTRY_DIRS=entries --env.CHUNK_DIRS=sharedComps,redux --env.OVERRIDE_COMPONENT_WEBPACK=test/webpack.config.symlinks.override.js --env.REACT4XP_CONFIG_FILE=build/constants.json --env.VERBOSE=true ",
-    "test:override": "NODE_PATH=. npx webpack --config webpack.config.js --env.OVERRIDE_COMPONENT_WEBPACK=test/webpack.config.override.js --env.VERBOSE=true --env.REACT4XP_CONFIG_FILE=build/constants.json ",
+    "test:raw": "NODE_PATH=. npx webpack --config webpack.config.js --env ENTRY_DIRS=entries --env CHUNK_DIRS=sharedComps,redux --env OVERRIDE_COMPONENT_WEBPACK=test/webpack.config.symlinks.override.js --env REACT4XP_CONFIG_FILE=build/constants.json --env VERBOSE=true ",
+    "test:override": "NODE_PATH=. npx webpack --config webpack.config.js --env OVERRIDE_COMPONENT_WEBPACK=test/webpack.config.override.js --env VERBOSE=true --env REACT4XP_CONFIG_FILE=build/constants.json ",
     "babel-min": "NODE_PATH=. npx babel src/entriesandchunks.js -o entriesandchunks.js --no-comments --minified --compact true",
     "babel": "NODE_PATH=.npx babel src/entriesandchunks.js -o entriesandchunks.js --no-comments",
     "lint": "NODE_PATH=. node_modules/eslint/bin/eslint.js src/*.js --fix",
@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/enonic/react4xp-build-components",
   "dependencies": {
-    "glob": "^7.1.6",
+    "glob": "^7.1.7",
     "stats-webpack-plugin": "^0.7.0"
   },
   "peerDependencies": {

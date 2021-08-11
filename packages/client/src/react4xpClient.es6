@@ -364,7 +364,7 @@ const postFillRegions = (props) => {
                     postFillBody(component.path, text, region, regionName, regionsBuffer, regionsRemaining);
                     // postFillPageContributions(json);
 
-                    // Webpack dev mode (--env.BUILD_ENV=production) will enable a client-console warning here. Nothing if not dev mode:
+                    // Webpack dev mode (--env BUILD_ENV=production) will enable a client-console warning here. Nothing if not dev mode:
                     // "React4xp postfilled <n> component(s). This is an attempted fallback, compensating for when React4xp is client-side-
                     // rendering an XP page/layout that contains regions. In this case, the components in the regions need to be filled in
                     // by the server in a second rendering step. NOTE: Currently, this extra step will only get the HTML of the component.

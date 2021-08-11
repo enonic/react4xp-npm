@@ -11,7 +11,7 @@ Supplies source code and a webpack setup to compile it.
 
 ## API: webpack build
 
-The webpack config takes two CLI arguments, mandatory from the root project. These are one the form of `--env.X=...`, where X is any of the capital-letter keys below.
+The webpack config takes two CLI arguments, mandatory from the root project. These are one the form of `--env X=...`, where X is any of the capital-letter keys below.
 
   - `REACT4XP_CONFIG_FILE`: root-project-relative path to a react4xp-project constant-values JSON file.
     - This file follows the format of, and is usually produced in the project by, [react4xp-buildconstants](https://www.npmjs.com/package/react4xp-buildconstants).
