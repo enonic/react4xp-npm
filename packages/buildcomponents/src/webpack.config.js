@@ -526,9 +526,11 @@ module.exports = (env = {}) => {
     output: {
       path: BUILD_R4X, // <-- Sets the base url for plugins and other target dirs. Note the use of {{assetUrl}} in index.html (or index.ejs).
       filename: (pathdata) => ((pathdata.chunk || {}).chunkReason) ? chunkFileName : "[name].js",  // <-- Content-hash file names of dependency chunks but not entry components
-      libraryTarget: "var",
-      library: [LIBRARY_NAME, "[name]"],
-      globalObject: "this",
+      library: {
+        name: [LIBRARY_NAME, "[name]"],
+        type: 'var',
+      },
+      globalObject: "window",
       environment: {
         arrowFunction: false,
         bigIntLiteral: false,

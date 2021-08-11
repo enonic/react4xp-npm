@@ -36,6 +36,9 @@ if (project.hasProperty("dev") || project.hasProperty("development")) {
   }
   project.ext.react4xp.BUILD_ENV = project.ext.react4xp.buildEnv
 }
+if (project.hasProperty("link") || project.hasProperty("linked") || project.ext.react4xp.BUILD_ENV == "development") {
+  project.ext.react4xp.NPMLINKED = true
+}
 
 
 project.ext.react4xp.verbose = project.hasProperty("verbose") || (project.ext.react4xp.BUILD_ENV == 'development')

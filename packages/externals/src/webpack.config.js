@@ -185,7 +185,7 @@ module.exports = (env = {}) => {
 
   return {
     mode: BUILD_ENV,
-    devtool: BUILD_ENV === "production" ? undefined : "cheap-module-source-map",
+    devtool: BUILD_ENV === "production" ? undefined : "source-map",
 
     entry,
 
