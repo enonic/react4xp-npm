@@ -4,6 +4,7 @@ const StatsPlugin = require("stats-webpack-plugin");
 const path = require("path");
 const fs = require("fs");
 const React4xpEntriesAndChunks = require("./entriesandchunks");
+const print = require('q-i').print;
 
 const cleanAnyDoublequotes = (label, val) => {
   if (val.startsWith('"')) {
@@ -524,8 +525,7 @@ module.exports = (env = {}) => {
 
     output: {
       path: BUILD_R4X, // <-- Sets the base url for plugins and other target dirs. Note the use of {{assetUrl}} in index.html (or index.ejs).
-      filename: "[name].js", // <-- Does not hash entry component filenames
-      chunkFilename: chunkFileName,
+      filename: (pathdata) => ((pathdata.chunk || {}).chunkReason) ? chunkFileName : "[name].js",  // <-- Content-hash file names of dependency chunks but not entry components
       libraryTarget: "var",
       library: [LIBRARY_NAME, "[name]"],
       globalObject: "this",
@@ -615,13 +615,8 @@ module.exports = (env = {}) => {
   const outputConfig = overrideCallback(env, config);
 
   if (VERBOSE) {
-    console.log(
-      `\n-------------------- react4xp-build-components: webpack config output${
-        OVERRIDE_COMPONENT_WEBPACK
-          ? ` (ADJUSTED BY ${OVERRIDE_COMPONENT_WEBPACK}): `
-          : ": "
-      }${JSON.stringify(outputConfig, null, 2)}\n-------------------------`
-    );
+    console.log(`\n-------------------- react4xp-build-components: webpack config output`);
+    print(outputConfig, {maxItems: Infinity});
   }
 
   return outputConfig;
