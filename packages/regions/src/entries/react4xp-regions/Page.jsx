@@ -30,7 +30,7 @@ const Page = ({title, regionsData, regionNames, regionClasses, children, childre
         </head>,
         <body className="xp-page">
             {!childrenAfterRegions ? children : null}
-            {regionsData ? <Regions regionsData={regionsData} classes={regionClasses} names={regionNames} /> : null}
+            {regionsData ? <Regions regionsData={regionsData} classes={regionClasses} names={regionNames}/> : null}
             {childrenAfterRegions ? children : null}
         </body>,
     ];

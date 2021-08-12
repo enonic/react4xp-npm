@@ -9,9 +9,9 @@ compileJS.inputs.files('package.json', 'src/entriesandchunks.js')
 compileJS.outputs.file('./entriesandchunks.js')
 
 task copyFiles(type: Copy) {
-  from 'src'
-  include "*.*"
-  into '.'
+    from 'src'
+    include "*.*"
+    into '.'
 }
 copyFiles.inputs.file('src/webpack.config.js')
 copyFiles.inputs.file('src/entriesandchunks.js')
@@ -21,8 +21,8 @@ build.dependsOn copyFiles
 
 
 task makeConstants(type: NodeTask) {
-  script = file('node_modules/react4xp-buildconstants/bin/cli.js')
-  args = [project.PROJDIR, '"{\\"verbose\\":true,\\"overwriteConstantsFile\\":true,\\"outputFileName\\":\\"' + project.PROJDIR + '/build/constants.json\\",\\"SRC_R4X\\":\\"' + project.PROJDIR + '/test/main/resources/react4xp\\",\\"SRC_SITE\\":\\"' + project.PROJDIR + '/test/main/resources/site\\"}"']
+    script = file('node_modules/react4xp-buildconstants/bin/cli.js')
+    args = [project.PROJDIR, '"{\\"verbose\\":true,\\"overwriteConstantsFile\\":true,\\"outputFileName\\":\\"' + project.PROJDIR + '/build/constants.json\\",\\"SRC_R4X\\":\\"' + project.PROJDIR + '/test/main/resources/react4xp\\",\\"SRC_SITE\\":\\"' + project.PROJDIR + '/test/main/resources/site\\"}"']
 }
 makeConstants.inputs.file('node_modules/react4xp-buildconstants/bin/cli.js')
 makeConstants.outputs.dir('build')
@@ -30,17 +30,17 @@ makeConstants.outputs.dir('build')
 makeConstants.dependsOn build
 
 task testEntriesAndChunks(type: NpmTask) {
-  args=['run', 'test:entriesAndChunks']
+    args = ['run', 'test:entriesAndChunks']
 }
 testEntriesAndChunks.outputs.dir('test/build')
 testEntriesAndChunks.outputs.dir('test/output')
 task testRaw(type: NpmTask) {
-  args=['run', 'test:raw']
+    args = ['run', 'test:raw']
 }
 testRaw.outputs.dir('test/build')
 testRaw.outputs.dir('test/output')
 task testOverride(type: NpmTask) {
-  args=['run', 'test:override']
+    args = ['run', 'test:override']
 }
 testOverride.outputs.dir('test/build')
 testOverride.outputs.dir('test/output')

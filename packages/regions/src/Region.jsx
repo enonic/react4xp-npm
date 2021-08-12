@@ -11,7 +11,7 @@ import ComponentTag from 'react4xp-regions/ComponentTag';
  * @param addClass (optional string): Adds an HTML class for the region, after "xp-region".
  * @returns A react4xp-representation (react component) of an XP region. Must be SERVER-SIDE-rendered by react4xp!
  */
-const Region = ({name, regionData, tag, addClass}) =>  {
+const Region = ({name, regionData, tag, addClass}) => {
     if (!((name || '').trim())) {
         console.error(`<Region NO_NAME> name: ${JSON.stringify(name)}`);
         throw Error(`Can't render <Region> without a 'name' prop.`);
