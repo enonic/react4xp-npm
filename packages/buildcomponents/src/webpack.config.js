@@ -208,17 +208,20 @@ module.exports = (env = {}) => {
     }
 
     const siteParsed = path.parse(SRC_SITE);
-    const tooGeneralPaths = SRC_SITE.split(path.sep).reduce((accum, current) => {
-        const longestPath = accum.slice(-1)[0];
-        if (longestPath === undefined) {
-            return [siteParsed.root];
-        }
-        const dir = path.resolve(longestPath, current);
-        if (dir !== SRC_SITE) {
-            accum.push(dir);
-        }
-        return accum;
-    }, []);
+    const tooGeneralPaths = SRC_SITE.split(path.sep).reduce(
+        (accum, current) => {
+            const longestPath = accum.slice(-1)[0];
+            if (longestPath === undefined) {
+                return [siteParsed.root];
+            }
+            const dir = path.resolve(longestPath, current);
+            if (dir !== SRC_SITE) {
+                accum.push(dir);
+            }
+            return accum;
+        },
+        []
+    );
 
     const badChunkDirs = chunkDirs.filter(
         (dir) =>
@@ -297,7 +300,9 @@ module.exports = (env = {}) => {
                     ? `array[${entrySets.length}]`
                     : typeof entrySets +
                     (entrySets && typeof entrySets === "object"
-                        ? ` with keys: ${JSON.stringify(Object.keys(entrySets))}`
+                        ? ` with keys: ${JSON.stringify(
+                            Object.keys(entrySets)
+                        )}`
                         : "")
             }): ${JSON.stringify(entrySets, null, 2)}`
         );
@@ -307,7 +312,9 @@ module.exports = (env = {}) => {
                     ? `array[${entries.length}]`
                     : typeof entries +
                     (entries && typeof entries === "object"
-                        ? ` with keys: ${JSON.stringify(Object.keys(entries))}`
+                        ? ` with keys: ${JSON.stringify(
+                            Object.keys(entries)
+                        )}`
                         : "")
             }: ${JSON.stringify(entries)}`
         );
@@ -320,7 +327,9 @@ module.exports = (env = {}) => {
                     ? `array[${entrySets.length}]`
                     : typeof entrySets +
                     (entrySets && typeof entrySets === "object"
-                        ? ` with keys: ${JSON.stringify(Object.keys(entrySets))}`
+                        ? ` with keys: ${JSON.stringify(
+                            Object.keys(entrySets)
+                        )}`
                         : "")
             }): ${JSON.stringify(entrySets, null, 2)}`
         );
@@ -436,7 +445,9 @@ module.exports = (env = {}) => {
         output: {
             path: BUILD_R4X, // <-- Sets the base url for plugins and other target dirs. Note the use of {{assetUrl}} in index.html (or index.ejs).
             filename: (pathdata) =>
-                (pathdata.chunk || {}).chunkReason ? chunkFileName : "[name].js", // <-- Content-hash file names of dependency chunks but not entry components
+                (pathdata.chunk || {}).chunkReason
+                    ? chunkFileName
+                    : "[name].js", // <-- Content-hash file names of dependency chunks but not entry components
             library: {
                 name: [LIBRARY_NAME, "[name]"],
                 type: "var",
@@ -465,12 +476,16 @@ module.exports = (env = {}) => {
                 {
                     // Babel for building static assets. Excluding node_modules BUT ALLOWING node_modules/react4xp-regions
                     test: /\.((jsx?)|(es6))$/,
-                    exclude: /(?=.*[\\/]node_modules[\\/](?!react4xp-regions))^(\w+)$/,
+                    exclude:
+                        /(?=.*[\\/]node_modules[\\/](?!react4xp-regions))^(\w+)$/,
                     use: {
                         loader: "babel-loader",
                         options: {
                             compact: !DEVMODE,
-                            presets: ["@babel/preset-react", "@babel/preset-env"],
+                            presets: [
+                                "@babel/preset-react",
+                                "@babel/preset-env",
+                            ],
                             plugins: [
                                 "@babel/plugin-transform-arrow-functions",
                                 "@babel/plugin-proposal-object-rest-spread",

@@ -64,7 +64,10 @@ function buildEntriesToSubfolder(entrySet, verboseLog) {
                                 .filter((a) => (a || "").trim())
                                 .join("/");
 
-                            verboseLog(`${name} -> ${normalizedEntry}`, "\tEntry");
+                            verboseLog(
+                                `${name} -> ${normalizedEntry}`,
+                                "\tEntry"
+                            );
 
                             // eslint-disable-next-line no-param-reassign
                             obj[name] = normalizedEntry;
@@ -102,7 +105,10 @@ function makeEntriesFile(entries, outputPath, entriesFilename, verboseLog) {
 exports.getEntries = (entrySets, outputPath, entriesFilename, verboseLog) => {
     const entries = entrySets.reduce(
         (accumulator, entrySet) =>
-            Object.assign(accumulator, buildEntriesToSubfolder(entrySet, verboseLog)),
+            Object.assign(
+                accumulator,
+                buildEntriesToSubfolder(entrySet, verboseLog)
+            ),
         {}
     );
 
