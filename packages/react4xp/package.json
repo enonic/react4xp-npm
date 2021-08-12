@@ -55,6 +55,7 @@
     "test": "__tests__"
   },
   "files": [
+    "util/index.js",
     "npmInstall.gradle",
     "react4xp.gradle",
     "updaters.gradle",

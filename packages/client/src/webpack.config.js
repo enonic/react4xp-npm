@@ -5,6 +5,7 @@
 /* global __filename, process, __dirname */
 
 const path = require('path');
+const makeVerboseLogger = require("react4xp/util").makeVerboseLogger;
 
 const Chunks2json = require('chunks-2-json-webpack-plugin');
 const webpack = require('webpack');
@@ -31,7 +32,7 @@ module.exports = env => {
 
     // Gets the following constants from the config file UNLESS they are overridden by an env parameter, which takes priority:
     const {
-        BUILD_R4X, LIBRARY_NAME, BUILD_ENV, CHUNK_CONTENTHASH, CLIENT_CHUNKS_FILENAME,
+        BUILD_R4X, LIBRARY_NAME, BUILD_ENV, CHUNK_CONTENTHASH, CLIENT_CHUNKS_FILENAME, VERBOSE,
 
     } = Object.assign(
         {},
@@ -41,46 +42,22 @@ module.exports = env => {
             {}
     );
 
+    const verboseLog = makeVerboseLogger(VERBOSE);
+
     // Optional root from which to look for node_modules
-    /*  let ROOT = env.ROOT || __dirname;
-try {
-  // env.ROOT may enter wrapped in double-quotes
-  ROOT = JSON.parse(ROOT);
-} catch (e) {
-  console.warn("Couldn't JSON.parse(" + JSON.stringify(ROOT) + ")");
-  // Guess not.
-}*/
     const ROOT = cleanAnyDoublequotes("ROOT", env.ROOT || __dirname);
-    console.log("ROOT:" + JSON.stringify(ROOT));
+    verboseLog(ROOT, "ROOT");
 
-    /*
-let buildR4X = BUILD_R4X;
-try {
-  // env.ROOT may enter wrapped in double-quotes
-  buildR4X = JSON.parse(buildR4X);
-} catch (e) {
-  console.warn("Couldn't JSON.parse(" + JSON.stringify(buildR4X) + ")");
-  // Guess not.
-}*/
     const buildR4X = cleanAnyDoublequotes("BUILD_R4X", BUILD_R4X);
-    console.log("buildR4X:" + JSON.stringify(buildR4X));
+    verboseLog(buildR4X, "buildR4X");
 
-
-    /*  let libraryName = LIBRARY_NAME;
-try {
-  // env.ROOT may enter wrapped in double-quotes
-  libraryName = JSON.parse(libraryName);
-} catch (e) {
-  console.warn("Couldn't JSON.parse(" + JSON.stringify(libraryName) + ")");
-  // Guess not.
-}*/
     const libraryName = cleanAnyDoublequotes("LIBRARY_NAME", LIBRARY_NAME);
-    console.log("libraryName:" + JSON.stringify(libraryName));
+    verboseLog(libraryName, "libraryName");
 
     if (overridden) {
-        console.log(__filename, "overridden config: " + JSON.stringify({
+        verboseLog({
             buildR4X, libraryName, BUILD_ENV, CHUNK_CONTENTHASH, CLIENT_CHUNKS_FILENAME, ROOT,
-        }, null, 2));
+        }, "Client build config overridden at " + __filename);
     }
 
     // Decides whether or not to hash filenames of the produced asset, and the length of the hash
@@ -160,7 +137,7 @@ try {
         ],
     };
 
-    console.log("outputConfig: " + JSON.stringify(outputConfig, null, 4));
+    verboseLog(outputConfig, "Client build output config");
 
     return outputConfig;
 };

@@ -35,6 +35,9 @@ const fs = require("fs");
 const Chunks2json = require("chunks-2-json-webpack-plugin");
 
 const cleanAnyDoublequotes = (label, val) => {
+  if (typeof val !== "string") {
+    return val;
+  }
   if (val.startsWith('"')) {
     if (!val.endsWith('"')) {
       throw Error(
@@ -102,10 +105,6 @@ function generateTempES6SourceAndGetFilename(_externals, outputFileName) {
   Object.keys(externals).forEach((key) => {
     externalsImports += `import ${externals[key]} from '${key}';\n`;
   });
-
-  /* Object.keys(externals).forEach( key => {
-        externalsImports += `console.log('${externals[key]}: ' + ${externals[key]});\n`;
-    }); // */
 
   Object.keys(externals).forEach((key) => {
     externalsExports += `\twindow.${externals[key]} = ${externals[key]};\n`;

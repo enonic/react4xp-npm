@@ -35,6 +35,7 @@
     "@babel/preset-react": "^7",
     "@babel/register": "*",
     "babel-loader": "^8",
+    "react4xp": "*",
     "react4xp-buildconstants": "*",
     "webpack": "^5",
     "webpack-cli": "^4"

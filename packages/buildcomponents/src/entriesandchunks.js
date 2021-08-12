@@ -32,7 +32,7 @@ exports.normalizePath = (pathString) => {
 
 /** Builds component entries from files found under a directory, for selected file extensions, for being transpiled out to a target path. */
 function buildEntriesToSubfolder(entrySet, verboseLog) {
-  verboseLog(`Entries from subfolder (entry set: ${JSON.stringify(entrySet)})`);
+  verboseLog(entrySet, "Entries from subfolder - entry set");
 
   const sourcePath = exports.normalizePath(entrySet.sourcePath);
   const extensions = entrySet.sourceExtensions;
@@ -64,7 +64,7 @@ function buildEntriesToSubfolder(entrySet, verboseLog) {
                 .filter((a) => (a || "").trim())
                 .join("/");
 
-              verboseLog("\tEntry: ", name, "->", normalizedEntry);
+              verboseLog(`${name} -> ${normalizedEntry}`, "\tEntry");
 
               // eslint-disable-next-line no-param-reassign
               obj[name] = normalizedEntry;
@@ -86,7 +86,7 @@ function makeEntriesFile(entries, outputPath, entriesFilename, verboseLog) {
   dirs.forEach((dir) => {
     accum += dir + exports.SLASH;
     if (!fs.existsSync(accum)) {
-      verboseLog(`\tCreate: ${accum}`);
+      verboseLog(accum, "\tCreate");
       fs.mkdirSync(accum);
     }
   });
@@ -99,8 +99,7 @@ function makeEntriesFile(entries, outputPath, entriesFilename, verboseLog) {
 // available and runnable to both the browser and the nashorn engine.
 // This function builds the entries AND entries.json, which lists the first-level components that shouldn't be counted
 // as general dependencies.
-exports.getEntries = (entrySets, outputPath, entriesFilename, verbose) => {
-  const verboseLog = verbose ? console.log : function () {};
+exports.getEntries = (entrySets, outputPath, entriesFilename, verboseLog) => {
   const entries = entrySets.reduce(
     (accumulator, entrySet) =>
       Object.assign(accumulator, buildEntriesToSubfolder(entrySet, verboseLog)),

@@ -3,8 +3,8 @@
 const StatsPlugin = require("stats-webpack-plugin");
 const path = require("path");
 const fs = require("fs");
+const { makeVerboseLogger } = require("react4xp/util");
 const React4xpEntriesAndChunks = require("./entriesandchunks");
-const print = require('q-i').print;
 
 const cleanAnyDoublequotes = (label, val) => {
   if (val.startsWith('"')) {
@@ -109,7 +109,7 @@ const normalizeDirList = (
       )
     : [];
 
-const makeExclusionsRegexpString = (currentDir, otherDirs, VERBOSE) =>
+const makeExclusionsRegexpString = (currentDir, otherDirs, verboseLog) =>
   otherDirs
     .filter((dir) => dir !== currentDir && dir.startsWith(currentDir))
     .map((dir) => dir.slice(currentDir.length))
@@ -121,8 +121,7 @@ const makeExclusionsRegexpString = (currentDir, otherDirs, VERBOSE) =>
       if (dir.endsWith(path.sep)) {
         dir = dir.slice(0, dir.length - 1);
       }
-      if (VERBOSE)
-        console.log(`\tExcluding '${dir}' relative to '${currentDir}'`);
+      verboseLog(`\tExcluding '${dir}' relative to '${currentDir}'`);
       return dir;
     })
     // TODO: escape characters in folder names that actually are regexp characters
@@ -146,19 +145,12 @@ module.exports = (env = {}) => {
   } = require(path.join(process.cwd(), env.REACT4XP_CONFIG_FILE));
 
   const DEVMODE = BUILD_ENV !== "production";
-  const VERBOSE = `${env.VERBOSE || ""}`.trim().toLowerCase() === "true";
 
-  /*  let ROOT = env.ROOT || __dirname;
-    try {
-      // env.ROOT may enter wrapped in double-quotes
-      ROOT = JSON.parse(ROOT);
-    } catch (e) {
-      // Guess not.
-    } */
+  const VERBOSE = `${env.VERBOSE || ""}`.trim().toLowerCase() === "true";
+  const verboseLog = makeVerboseLogger(VERBOSE);
+
   const ROOT = cleanAnyDoublequotes("ROOT", env.ROOT || __dirname);
-  if (VERBOSE) {
-    console.log(`ROOT: '${ROOT}'\n\n`);
-  }
+  verboseLog(ROOT, "ROOT");
 
   // TODO: Probably more consistent if this too is a master config file property. Add to react4xp-buildconstants and import above from env.REACT4XP_CONFIG_FILE.
   let OVERRIDE_COMPONENT_WEBPACK = `${
@@ -205,50 +197,11 @@ module.exports = (env = {}) => {
     VERBOSE
   );
 
-  if (VERBOSE) {
-    console.log(
-      `\n\n---\nenv.CHUNK_DIRS (${
-        Array.isArray(env.CHUNK_DIRS)
-          ? `array[${env.CHUNK_DIRS.length}]`
-          : typeof env.CHUNK_DIRS +
-            (env.CHUNK_DIRS && typeof env.CHUNK_DIRS === "object"
-              ? ` with keys: ${JSON.stringify(Object.keys(env.CHUNK_DIRS))}`
-              : "")
-      }): ${JSON.stringify(env.CHUNK_DIRS, null, 2)}`
-    );
-    console.log(
-      `--> chunkDirs (${
-        Array.isArray(chunkDirs)
-          ? `array[${chunkDirs.length}]`
-          : typeof chunkDirs +
-            (chunkDirs && typeof chunkDirs === "object"
-              ? ` with keys: ${JSON.stringify(Object.keys(chunkDirs))}`
-              : "")
-      }): ${JSON.stringify(chunkDirs, null, 2)}`
-    );
-
-    console.log(
-      `\n\n---\nenv.ENTRY_DIRS (${
-        Array.isArray(env.ENTRY_DIRS)
-          ? `array[${env.ENTRY_DIRS.length}]`
-          : typeof env.ENTRY_DIRS +
-            (env.ENTRY_DIRS && typeof env.ENTRY_DIRS === "object"
-              ? ` with keys: ${JSON.stringify(Object.keys(env.ENTRY_DIRS))}`
-              : "")
-      }): ${JSON.stringify(env.ENTRY_DIRS, null, 2)}`
-    );
-    console.log(
-      `--> chunkDirs (${
-        Array.isArray(entryDirs)
-          ? `array[${entryDirs.length}]`
-          : typeof entryDirs +
-            (entryDirs && typeof entryDirs === "object"
-              ? ` with keys: ${JSON.stringify(Object.keys(entryDirs))}`
-              : "")
-      }): ${JSON.stringify(entryDirs, null, 2)}`
-    );
-    console.log("\n---\n");
-  }
+  verboseLog(env.CHUNK_DIRS, "\n\n---\nenv.CHUNK_DIRS");
+  verboseLog(chunkDirs, "--> chunkDirs");
+  verboseLog(env.ENTRY_DIRS, "\n\n---\nenv.ENTRY_DIRS");
+  verboseLog(entryDirs, "--> entryDirs");
+  verboseLog("\n---\n");
 
   // -----------------------------------------------------------  Catching some likely troublemakers:
 
@@ -353,7 +306,7 @@ module.exports = (env = {}) => {
     entrySets,
     BUILD_R4X,
     ENTRIES_FILENAME,
-    VERBOSE
+    verboseLog
   );
 
   // ------------------------------------------- Entries are generated. Error reporting and verbose output:
@@ -399,18 +352,7 @@ module.exports = (env = {}) => {
     );
   }
 
-  if (VERBOSE) {
-    console.log(
-      `\nreact4xp-build-components: entries (${
-        Array.isArray(entries)
-          ? `array[${entries.length}]`
-          : typeof entries +
-            (entries && typeof entries === "object"
-              ? ` with keys: ${JSON.stringify(Object.keys(entries))}`
-              : "")
-      }) = ${JSON.stringify(entries, null, 2)}`
-    );
-  }
+  verboseLog(entries, "\nreact4xp-build-components - entries");
 
   // ------------------------------  Generated the webpack cacheGroups
 
@@ -418,7 +360,7 @@ module.exports = (env = {}) => {
   const react4xpExclusions = makeExclusionsRegexpString(
     SRC_R4X,
     detectedTargetDirs,
-    VERBOSE
+    verboseLog
   );
   const cacheGroups = {
     vendors: {
@@ -466,7 +408,7 @@ module.exports = (env = {}) => {
     const chunkExclusions = makeExclusionsRegexpString(
       chunkDir,
       detectedTargetDirs,
-      VERBOSE
+      verboseLog
     );
     const test = `${chunkDir}${
       chunkExclusions ? `[\\\\/]((?!(${chunkExclusions})).)[\\\\/]?` : ""
@@ -480,17 +422,6 @@ module.exports = (env = {}) => {
       priority: 1,
     };
   });
-
-  // Display the generated cachegroups:
-  if (VERBOSE) {
-    console.log(
-      `react4xp-buikd-components generated cacheGroups (.test attributes that are strings will be turned into RegExp): ${JSON.stringify(
-        cacheGroups,
-        null,
-        2
-      )}`
-    );
-  }
 
   // Finally, turn all generated regexp strings in each .test attribute into actual RegExp's:
   Object.keys(cacheGroups).forEach((key) => {
@@ -525,10 +456,11 @@ module.exports = (env = {}) => {
 
     output: {
       path: BUILD_R4X, // <-- Sets the base url for plugins and other target dirs. Note the use of {{assetUrl}} in index.html (or index.ejs).
-      filename: (pathdata) => ((pathdata.chunk || {}).chunkReason) ? chunkFileName : "[name].js",  // <-- Content-hash file names of dependency chunks but not entry components
+      filename: (pathdata) =>
+        (pathdata.chunk || {}).chunkReason ? chunkFileName : "[name].js", // <-- Content-hash file names of dependency chunks but not entry components
       library: {
         name: [LIBRARY_NAME, "[name]"],
-        type: 'var',
+        type: "var",
       },
       globalObject: "window",
       environment: {
@@ -616,10 +548,10 @@ module.exports = (env = {}) => {
 
   const outputConfig = overrideCallback(env, config);
 
-  if (VERBOSE) {
-    console.log(`\n-------------------- react4xp-build-components: webpack config output`);
-    print(outputConfig, {maxItems: Infinity});
-  }
+  verboseLog(
+    outputConfig,
+    "\n-------------------- react4xp-build-components - webpack config output"
+  );
 
   return outputConfig;
 };
