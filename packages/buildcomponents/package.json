@@ -1,6 +1,6 @@
 {
   "name": "react4xp-build-components",
-  "version": "1.0.17",
+  "version": "2.0.0-RC1",
   "description": "React4xp helper: basic webpack compilation of user-added React components in a React4xp structure",
   "main": "webpack.config.js",
   "files": [
@@ -40,7 +40,7 @@
     "@babel/preset-react": "^7",
     "prop-types": "*",
     "react": "*",
-    "react4xp": "*",
+    "react4xp": "^2",
     "react-dom": "*",
     "webpack": "^5",
     "webpack-cli": "^4"

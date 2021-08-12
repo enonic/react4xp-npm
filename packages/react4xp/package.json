@@ -43,12 +43,12 @@
     "babel-loader": "^8.2.2",
     "chunks-2-json-webpack-plugin": "^1.0.4",
     "npm-safe-install": "^1.1.0",
-    "react4xp-build-components": "1.0.17",
+    "react4xp-build-components": "2.0.0-RC1",
     "react4xp-buildconstants": "4.2.0-RC1",
     "react4xp-regions": "1.1.0-RC1",
     "react4xp-runtime-client": "2.0.0-RC1",
     "react4xp-runtime-externals": "2.0.0-RC1",
-    "react4xp-runtime-nashornpolyfills": "1.1.0"
+    "react4xp-runtime-nashornpolyfills": "2.0.0-RC1"
   },
   "directories": {
     "lib": "lib",
