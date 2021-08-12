@@ -32,7 +32,7 @@ exports.normalizePath = (pathString) => {
 
 /** Builds component entries from files found under a directory, for selected file extensions, for being transpiled out to a target path. */
 function buildEntriesToSubfolder(entrySet, verboseLog) {
-  verboseLog(entrySet, "Entries from subfolder - entry set");
+  verboseLog(entrySet, "Entries from subfolder - entry set", 1);
 
   const sourcePath = exports.normalizePath(entrySet.sourcePath);
   const extensions = entrySet.sourceExtensions;
@@ -92,7 +92,7 @@ function makeEntriesFile(entries, outputPath, entriesFilename, verboseLog) {
   });
   fs.writeFileSync(entryFile, JSON.stringify(entryList, null, 2));
 
-  verboseLog(`React4xp entries (a.k.a jsxPath) listed in: ${entryFile}\n`);
+  verboseLog(entryFile, "React4xp entries (a.k.a jsxPath) listed in");
 }
 
 // Entries are the non-dependency output files, i.e. react components and other js files that should be directly

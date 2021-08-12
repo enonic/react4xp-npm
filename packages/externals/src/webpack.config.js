@@ -34,29 +34,8 @@ const fs = require("fs");
 
 const Chunks2json = require("chunks-2-json-webpack-plugin");
 
-const cleanAnyDoublequotes = (label, val) => {
-  if (typeof val !== "string") {
-    return val;
-  }
-  if (val.startsWith('"')) {
-    if (!val.endsWith('"')) {
-      throw Error(
-        `Inconsistent double-quote-wrapping on '${label}' value: ${JSON.stringify(
-          val
-        )}`
-      );
-    }
-    return val.substring(1, val.length - 1);
-  }
-  if (val.endsWith('"')) {
-    throw Error(
-      `Inconsistent double-quote-wrapping on '${label}' value: ${JSON.stringify(
-        val
-      )}`
-    );
-  }
-  return val;
-};
+const { cleanAnyDoublequotes } = require('react4xp/util');
+
 
 // TODO: Find a good pattern to control output name for chunks,
 // allowing for multi-chunks and still doing it in one pass (only one chunks.externals.json)

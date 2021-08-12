@@ -179,11 +179,10 @@ task react4xp_components(type: NodeTask) {
 
   // Finally, and mandatorily: tells all of the webpack steps here where to find the react4xp master config file that was built during the config_react4xp task
   args.addAll(['--env', 'REACT4XP_CONFIG_FILE=' + project.ext.react4xp.masterConfigFileName])
-
+/*
   if (project.ext.react4xp.verbose) {
-    println "react4xp_components task - args:"
-    println "\t${args}\n"
-  }
+    println "react4xp_components task - args:\n"
+  }*/
 
   inputs.file(project.ext.react4xp.outputFileName)
   inputs.file("package.json")
@@ -216,10 +215,10 @@ task react4xp_externals(type: NodeTask) {
   // Finally, and mandatorily: tells all of the webpack steps here where to find the react4xp master config file that was built during the config_react4xp task
   args.addAll(['--env', 'REACT4XP_CONFIG_FILE=' + project.ext.react4xp.masterConfigFileName])
 
-  if (project.ext.react4xp.verbose && project.ext.react4xp.buildExternals) {
+/*  if (project.ext.react4xp.verbose && project.ext.react4xp.buildExternals) {
     println "react4xp_externals task - args:"
     println "\t${args}\n"
-  }
+  }*/
 
   inputs.file(project.ext.react4xp.outputFileName)
   inputs.file("package.json")

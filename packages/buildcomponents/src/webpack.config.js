@@ -3,29 +3,9 @@
 const StatsPlugin = require("stats-webpack-plugin");
 const path = require("path");
 const fs = require("fs");
-const { makeVerboseLogger } = require("react4xp/util");
+const { makeVerboseLogger, cleanAnyDoublequotes } = require("react4xp/util");
 const React4xpEntriesAndChunks = require("./entriesandchunks");
 
-const cleanAnyDoublequotes = (label, val) => {
-  if (val.startsWith('"')) {
-    if (!val.endsWith('"')) {
-      throw Error(
-        `Inconsistent double-quote-wrapping on '${label}' value: ${JSON.stringify(
-          val
-        )}`
-      );
-    }
-    return val.substring(1, val.length - 1);
-  }
-  if (val.endsWith('"')) {
-    throw Error(
-      `Inconsistent double-quote-wrapping on '${label}' value: ${JSON.stringify(
-        val
-      )}`
-    );
-  }
-  return val;
-};
 
 // Turns a comma-separated list of subdirectories below the root React4xp source folder (SRC_R4X, usually .../resources/react4xp/)
 // into an array of unique, verified, absolute-path'd and OS-compliant folder names.
@@ -150,7 +130,7 @@ module.exports = (env = {}) => {
   const verboseLog = makeVerboseLogger(VERBOSE);
 
   const ROOT = cleanAnyDoublequotes("ROOT", env.ROOT || __dirname);
-  verboseLog(ROOT, "ROOT");
+  verboseLog(ROOT, "ROOT", 1);
 
   // TODO: Probably more consistent if this too is a master config file property. Add to react4xp-buildconstants and import above from env.REACT4XP_CONFIG_FILE.
   let OVERRIDE_COMPONENT_WEBPACK = `${
@@ -197,11 +177,11 @@ module.exports = (env = {}) => {
     VERBOSE
   );
 
-  verboseLog(env.CHUNK_DIRS, "\n\n---\nenv.CHUNK_DIRS");
-  verboseLog(chunkDirs, "--> chunkDirs");
-  verboseLog(env.ENTRY_DIRS, "\n\n---\nenv.ENTRY_DIRS");
-  verboseLog(entryDirs, "--> entryDirs");
-  verboseLog("\n---\n");
+  verboseLog(env.CHUNK_DIRS, "\n\n---\nenv.CHUNK_DIRS", 1);
+  verboseLog(chunkDirs, "--> chunkDirs", 1);
+  verboseLog(env.ENTRY_DIRS, "\n\n---\nenv.ENTRY_DIRS", 1);
+  verboseLog(entryDirs, "--> entryDirs", 1);
+  verboseLog("---\n");
 
   // -----------------------------------------------------------  Catching some likely troublemakers:
 
@@ -352,7 +332,7 @@ module.exports = (env = {}) => {
     );
   }
 
-  verboseLog(entries, "\nreact4xp-build-components - entries");
+  verboseLog(entries, "\nreact4xp-build-components - entries", 1);
 
   // ------------------------------  Generated the webpack cacheGroups
 
