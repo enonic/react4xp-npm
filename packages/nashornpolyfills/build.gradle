@@ -5,13 +5,10 @@
 clean.delete './nashornpolyfills.es6', './webpack.config.js', 'test/output', 'build'
 
 compileJS.enabled = false
-/*
+
 task buildTestPolyfilled(type: NodeTask) {
   script = file('node_modules/.bin/webpack')
-  args=['--config', 'webpack.config.js', '--env NASHORNPOLYFILLS_SOURCE=test/testPolyfiller.es6', '--env BUILD_ENV=development', '--env BUILD_R4X=' + project.PROJDIR + '/test/output', '--env NASHORNPOLYFILLS_FILENAME=testPolyfilled']
-}*/
-task buildTestPolyfilled(type: NpmTask) {
-  args=['run', 'test:polyfilled']
+  args=['--config', 'webpack.config.js', '--env', 'NASHORNPOLYFILLS_SOURCE=test/testPolyfiller.es6', '--env', 'BUILD_ENV=development', '--env', 'BUILD_R4X=' + project.PROJDIR + '/test/output', '--env', 'NASHORNPOLYFILLS_FILENAME=testPolyfilled']
 }
 buildTestPolyfilled.inputs.dir('src')
 buildTestPolyfilled.inputs.file('test/testPolyfiller.es6')

@@ -25,7 +25,7 @@ copyGradle.dependsOn += copyUtil
 build.dependsOn += copyGradle
 //doPublish.dependsOn += copyFiles
 
-clean.delete './npmInstall.gradle', './util/util.js', './react4xp.gradle', './updaters.gradle', './react4xp.properties', 'lib', './npmLinked.marker'
+clean.delete './npmInstall.gradle', './util/index.js', './react4xp.gradle', './updaters.gradle', './react4xp.properties', 'lib', './npmLinked.marker'
 
 /*
 doPublish.shouldRunAfter ":packages:buildcomponents:doPublish"

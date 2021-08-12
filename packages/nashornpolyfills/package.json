@@ -12,7 +12,6 @@
   "scripts": {
     "lint": "eslint --fix src/**/*.js",
     "test:constants": "webpack --config webpack.config.js --env REACT4XP_CONFIG_FILE=test/output/testConfig.json && node test/output/testPolyfilled.js",
-    "test:polyfilled": "webpack --config webpack.config.js --env NASHORNPOLYFILLS_SOURCE=test/testPolyfiller.es6 --env BUILD_ENV=development --env BUILD_R4X=./test/output --env NASHORNPOLYFILLS_FILENAME=testPolyfilled",
     "postversion": "cd ../.. && ./copytag.js nashornpolyfills"
   },
   "repository": {

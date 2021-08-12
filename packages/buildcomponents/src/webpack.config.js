@@ -6,7 +6,6 @@ const fs = require("fs");
 const { makeVerboseLogger, cleanAnyDoublequotes } = require("react4xp/util");
 const React4xpEntriesAndChunks = require("./entriesandchunks");
 
-
 // Turns a comma-separated list of subdirectories below the root React4xp source folder (SRC_R4X, usually .../resources/react4xp/)
 // into an array of unique, verified, absolute-path'd and OS-compliant folder names.
 // Halts on errors, displays warnings, skips items that are not found.

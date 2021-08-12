@@ -33,6 +33,7 @@
     "@babel/register": "^7",
     "babel-loader": "^8",
     "react": "*",
+    "react4xp": "*",
     "react-dom": "*",
     "webpack": "^5",
     "webpack-cli": "^4"

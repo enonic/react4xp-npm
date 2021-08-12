@@ -16,7 +16,7 @@
   },
   "rules": {
     "eol-last": ["error"],
-    "indent": ["error", 4, {"SwitchCase": 1}],
+    "indent": ["error", 2, {"SwitchCase": 1}],
     "semi": ["error", "always"],
     "comma-dangle": ["error", "always-multiline"],
     "no-console": ["off"], // we automatically strip console.log from production code, and we want to keep console.warn and console.error
