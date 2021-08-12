@@ -93,7 +93,8 @@ Thins ready state should be:
 >
 > This creates a **circular graph** of symlinks under _node_modules_ in the different packages. This is fine most of the time, but important to know for two reasons:
 > 1. Occasionally, this will cause the error message `Maximum call stack size exceeded`, preventing further progress. If this happens, rebuild completely, in this order:
->   - `gradlew clean`
+     >
+- `gradlew clean`
 >   - `npm run clean`
 >   - `rm -rf node_modules build .gradle`
 >   - `npm run setup`
@@ -127,7 +128,7 @@ Again, these commands are only used **from the project root**:
   for their dependencies). Further description in comments
   in [versionAndPublish.gradle](https://github.com/enonic/react4xp-npm/blob/master/versionAndPublish.gradle). Optional
   parameters:
-    - `-Pdry`: dry-run
-    - `-Pmessage='...'`: Common description of the entire release for all changed packages, will be used in commit
-      messages to clarify and group the multiple commits that will occur during the process.
+  - `-Pdry`: dry-run
+  - `-Pmessage='...'`: Common description of the entire release for all changed packages, will be used in commit
+    messages to clarify and group the multiple commits that will occur during the process.
 

@@ -23,39 +23,47 @@ import Regions from 'react4xp-regions/Regions';
  *      If true, they will be rendered below the regions.
  * @returns A react4xp-representation (react component) of an XP layout. Must be SERVER-SIDE-rendered by react4xp!
  */
-const Layout = ({ regionsData, regionNames, regionClasses, containerTag, containerClass, children, childrenAfterRegions }) => {
-    const TAG = containerTag || 'div';
+const Layout = ({
+                  regionsData,
+                  regionNames,
+                  regionClasses,
+                  containerTag,
+                  containerClass,
+                  children,
+                  childrenAfterRegions
+                }) => {
+  const TAG = containerTag || 'div';
 
-    return <TAG className={containerClass}>
-        {!childrenAfterRegions ? children : null}
-        {regionsData ? <Regions regionsData={regionsData} classes={regionClasses} names={regionNames} /> : null}
-        {childrenAfterRegions ? children : null}
-    </TAG>;
+  return <TAG className={containerClass}>
+    {!childrenAfterRegions ? children : null}
+    {regionsData ? <Regions regionsData={regionsData} classes={regionClasses} names={regionNames}/> : null}
+    {childrenAfterRegions ? children : null}
+  </TAG>;
 };
 
 
 Layout.propTypes = {
-    regionsData: PropTypes.objectOf(
+  regionsData: PropTypes.objectOf(
+    PropTypes.shape({
+      components: PropTypes.arrayOf(
         PropTypes.shape({
-            components: PropTypes.arrayOf(
-                PropTypes.shape({
-                    path: PropTypes.string.isRequired,
-                })
-            ),
+          path: PropTypes.string.isRequired,
         })
-    ),
-    regionNames: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string),
-    ]),
-    regionClasses: PropTypes.oneOfType([
-        PropTypes.bool,
-        PropTypes.string,
-        PropTypes.objectOf(PropTypes.string),
-    ]),
-    containerTag: PropTypes.string,
-    containerClass: PropTypes.string,
-    childrenAfterRegions: PropTypes.bool,
+      ),
+    })
+  ),
+  regionNames: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string),
+  ]),
+  regionClasses: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.string,
+    PropTypes.objectOf(PropTypes.string),
+  ]),
+  containerTag: PropTypes.string,
+  containerClass: PropTypes.string,
+  childrenAfterRegions: PropTypes.bool,
 };
 
 export default Layout;

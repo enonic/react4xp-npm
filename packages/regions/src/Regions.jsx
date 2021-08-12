@@ -19,69 +19,69 @@ import Region from 'react4xp-regions/Region';
  * @returns An array of <Region> elements.
  */
 const Regions = ({regionsData, names, tags, classes}) => {
-    if (
-        !regionsData ||
-        typeof regionsData !== 'object'
-    ) {
-        console.error('<Regions> regions: ' + JSON.stringify(regionsData));
-        throw Error("Can't render <Regions> without a 'regionsData' prop.");
-    }
+  if (
+    !regionsData ||
+    typeof regionsData !== 'object'
+  ) {
+    console.error('<Regions> regions: ' + JSON.stringify(regionsData));
+    throw Error("Can't render <Regions> without a 'regionsData' prop.");
+  }
 
-    const selectedRegions =
-        !names ? Object.keys(regionsData) :
-            (typeof names === 'string') ? [names] :
-                Array.isArray(names) ? names : null;
+  const selectedRegions =
+    !names ? Object.keys(regionsData) :
+      (typeof names === 'string') ? [names] :
+        Array.isArray(names) ? names : null;
 
-    if (!selectedRegions) {
-        console.error('<Regions> names: ' + JSON.stringify(names));
-        throw Error("Can't render <Regions>: 'names' prop must be a string, an array of strings or omitted/falsy.");
-    }
+  if (!selectedRegions) {
+    console.error('<Regions> names: ' + JSON.stringify(names));
+    throw Error("Can't render <Regions>: 'names' prop must be a string, an array of strings or omitted/falsy.");
+  }
 
-    // TODO: sanitize tag and name: not all characters (or tags) are acceptable
-    return selectedRegions.map(name =>
-        <Region key={name}
-                regionData={regionsData[name]}
-                name={name}
-                tag={typeof tags === 'string' ? tags : (tags || {})[name]}
-                addClass={
-                    classes === true ?
-                        name :
-                        typeof classes === 'string' ?
-                            classes :
-                            (classes || {})[name]
-                }
-        />
-    );
+  // TODO: sanitize tag and name: not all characters (or tags) are acceptable
+  return selectedRegions.map(name =>
+    <Region key={name}
+            regionData={regionsData[name]}
+            name={name}
+            tag={typeof tags === 'string' ? tags : (tags || {})[name]}
+            addClass={
+              classes === true ?
+                name :
+                typeof classes === 'string' ?
+                  classes :
+                  (classes || {})[name]
+            }
+    />
+  );
 };
 Regions.propTypes = {
-    regionsData: PropTypes.objectOf(
+  regionsData: PropTypes.objectOf(
+    PropTypes.shape({
+      components: PropTypes.arrayOf(
         PropTypes.shape({
-            components: PropTypes.arrayOf(
-                PropTypes.shape({
-                    path: PropTypes.string.isRequired,
-                })
-            ),
+          path: PropTypes.string.isRequired,
         })
-    ).isRequired,
-    names: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(
-            PropTypes.string
-        ),
-    ]),
-    tags: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.objectOf(
-            PropTypes.string
-        ),
-    ]),
-    classes: PropTypes.oneOfType([
-        PropTypes.bool,
-        PropTypes.string,
-        PropTypes.objectOf(
-            PropTypes.string
-        ),
-    ]),
+      ),
+    })
+  ).isRequired,
+  names: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(
+      PropTypes.string
+    ),
+  ]),
+  tags: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.objectOf(
+      PropTypes.string
+    ),
+  ]),
+  classes: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.string,
+    PropTypes.objectOf(
+      PropTypes.string
+    ),
+  ]),
 };
 
 export default Regions;

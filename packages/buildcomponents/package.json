@@ -1,58 +1,58 @@
 {
-    "name": "react4xp-build-components",
-    "version": "1.0.17",
-    "description": "React4xp helper: basic webpack compilation of user-added React components in a React4xp structure",
-    "main": "webpack.config.js",
-    "files": [
-        "entriesandchunks.js",
-        "webpack.config.js",
-        "README.md",
-        "LICENSE"
-    ],
-    "scripts": {
-        "test:main": "echo \"(Placeholder necessary for task dependencies)\"",
-        "test:entriesAndChunks": "NODE_PATH=. npx mocha --require @babel/register --require @babel/polyfill --require test/test_helper.js \"test/**/*@(spec.js)\"",
-        "test:raw": "NODE_PATH=. npx webpack --config webpack.config.js --env ENTRY_DIRS=entries --env CHUNK_DIRS=sharedComps,redux --env OVERRIDE_COMPONENT_WEBPACK=test/webpack.config.symlinks.override.js --env REACT4XP_CONFIG_FILE=build/constants.json --env VERBOSE=true ",
-        "test:override": "NODE_PATH=. npx webpack --config webpack.config.js --env OVERRIDE_COMPONENT_WEBPACK=test/webpack.config.override.js --env VERBOSE=true --env REACT4XP_CONFIG_FILE=build/constants.json ",
-        "babel-min": "NODE_PATH=. npx babel src/entriesandchunks.js -o entriesandchunks.js --no-comments --minified --compact true",
-        "babel": "NODE_PATH=.npx babel src/entriesandchunks.js -o entriesandchunks.js --no-comments",
-        "lint": "NODE_PATH=. node_modules/eslint/bin/eslint.js src/*.js --fix",
-        "postversion": "cd ../.. && ./copytag.js buildcomponents"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+ssh://git@github.com:enonic/react4xp-npm.git"
-    },
-    "author": "Espen Norderud",
-    "license": "Apache-2.0",
-    "bugs": {
-        "url": "https://github.com/enonic/lib-react4xp/issues"
-    },
-    "homepage": "https://github.com/enonic/react4xp-build-components",
-    "dependencies": {
-        "glob": "^7.1.7",
-        "stats-webpack-plugin": "^0.7.0"
-    },
-    "peerDependencies": {
-        "@babel/plugin-proposal-object-rest-spread": "^7",
-        "@babel/plugin-transform-arrow-functions": "^7",
-        "@babel/preset-env": "^7",
-        "@babel/preset-react": "^7",
-        "prop-types": "*",
-        "react": "*",
-        "react4xp": "*",
-        "react-dom": "*",
-        "webpack": "^5",
-        "webpack-cli": "^4"
-    },
-    "lint-staged": {
-        "src/webpack.config.js": [
-            "eslint --fix",
-            "git add"
-        ]
-    },
-    "directories": {
-        "lib": "lib",
-        "test": "__tests__"
-    }
+  "name": "react4xp-build-components",
+  "version": "1.0.17",
+  "description": "React4xp helper: basic webpack compilation of user-added React components in a React4xp structure",
+  "main": "webpack.config.js",
+  "files": [
+    "entriesandchunks.js",
+    "webpack.config.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test:main": "echo \"(Placeholder necessary for task dependencies)\"",
+    "test:entriesAndChunks": "NODE_PATH=. npx mocha --require @babel/register --require @babel/polyfill --require test/test_helper.js \"test/**/*@(spec.js)\"",
+    "test:raw": "NODE_PATH=. npx webpack --config webpack.config.js --env ENTRY_DIRS=entries --env CHUNK_DIRS=sharedComps,redux --env OVERRIDE_COMPONENT_WEBPACK=test/webpack.config.symlinks.override.js --env REACT4XP_CONFIG_FILE=build/constants.json --env VERBOSE=true ",
+    "test:override": "NODE_PATH=. npx webpack --config webpack.config.js --env OVERRIDE_COMPONENT_WEBPACK=test/webpack.config.override.js --env VERBOSE=true --env REACT4XP_CONFIG_FILE=build/constants.json ",
+    "babel-min": "NODE_PATH=. npx babel src/entriesandchunks.js -o entriesandchunks.js --no-comments --minified --compact true",
+    "babel": "NODE_PATH=.npx babel src/entriesandchunks.js -o entriesandchunks.js --no-comments",
+    "lint": "NODE_PATH=. node_modules/eslint/bin/eslint.js src/*.js --fix",
+    "postversion": "cd ../.. && ./copytag.js buildcomponents"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:enonic/react4xp-npm.git"
+  },
+  "author": "Espen Norderud",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/enonic/lib-react4xp/issues"
+  },
+  "homepage": "https://github.com/enonic/react4xp-build-components",
+  "dependencies": {
+    "glob": "^7.1.7",
+    "stats-webpack-plugin": "^0.7.0"
+  },
+  "peerDependencies": {
+    "@babel/plugin-proposal-object-rest-spread": "^7",
+    "@babel/plugin-transform-arrow-functions": "^7",
+    "@babel/preset-env": "^7",
+    "@babel/preset-react": "^7",
+    "prop-types": "*",
+    "react": "*",
+    "react4xp": "*",
+    "react-dom": "*",
+    "webpack": "^5",
+    "webpack-cli": "^4"
+  },
+  "lint-staged": {
+    "src/webpack.config.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  }
 }

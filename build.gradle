@@ -19,7 +19,7 @@ allprojects {
 project.ext.SUBPROJS_TO_IGNORE = [
   'packages'
 ]
-configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)}) {
+configure(subprojects.findAll { !project.ext.SUBPROJS_TO_IGNORE.contains(it.name) }) {
   apply plugin: "com.github.node-gradle.node" // version "3.0.1"
 
   def slash = File.separator
@@ -36,7 +36,7 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
   build.dependsOn ":packages:${project.name}:compileJS"
 
   task lint(type: NpmTask) {
-    args=['run', 'lint']
+    args = ['run', 'lint']
   }
   lint.inputs.dir('src')
   lint.outputs.dir('src')
@@ -66,7 +66,7 @@ npmInstall.outputs.file file(markerName)
 
 // Replace npmInstall with npmDoInstall in order to ensure than npmLink is run afterwards!
 task npmDoInstall(type: NpmTask) {
-  args=['install']
+  args = ['install']
 
   inputs.files('package.json', 'package-lock.json', 'build.gradle')
   inputs.files('package.json', 'build.gradle')
@@ -74,17 +74,17 @@ task npmDoInstall(type: NpmTask) {
 }
 
 task clean(type: Delete) {
-    delete 'build'
-    followSymlinks = false
+  delete 'build'
+  followSymlinks = false
 
-    doLast {
-      def marker = new File(markerName)
-      marker.delete()
-    }
+  doLast {
+    def marker = new File(markerName)
+    marker.delete()
+  }
 }
 
 task npmUnlink(type: NpmTask) {
-  args=['run', 'npmUnlink']
+  args = ['run', 'npmUnlink']
 
   npmInstall.inputs.files('package.json', 'package-lock.json', 'build.gradle')
   outputs.file file(markerName)
@@ -95,7 +95,7 @@ task npmUnlink(type: NpmTask) {
   }
 }
 task npmLink(type: NpmTask) {
-  args=['run', 'npmLink']
+  args = ['run', 'npmLink']
 
   npmInstall.inputs.files('package.json', 'package-lock.json', 'build.gradle')
   inputs.files('package.json', 'build.gradle')
@@ -124,7 +124,7 @@ task setup(type: NpmTask) {
     marker.delete()
   }
 
-  args=['run', 'setup']
+  args = ['run', 'setup']
 }
 
 ///////////////////////////////////////////////////

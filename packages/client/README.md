@@ -16,10 +16,10 @@ The webpack config takes two CLI arguments, mandatory from the root project. The
 where X is any of the capital-letter keys below.
 
 - `REACT4XP_CONFIG_FILE`: root-project-relative path to a react4xp-project constant-values JSON file.
-    - This file follows the format of, and is usually produced in the project
-      by, [react4xp-buildconstants](https://www.npmjs.com/package/react4xp-buildconstants).
-    - The used values from it can be overriden by CLI env arguments: `BUILD_R4X`, `LIBRARY_NAME`, `BUILD_ENV`
-      , `CHUNK_CONTENTHASH`, `CLIENT_CHUNKS_FILENAME`.
+  - This file follows the format of, and is usually produced in the project
+    by, [react4xp-buildconstants](https://www.npmjs.com/package/react4xp-buildconstants).
+  - The used values from it can be overriden by CLI env arguments: `BUILD_R4X`, `LIBRARY_NAME`, `BUILD_ENV`
+    , `CHUNK_CONTENTHASH`, `CLIENT_CHUNKS_FILENAME`.
 - `ROOT`: absolute path to the root project
 
 ## API: client runtime
@@ -85,7 +85,7 @@ React4xp.CLIENT.renderWithDependencies(entriesWithTargetIdsAndProps, callback, s
   serializable object of any shape. Entries are loaded on the page in the order of the entry name keys.
 - `callback` (function, optional): called after the entire call chain is complete.
 - `serviceUrlRoot` (string, kinda-sorta-optional): root of the URL to the lib-react4xp's services - e.g. your app.
-    - For example, if they have the URLs `/_/service/my.app/react4xp/` and `/_/service/my.app/react4xp-dependencies/`,
-      then `serviceRootUrl` should be `/_/service/my.app` - _without_ a trailing slash.
-    - You can skip this argument ONLY IF you define the constant SERVICE_URL_ROOT in global namespace before this call.
+  - For example, if they have the URLs `/_/service/my.app/react4xp/` and `/_/service/my.app/react4xp-dependencies/`,
+    then `serviceRootUrl` should be `/_/service/my.app` - _without_ a trailing slash.
+  - You can skip this argument ONLY IF you define the constant SERVICE_URL_ROOT in global namespace before this call.
 
