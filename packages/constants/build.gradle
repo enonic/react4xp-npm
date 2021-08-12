@@ -8,4 +8,4 @@ compileJS.args = ['run', 'compile']
 compileJS.outputs.dir('./bin')
 compileJS.outputs.files('./ensureTargetOutputPath.js', './index.js')
 
-test.args=['run', 'test:mocha']
+test.args = ['run', 'test:mocha']

@@ -6,19 +6,19 @@ compileJS.enabled = false
 test.enabled = false
 
 task copyGradle(type: Copy) {
-  from 'src'
-  include "*.gradle"
-  into '.'
+    from 'src'
+    include "*.gradle"
+    into '.'
 }
 task copyUtil(type: Copy) {
-  from 'src/util'
-  include "*.js"
-  into './util'
+    from 'src/util'
+    include "*.js"
+    into './util'
 }
 task copyReact4xpProps(type: Copy) {
-  from 'src'
-  include "react4xp.properties"
-  into '.'
+    from 'src'
+    include "react4xp.properties"
+    into '.'
 }
 copyGradle.dependsOn += copyReact4xpProps
 copyGradle.dependsOn += copyUtil

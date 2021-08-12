@@ -31,7 +31,7 @@ clean.delete 'entries'
 
 compileJS.enabled = false
 
-lint.args=['run', 'lint']
+lint.args = ['run', 'lint']
 lint.inputs.file('package.json')
 lint.inputs.dir('src')
 //lint.dependsOn project.npmInstall
@@ -45,10 +45,10 @@ test.enabled = false
 //test.outputs.dir('test/output')
 
 task copyFiles(type: Copy) {
-  from 'src'
-  into '.'
-  include '*.*'
-  include 'entries/**'
+    from 'src'
+    into '.'
+    include '*.*'
+    include 'entries/**'
 }
 copyFiles.inputs.dir('src')
 copyFiles.outputs.files('./*.jsx')
