@@ -1,6 +1,6 @@
 {
   "name": "react4xp-build-components",
-  "version": "2.0.0",
+  "version": "2.0.1-SNAPSHOT",
   "description": "React4xp helper: basic webpack compilation of user-added React components in a React4xp structure",
   "main": "webpack.config.js",
   "files": [
@@ -29,6 +29,11 @@
     "url": "https://github.com/enonic/lib-react4xp/issues"
   },
   "homepage": "https://github.com/enonic/react4xp-build-components",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "react4xp-buildconstants": "^4.2.0",
+    "react4xp": "^2.0.0"
+  },
   "dependencies": {
     "glob": "^7.1.7",
     "stats-webpack-plugin": "^0.7.0"

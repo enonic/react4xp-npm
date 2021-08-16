@@ -7,7 +7,7 @@ clean.delete './nashornpolyfills.es6', './webpack.config.js', 'test/output', 'bu
 compileJS.enabled = false
 
 task buildTestPolyfilled(type: NodeTask) {
-  script = file('node_modules/.bin/webpack')
+  script = file('node_modules/.bin/webpack-cli')
   args = ['--config', 'webpack.config.js', '--env', 'NASHORNPOLYFILLS_SOURCE=test/testPolyfiller.es6', '--env', 'BUILD_ENV=development', '--env', 'BUILD_R4X=' + project.PROJDIR + '/test/output', '--env', 'NASHORNPOLYFILLS_FILENAME=testPolyfilled']
 }
 buildTestPolyfilled.inputs.dir('src')

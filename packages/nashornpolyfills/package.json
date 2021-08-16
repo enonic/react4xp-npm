@@ -1,6 +1,6 @@
 {
   "name": "react4xp-runtime-nashornpolyfills",
-  "version": "2.0.0",
+  "version": "2.0.1-SNAPSHOT",
   "description": "Source code and webpack compile script for produces a JS file which, when run in Nashorn, will polyfill Nashorn with some necessary functionality for running React4xp's server-side rendering of react components.",
   "main": "webpack.config.js",
   "files": [
@@ -24,6 +24,12 @@
     "url": "https://github.com/enonic/lib-react4xp/issues"
   },
   "homepage": "https://github.com/enonic/react4xp-runtime-nashornpolyfills",
+  "devDependencies": {
+    "react4xp-buildconstants": "^4.2.0",
+    "webpack": "^5.50.0",
+    "webpack-cli": "^4.8.0",
+    "react4xp": "^2.0.0"
+  },
   "dependencies": {
     "es6-set-and-map": "^1.0.5"
   },
@@ -35,7 +41,7 @@
     "@babel/register": "*",
     "babel-loader": "^8",
     "react4xp": "^2",
-    "react4xp-buildconstants": "^2",
+    "react4xp-buildconstants": "^4.2",
     "webpack": "^5",
     "webpack-cli": "^4"
   },

@@ -1,6 +1,6 @@
 {
   "name": "react4xp-buildconstants",
-  "version": "4.2.0",
+  "version": "4.2.1-SNAPSHOT",
   "description": "React4xp helper: creates a JSON file with shared constants that define and setup a React4xp project.",
   "main": "index.js",
   "files": [
@@ -16,7 +16,7 @@
   "scripts": {
     "compile": "NODE_PATH=. npx babel src -d . --no-comments",
     "lint": "NODE_PATH=. npx eslint src/*.es6",
-    "test:mocha": "NODE_PATH=. npx mocha --require @babel/register --require @babel/polyfill --require test/test_helper.js \"test/**/*@(spec.js)\" && mkdir test/output/cli; bin/cli.js test/output/cli && node_modules/path-exists-cli/cli.js test/output/cli/react4xp_constants.json && node_modules/path-exists-cli/cli.js test/output/cli/build/resources/main/lib/enonic/react4xp/react4xp_constants.json",
+    "test:mocha": "NODE_PATH=. npx mocha --require @babel/register --require @babel/polyfill --require test/test_helper.js \"test/**/*@(spec.js)\" && mkdir test/output/cli; bin/cli.js test/output/cli && path-exists test/output/cli/react4xp_constants.json && path-exists test/output/cli/build/resources/main/lib/enonic/react4xp/react4xp_constants.json",
     "postversion": "cd ../.. && ./copytag.js constants",
     "_TEMP_DISABLED_prepublish": "npm run compile"
   },
@@ -33,5 +33,12 @@
   "directories": {
     "lib": "lib",
     "test": "__tests__"
+  },
+  "peerDependencies": {
+    "react4xp": "^2"
+  },
+  "devDependencies": {
+    "path-exists-cli": "^2.0.0",
+    "react4xp": "^2.0.0"
   }
 }
