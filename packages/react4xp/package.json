@@ -47,7 +47,7 @@
     "react4xp-build-components": "2.0.0-RC1",
     "react4xp-buildconstants": "4.2.0-RC1",
     "react4xp-regions": "1.1.0-RC1",
-    "react4xp-runtime-client": "2.0.0-RC1",
+    "react4xp-runtime-client": "2.0.0-RC2",
     "react4xp-runtime-externals": "2.0.0-RC1",
     "react4xp-runtime-nashornpolyfills": "2.0.0-RC1"
   },
