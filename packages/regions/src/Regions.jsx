@@ -40,16 +40,16 @@ const Regions = ({regionsData, names, tags, classes}) => {
   // TODO: sanitize tag and name: not all characters (or tags) are acceptable
   return selectedRegions.map(name =>
     <Region key={name}
-            regionData={regionsData[name]}
-            name={name}
-            tag={typeof tags === 'string' ? tags : (tags || {})[name]}
-            addClass={
-              classes === true ?
-                name :
-                typeof classes === 'string' ?
-                  classes :
-                  (classes || {})[name]
-            }
+      regionData={regionsData[name]}
+      name={name}
+      tag={typeof tags === 'string' ? tags : (tags || {})[name]}
+      addClass={
+        classes === true ?
+          name :
+          typeof classes === 'string' ?
+            classes :
+            (classes || {})[name]
+      }
     />
   );
 };

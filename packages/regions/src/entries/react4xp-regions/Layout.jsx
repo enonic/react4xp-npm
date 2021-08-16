@@ -24,14 +24,14 @@ import Regions from 'react4xp-regions/Regions';
  * @returns A react4xp-representation (react component) of an XP layout. Must be SERVER-SIDE-rendered by react4xp!
  */
 const Layout = ({
-                  regionsData,
-                  regionNames,
-                  regionClasses,
-                  containerTag,
-                  containerClass,
-                  children,
-                  childrenAfterRegions
-                }) => {
+  regionsData,
+  regionNames,
+  regionClasses,
+  containerTag,
+  containerClass,
+  children,
+  childrenAfterRegions,
+}) => {
   const TAG = containerTag || 'div';
 
   return <TAG className={containerClass}>

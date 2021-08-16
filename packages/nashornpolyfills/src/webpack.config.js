@@ -1,17 +1,17 @@
 // Transpiles nashorn polyfill from, among other things, npm libraries.
 
 const path = require("path");
-const {makeVerboseLogger, cleanAnyDoublequotes} = require("react4xp/util");
+const { makeVerboseLogger, cleanAnyDoublequotes } = require("react4xp/util");
 
 module.exports = (env) => {
   env = env || {}; // eslint-disable-line no-param-reassign
 
-  let {BUILD_R4X} = env;
+  let { BUILD_R4X } = env;
   let BUILD_ENV = env.BUILD_ENV || "production";
-  let {NASHORNPOLYFILLS_FILENAME} = env;
-  let {verbose} = env;
+  let { NASHORNPOLYFILLS_FILENAME } = env;
+  let { verbose } = env;
 
-  let {NASHORNPOLYFILLS_SOURCE} = env; // || path.join(__dirname, 'nashornPolyfills.es6');
+  let { NASHORNPOLYFILLS_SOURCE } = env; // || path.join(__dirname, 'nashornPolyfills.es6');
 
   if (env.REACT4XP_CONFIG_FILE) {
     try {
@@ -108,10 +108,7 @@ module.exports = (env) => {
             loader: "babel-loader",
             options: {
               compact: BUILD_ENV !== "development",
-              presets: [
-                "@babel/preset-react",
-                "@babel/preset-env",
-              ],
+              presets: ["@babel/preset-react", "@babel/preset-env"],
               plugins: [
                 "@babel/plugin-transform-arrow-functions",
                 "@babel/plugin-proposal-object-rest-spread",

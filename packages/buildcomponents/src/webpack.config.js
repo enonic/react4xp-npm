@@ -3,7 +3,7 @@
 const StatsPlugin = require("stats-webpack-plugin");
 const path = require("path");
 const fs = require("fs");
-const {makeVerboseLogger, cleanAnyDoublequotes} = require("react4xp/util");
+const { makeVerboseLogger, cleanAnyDoublequotes } = require("react4xp/util");
 const React4xpEntriesAndChunks = require("./entriesandchunks");
 
 // Turns a comma-separated list of subdirectories below the root React4xp source folder (SRC_R4X, usually .../resources/react4xp/)
@@ -18,74 +18,74 @@ const normalizeDirList = (
 ) =>
   (commaSepDirList || "").trim()
     ? Array.from(
-      new Set(
-        commaSepDirList
-          .trim()
-          .replace(/[\\/]/g, path.sep)
-          .replace(/[´`'"]/g, "")
-          .split(",")
+        new Set(
+          commaSepDirList
+            .trim()
+            .replace(/[\\/]/g, path.sep)
+            .replace(/[´`'"]/g, "")
+            .split(",")
 
-          .map((item) => (item || "").trim())
-          .filter((item) => !!item)
-          .map((item) => item.replace(/[\\/]$/, ""))
-          .map((orig) => {
-            let dir = path.resolve(path.join(SRC_R4X, orig));
+            .map((item) => (item || "").trim())
+            .filter((item) => !!item)
+            .map((item) => item.replace(/[\\/]$/, ""))
+            .map((orig) => {
+              let dir = path.resolve(path.join(SRC_R4X, orig));
 
-            let realDir = null;
-            try {
-              realDir = fs.realpathSync(dir);
-            } catch (e) {
-              if (VERBOSE) {
-                console.warn(
-                  `Warning - error message dump for ${singularLabel} '${orig}':\n--------`
-                );
-                console.warn(e);
-              }
-              console.warn(
-                `${
-                  VERBOSE ? "-------->" : "Warning:"
-                } skipping ${singularLabel} '${orig}' from react4xp.properties${
-                  !VERBOSE
-                    ? " - it probably just doesn't exist. If you're sure it exists, there may be another problem - run the build again with verbose option in react4xp.properties for full error dump"
-                    : ""
-                }.`
-              );
-              return null;
-            }
-
-            let symlinkTargetDir = null;
-            let lstat = fs.lstatSync(dir);
-            while (lstat.isSymbolicLink()) {
-              symlinkTargetDir = fs.readlinkSync(dir);
-              dir = path.resolve(dir, "..", symlinkTargetDir);
-
-              if (fs.existsSync(dir)) {
-                if (dir.startsWith(SRC_R4X)) {
-                  // eslint-disable-next-line no-param-reassign
-                  symlinksUnderReact4xpRoot[orig] = true;
+              let realDir = null;
+              try {
+                realDir = fs.realpathSync(dir);
+              } catch (e) {
+                if (VERBOSE) {
+                  console.warn(
+                    `Warning - error message dump for ${singularLabel} '${orig}':\n--------`
+                  );
+                  console.warn(e);
                 }
-                lstat = fs.lstatSync(dir);
-              } else {
+                console.warn(
+                  `${
+                    VERBOSE ? "-------->" : "Warning:"
+                  } skipping ${singularLabel} '${orig}' from react4xp.properties${
+                    !VERBOSE
+                      ? " - it probably just doesn't exist. If you're sure it exists, there may be another problem - run the build again with verbose option in react4xp.properties for full error dump"
+                      : ""
+                  }.`
+                );
+                return null;
+              }
+
+              let symlinkTargetDir = null;
+              let lstat = fs.lstatSync(dir);
+              while (lstat.isSymbolicLink()) {
+                symlinkTargetDir = fs.readlinkSync(dir);
+                dir = path.resolve(dir, "..", symlinkTargetDir);
+
+                if (fs.existsSync(dir)) {
+                  if (dir.startsWith(SRC_R4X)) {
+                    // eslint-disable-next-line no-param-reassign
+                    symlinksUnderReact4xpRoot[orig] = true;
+                  }
+                  lstat = fs.lstatSync(dir);
+                } else {
+                  throw Error(
+                    `${singularLabel.replace(/^\w/, (c) =>
+                      c.toUpperCase()
+                    )} '${orig}' from react4xp.properties leads by resolved symlink(s) to '${dir}', which was not found.`
+                  );
+                }
+              }
+
+              lstat = fs.lstatSync(realDir);
+              if (!lstat.isDirectory()) {
                 throw Error(
-                  `${singularLabel.replace(/^\w/, (c) =>
-                    c.toUpperCase()
-                  )} '${orig}' from react4xp.properties leads by resolved symlink(s) to '${dir}', which was not found.`
+                  `Can't add ${singularLabel} '${orig}' from react4xp.properties - ${realDir} was found but is not a directory.`
                 );
               }
-            }
 
-            lstat = fs.lstatSync(realDir);
-            if (!lstat.isDirectory()) {
-              throw Error(
-                `Can't add ${singularLabel} '${orig}' from react4xp.properties - ${realDir} was found but is not a directory.`
-              );
-            }
-
-            return realDir;
-          })
-          .filter((dir) => !!dir)
+              return realDir;
+            })
+            .filter((dir) => !!dir)
+        )
       )
-    )
     : [];
 
 const makeExclusionsRegexpString = (currentDir, otherDirs, verboseLog) =>
@@ -208,20 +208,17 @@ module.exports = (env = {}) => {
   }
 
   const siteParsed = path.parse(SRC_SITE);
-  const tooGeneralPaths = SRC_SITE.split(path.sep).reduce(
-    (accum, current) => {
-      const longestPath = accum.slice(-1)[0];
-      if (longestPath === undefined) {
-        return [siteParsed.root];
-      }
-      const dir = path.resolve(longestPath, current);
-      if (dir !== SRC_SITE) {
-        accum.push(dir);
-      }
-      return accum;
-    },
-    []
-  );
+  const tooGeneralPaths = SRC_SITE.split(path.sep).reduce((accum, current) => {
+    const longestPath = accum.slice(-1)[0];
+    if (longestPath === undefined) {
+      return [siteParsed.root];
+    }
+    const dir = path.resolve(longestPath, current);
+    if (dir !== SRC_SITE) {
+      accum.push(dir);
+    }
+    return accum;
+  }, []);
 
   const badChunkDirs = chunkDirs.filter(
     (dir) =>
@@ -299,11 +296,9 @@ module.exports = (env = {}) => {
         Array.isArray(entrySets)
           ? `array[${entrySets.length}]`
           : typeof entrySets +
-          (entrySets && typeof entrySets === "object"
-            ? ` with keys: ${JSON.stringify(
-              Object.keys(entrySets)
-            )}`
-            : "")
+            (entrySets && typeof entrySets === "object"
+              ? ` with keys: ${JSON.stringify(Object.keys(entrySets))}`
+              : "")
       }): ${JSON.stringify(entrySets, null, 2)}`
     );
     throw Error(
@@ -311,11 +306,9 @@ module.exports = (env = {}) => {
         Array.isArray(entries)
           ? `array[${entries.length}]`
           : typeof entries +
-          (entries && typeof entries === "object"
-            ? ` with keys: ${JSON.stringify(
-              Object.keys(entries)
-            )}`
-            : "")
+            (entries && typeof entries === "object"
+              ? ` with keys: ${JSON.stringify(Object.keys(entries))}`
+              : "")
       }: ${JSON.stringify(entries)}`
     );
   }
@@ -326,11 +319,9 @@ module.exports = (env = {}) => {
         Array.isArray(entrySets)
           ? `array[${entrySets.length}]`
           : typeof entrySets +
-          (entrySets && typeof entrySets === "object"
-            ? ` with keys: ${JSON.stringify(
-              Object.keys(entrySets)
-            )}`
-            : "")
+            (entrySets && typeof entrySets === "object"
+              ? ` with keys: ${JSON.stringify(Object.keys(entrySets))}`
+              : "")
       }): ${JSON.stringify(entrySets, null, 2)}`
     );
     throw Error(
@@ -445,9 +436,7 @@ module.exports = (env = {}) => {
     output: {
       path: BUILD_R4X, // <-- Sets the base url for plugins and other target dirs. Note the use of {{assetUrl}} in index.html (or index.ejs).
       filename: (pathdata) =>
-        (pathdata.chunk || {}).chunkReason
-          ? chunkFileName
-          : "[name].js", // <-- Content-hash file names of dependency chunks but not entry components
+        (pathdata.chunk || {}).chunkReason ? chunkFileName : "[name].js", // <-- Content-hash file names of dependency chunks but not entry components
       library: {
         name: [LIBRARY_NAME, "[name]"],
         type: "var",
@@ -476,16 +465,12 @@ module.exports = (env = {}) => {
         {
           // Babel for building static assets. Excluding node_modules BUT ALLOWING node_modules/react4xp-regions
           test: /\.((jsx?)|(es6))$/,
-          exclude:
-            /(?=.*[\\/]node_modules[\\/](?!react4xp-regions))^(\w+)$/,
+          exclude: /(?=.*[\\/]node_modules[\\/](?!react4xp-regions))^(\w+)$/,
           use: {
             loader: "babel-loader",
             options: {
               compact: !DEVMODE,
-              presets: [
-                "@babel/preset-react",
-                "@babel/preset-env",
-              ],
+              presets: ["@babel/preset-react", "@babel/preset-env"],
               plugins: [
                 "@babel/plugin-transform-arrow-functions",
                 "@babel/plugin-proposal-object-rest-spread",
