@@ -1,6 +1,6 @@
 {
   "name": "react4xp-runtime-client",
-  "version": "2.0.0-RC1",
+  "version": "2.0.0-RC2",
   "description": "React4xp helper: Webpack setup for building React4xp's client-side wrapper",
   "main": "webpack.config.js",
   "files": [
@@ -36,7 +36,7 @@
   },
   "peerDependencies": {
     "@babel/cli": "^7",
-    "@babel/core": "^'7",
+    "@babel/core": "^7",
     "@babel/plugin-proposal-object-rest-spread": "^7",
     "@babel/plugin-transform-arrow-functions": "^7",
     "@babel/polyfill": "*",
