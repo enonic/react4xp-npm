@@ -1,5 +1,5 @@
 /*plugins {
-  id "com.moowork.node" // version "1.3.1"
+  id "com.github.node-gradle.node" // version "3.0.1"
 }*/
 
 clean.delete './webpack.config.js', './build', './entriesandchunks.js', 'test/dummy-build', "test/output"
@@ -30,17 +30,17 @@ makeConstants.outputs.dir('build')
 makeConstants.dependsOn build
 
 task testEntriesAndChunks(type: NpmTask) {
-  args=['run', 'test:entriesAndChunks']
+  args = ['run', 'test:entriesAndChunks']
 }
 testEntriesAndChunks.outputs.dir('test/build')
 testEntriesAndChunks.outputs.dir('test/output')
 task testRaw(type: NpmTask) {
-  args=['run', 'test:raw']
+  args = ['run', 'test:raw']
 }
 testRaw.outputs.dir('test/build')
 testRaw.outputs.dir('test/output')
 task testOverride(type: NpmTask) {
-  args=['run', 'test:override']
+  args = ['run', 'test:override']
 }
 testOverride.outputs.dir('test/build')
 testOverride.outputs.dir('test/output')

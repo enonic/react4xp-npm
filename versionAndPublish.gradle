@@ -74,7 +74,7 @@ project.ext.SEMVER_PATTERN = ~"\\d+\\.\\d+\\.\\d+"
 def msg = (project.hasProperty("message")) ? project.property("message") : "publish"
 
 task preVersionCleanNpm(type: NpmTask) {
-  args=['run', 'clean']
+  args = ['run', 'clean']
 }
 
 def lernaVersionCommonCmd = [
@@ -135,15 +135,12 @@ task versionLevel3(type: Exec) {
 }
 
 
-
 ////////////////////////
 
 task cleanPrereleaseTags(type: Exec) {
   commandLine './cleanTagsContaining.sh', project.ext.PRERELEASE_ID
   enabled = !project.hasProperty("dry")
 }
-
-
 
 
 task gitAdd1(type: Exec) {
@@ -214,14 +211,10 @@ task postLevel3() {}
 postLevel3.dependsOn gitPush3
 
 
-task versionAndPublish(){
+task versionAndPublish() {
   group('Publish')
   description('Automated full-project version bumping and NPM publishing of updated packages and their dependents. See versionAndPublish.gradle')
 }
-
-
-
-
 
 
 def getCurrentlyReleasedVersion(packageName, npmViewOutput, npmViewFailure, npmViewErrors, npmViewExitValue) {
@@ -308,6 +301,7 @@ def getWaitMessage(currentLevel) {
     "    - Level 2 (TWO): All other packages are published in between.\n\n" +
     "When you're ready, TYPE 'y' TO CONTINUE (git commit/push and npm publish).\n\n"
 }
+
 task wait1 {
   doLast {
     println getWaitMessage(1)
@@ -335,7 +329,7 @@ task wait2 {
 
 def NPM_PUBLISH_CMD = "npm publish${(!project.hasProperty("dry")) ? "" : ' --dry-run'}"
 
-configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)}) {
+configure(subprojects.findAll { !project.ext.SUBPROJS_TO_IGNORE.contains(it.name) }) {
   // Set up 3 groups (levels) of publish, which must happen in that order.
   // Also disable publish for each package that has the prerelease ID in the version string:
 
@@ -352,9 +346,6 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
     delete 'node_modules'
   }
   npmClean3.dependsOn cleanPrereleaseTags
-
-
-
 
 
   task npmInstall1(type: NpmTask) {
@@ -473,7 +464,6 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
   }
 
 
-
   // Enables/disables based on currently configured subproject's name:
 
   // regions and constants are released first, since other packages depend on them:
@@ -524,8 +514,6 @@ configure(subprojects.findAll {!project.ext.SUBPROJS_TO_IGNORE.contains(it.name)
   npmClean1.dependsOn wait1
   wait1.dependsOn publishLevel1
 }
-
-
 
 
 ///////////////////////////////////////////////////////////////////////////////

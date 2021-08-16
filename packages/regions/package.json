@@ -38,7 +38,7 @@
   "homepage": "https://github.com/enonic/react4xp-regions",
   "peerDependencies": {
     "prop-types": "^15",
-    "react": "^16"
+    "react": "*"
   },
   "lint-staged": {
     "*.{js,jsx,es,es6}": [

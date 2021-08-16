@@ -10,5 +10,5 @@
  *      have a 'path' string attribute.
  */
 export default (component) => (component && component.path) ?
-    `\t\t\t\t\t\t\n\t\t\t\t\t\t\t<!--# COMPONENT ${component.path} -->` :
-    null;
+  `\t\t\t\t\t\t\n\t\t\t\t\t\t\t<!--# COMPONENT ${component.path} -->` :
+  null;

@@ -33,7 +33,7 @@ module.exports = function(env, config) {
   }
 
   config.mode = "production";
-  config.devtool = "cheap-module-eval-source-map";
+  config.devtool = "eval-cheap-module-source-map";
 
   return config;
 };

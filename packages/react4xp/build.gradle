@@ -1,5 +1,5 @@
 /*plugins {
-  id "com.moowork.node" // version "1.3.1"
+  id "com.github.node-gradle.node" // version "3.1.0"
 }*/
 
 compileJS.enabled = false
@@ -10,16 +10,22 @@ task copyGradle(type: Copy) {
   include "*.gradle"
   into '.'
 }
+task copyUtil(type: Copy) {
+  from 'src/util'
+  include "*.js"
+  into './util'
+}
 task copyReact4xpProps(type: Copy) {
   from 'src'
   include "react4xp.properties"
   into '.'
 }
 copyGradle.dependsOn += copyReact4xpProps
+copyGradle.dependsOn += copyUtil
 build.dependsOn += copyGradle
 //doPublish.dependsOn += copyFiles
 
-clean.delete './npmInstall.gradle', './react4xp.gradle', './updaters.gradle', './react4xp.properties', 'lib', './npmLinked.marker'
+clean.delete './npmInstall.gradle', './util/index.js', './react4xp.gradle', './updaters.gradle', './react4xp.properties', 'lib', './npmLinked.marker'
 
 /*
 doPublish.shouldRunAfter ":packages:buildcomponents:doPublish"

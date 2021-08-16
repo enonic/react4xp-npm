@@ -32,7 +32,7 @@ exports.normalizePath = (pathString) => {
 
 /** Builds component entries from files found under a directory, for selected file extensions, for being transpiled out to a target path. */
 function buildEntriesToSubfolder(entrySet, verboseLog) {
-  verboseLog(`Entries from subfolder (entry set: ${JSON.stringify(entrySet)})`);
+  verboseLog(entrySet, "Entries from subfolder - entry set", 1);
 
   const sourcePath = exports.normalizePath(entrySet.sourcePath);
   const extensions = entrySet.sourceExtensions;
@@ -64,7 +64,7 @@ function buildEntriesToSubfolder(entrySet, verboseLog) {
                 .filter((a) => (a || "").trim())
                 .join("/");
 
-              verboseLog("\tEntry: ", name, "->", normalizedEntry);
+              verboseLog(`${name} -> ${normalizedEntry}`, "\tEntry");
 
               // eslint-disable-next-line no-param-reassign
               obj[name] = normalizedEntry;
@@ -86,21 +86,20 @@ function makeEntriesFile(entries, outputPath, entriesFilename, verboseLog) {
   dirs.forEach((dir) => {
     accum += dir + exports.SLASH;
     if (!fs.existsSync(accum)) {
-      verboseLog(`\tCreate: ${accum}`);
+      verboseLog(accum, "\tCreate");
       fs.mkdirSync(accum);
     }
   });
   fs.writeFileSync(entryFile, JSON.stringify(entryList, null, 2));
 
-  verboseLog(`React4xp entries (a.k.a jsxPath) listed in: ${entryFile}\n`);
+  verboseLog(entryFile, "React4xp entries (a.k.a jsxPath) listed in");
 }
 
 // Entries are the non-dependency output files, i.e. react components and other js files that should be directly
 // available and runnable to both the browser and the nashorn engine.
 // This function builds the entries AND entries.json, which lists the first-level components that shouldn't be counted
 // as general dependencies.
-exports.getEntries = (entrySets, outputPath, entriesFilename, verbose) => {
-  const verboseLog = verbose ? console.log : function () {};
+exports.getEntries = (entrySets, outputPath, entriesFilename, verboseLog) => {
   const entries = entrySets.reduce(
     (accumulator, entrySet) =>
       Object.assign(accumulator, buildEntriesToSubfolder(entrySet, verboseLog)),

@@ -3,7 +3,7 @@ import deepFreeze from 'deep-freeze';
 import path from 'path';
 
 // TODO: Test cachegroups!
-import { getEntries, getCacheGroups, normalizePath } from '../entriesandchunks';
+const { getEntries, getCacheGroups, normalizePath } = require('../entriesandchunks');
 
 const DIR_NAME = __dirname; // eslint-disable-line no-undef
 //console.log("DIR_NAME:", JSON.stringify(DIR_NAME, null, 2));
@@ -43,8 +43,8 @@ describe("React4xp Webpack build: entries-and-chunks", ()=>{
                     },
                 ],
                 OUTPUT_PATH,
-                "outputEntries.json"
-                //,true
+                "outputEntries.json",
+                console.log
             );
             //console.log("actualEntries from .getEntries: " + JSON.stringify(actualEntries, null, 2));
 
@@ -71,8 +71,8 @@ describe("React4xp Webpack build: entries-and-chunks", ()=>{
                     },
                 ],
                 OUTPUT_PATH,
-                "outputEntries.json"
-                //,true
+                "outputEntries.json",
+                console.log
             );
 
             // Loads as JSON data the expected file that should be side-effect-generated during .getEntries)
