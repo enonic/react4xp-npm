@@ -1,6 +1,6 @@
 {
   "name": "react4xp-runtime-client",
-  "version": "1.0.8",
+  "version": "2.0.0-RC2",
   "description": "React4xp helper: Webpack setup for building React4xp's client-side wrapper",
   "main": "webpack.config.js",
   "files": [
@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "test:main": "echo \"(Placeholder necessary for task dependencies)\"",
-    "test:webpack": "webpack --config webpack.config.js --env.BUILD_R4X=$(pwd)/test/output --env.LIBRARY_NAME=React4xp --env.CHUNK_CONTENTHASH=9 --env.CLIENT_CHUNKS_FILENAME=chunky.json && echo \"-------------- react4xp-runtimeclient builds. ADD SOME ACTUAL TESTS PLZ?\"",
+    "test:webpack": "webpack --config webpack.config.js --env BUILD_R4X=$(pwd)/test/output --env LIBRARY_NAME=React4xp --env CHUNK_CONTENTHASH=9 --env CLIENT_CHUNKS_FILENAME=chunky.json && echo \"-------------- react4xp-runtimeclient builds. ADD SOME ACTUAL TESTS PLZ?\"",
     "lint": "eslint src/**/*.* --fix",
     "postversion": "cd ../.. && ./copytag.js client",
     "_TEMP_DISABLED_prepublish": "npm run copyFiles",
@@ -31,8 +31,8 @@
   },
   "homepage": "https://github.com/enonic/react4xp-runtime-client",
   "dependencies": {
-    "fetch-timeout": "0.0.2",
-    "node-fetch": "^2.3.0"
+    "fetch-timeout": "^0.0.2",
+    "node-fetch": "^2.6.1"
   },
   "peerDependencies": {
     "@babel/cli": "^7",
@@ -45,9 +45,10 @@
     "@babel/register": "*",
     "babel-loader": "^8",
     "react": "*",
+    "react4xp": "^2",
     "react-dom": "*",
-    "webpack": "^4",
-    "webpack-cli": "^3"
+    "webpack": "^5",
+    "webpack-cli": "^4"
   },
   "babel": {
     "presets": [

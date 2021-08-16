@@ -34,6 +34,8 @@ const fs = require("fs");
 
 const Chunks2json = require("chunks-2-json-webpack-plugin");
 
+const { cleanAnyDoublequotes } = require("react4xp/util");
+
 // TODO: Find a good pattern to control output name for chunks,
 // allowing for multi-chunks and still doing it in one pass (only one chunks.externals.json)
 // TODO: Allowing build path (where BUILD_R4X today must be absolute)
@@ -82,10 +84,6 @@ function generateTempES6SourceAndGetFilename(_externals, outputFileName) {
     externalsImports += `import ${externals[key]} from '${key}';\n`;
   });
 
-  /* Object.keys(externals).forEach( key => {
-        externalsImports += `console.log('${externals[key]}: ' + ${externals[key]});\n`;
-    }); // */
-
   Object.keys(externals).forEach((key) => {
     externalsExports += `\twindow.${externals[key]} = ${externals[key]};\n`;
   });
@@ -110,9 +108,12 @@ module.exports = (env = {}) => {
   }
 
   const BUILD_ENV = env.BUILD_ENV || config.BUILD_ENV;
-  const BUILD_R4X = env.BUILD_R4X || config.BUILD_R4X;
 
-  const ROOT = env.ROOT || __dirname;
+  const BUILD_R4X = cleanAnyDoublequotes(
+    "BUILD_R4X",
+    env.BUILD_R4X || config.BUILD_R4X
+  );
+  const ROOT = cleanAnyDoublequotes("ROOT", env.ROOT || __dirname);
 
   /* EXTERNALS is the main object handled here. By default it looks like this:
       {
@@ -161,13 +162,22 @@ module.exports = (env = {}) => {
 
   return {
     mode: BUILD_ENV,
-    devtool: BUILD_ENV === "production" ? undefined : "cheap-module-source-map",
+    devtool: BUILD_ENV === "production" ? undefined : "source-map",
 
     entry,
 
     output: {
       path: BUILD_R4X, // <-- Sets the base url for plugins and other target dirs.
       filename: chunkFileName,
+      environment: {
+        arrowFunction: false,
+        bigIntLiteral: false,
+        const: false,
+        destructuring: false,
+        dynamicImport: false,
+        forOf: false,
+        module: false,
+      },
     },
 
     resolve: {
@@ -179,9 +189,11 @@ module.exports = (env = {}) => {
         {
           test: /\.((jsx?)|(es6))$/,
           exclude: /node_modules/,
-          loader: "babel-loader",
-          query: {
-            compact: BUILD_ENV === "production",
+          use: {
+            loader: "babel-loader",
+            options: {
+              compact: BUILD_ENV === "production",
+            },
           },
         },
       ],

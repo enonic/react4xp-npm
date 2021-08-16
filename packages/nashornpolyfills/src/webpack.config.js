@@ -1,6 +1,7 @@
 // Transpiles nashorn polyfill from, among other things, npm libraries.
 
 const path = require("path");
+const { makeVerboseLogger, cleanAnyDoublequotes } = require("react4xp/util");
 
 module.exports = (env) => {
   env = env || {}; // eslint-disable-line no-param-reassign
@@ -30,6 +31,8 @@ module.exports = (env) => {
     }
   }
 
+  const verboseLog = makeVerboseLogger(verbose);
+
   if (`${NASHORNPOLYFILLS_SOURCE || ""}`.trim() === "") {
     throw Error(
       `react4xp-runtime-nashornpolyfills: no source filename is set (NASHORNPOLYFILLS_SOURCE). Check react4xp-runtime-nashornpolyfills build setup, for env parameters${
@@ -39,6 +42,8 @@ module.exports = (env) => {
       }.`
     );
   }
+
+  BUILD_R4X = cleanAnyDoublequotes("BUILD_R4X", BUILD_R4X);
 
   if (`${BUILD_R4X || ""}`.trim() === "") {
     throw Error(
@@ -60,14 +65,12 @@ module.exports = (env) => {
     );
   }
 
-  if (verbose) {
-    console.log(
-      `Adding custom nashorn polyfills: compiling ${path.join(
-        process.cwd(),
-        NASHORNPOLYFILLS_SOURCE
-      )} --> ${path.join(BUILD_R4X, NASHORNPOLYFILLS_FILENAME)}`
-    );
-  }
+  verboseLog(
+    `Adding custom nashorn polyfills: compiling ${path.join(
+      process.cwd(),
+      NASHORNPOLYFILLS_SOURCE
+    )} --> ${path.join(BUILD_R4X, NASHORNPOLYFILLS_FILENAME)}`
+  );
 
   return {
     mode: BUILD_ENV,
@@ -82,6 +85,15 @@ module.exports = (env) => {
     output: {
       path: BUILD_R4X,
       filename: "[name].js",
+      environment: {
+        arrowFunction: false,
+        bigIntLiteral: false,
+        const: false,
+        destructuring: false,
+        dynamicImport: false,
+        forOf: false,
+        module: false,
+      },
     },
 
     resolve: {
@@ -92,14 +104,16 @@ module.exports = (env) => {
         {
           test: /\.es6$/,
           exclude: /node_modules/,
-          loader: "babel-loader",
-          query: {
-            compact: BUILD_ENV !== "development",
-            presets: ["@babel/preset-react", "@babel/preset-env"],
-            plugins: [
-              "@babel/plugin-transform-arrow-functions",
-              "@babel/plugin-proposal-object-rest-spread",
-            ],
+          use: {
+            loader: "babel-loader",
+            options: {
+              compact: BUILD_ENV !== "development",
+              presets: ["@babel/preset-react", "@babel/preset-env"],
+              plugins: [
+                "@babel/plugin-transform-arrow-functions",
+                "@babel/plugin-proposal-object-rest-spread",
+              ],
+            },
           },
         },
       ],

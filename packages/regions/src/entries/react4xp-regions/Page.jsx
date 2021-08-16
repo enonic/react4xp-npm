@@ -24,40 +24,40 @@ import Regions from 'react4xp-regions/Regions';
  * context.
  */
 const Page = ({title, regionsData, regionNames, regionClasses, children, childrenAfterRegions}) => {
-    return [
-        <head>
-            {title ? <title>{title}</title> : null}
-        </head>,
-        <body className="xp-page">
-            {!childrenAfterRegions ? children : null}
-            {regionsData ? <Regions regionsData={regionsData} classes={regionClasses} names={regionNames} /> : null}
-            {childrenAfterRegions ? children : null}
-        </body>,
-    ];
+  return [
+    <head>
+      {title ? <title>{title}</title> : null}
+    </head>,
+    <body className="xp-page">
+      {!childrenAfterRegions ? children : null}
+      {regionsData ? <Regions regionsData={regionsData} classes={regionClasses} names={regionNames}/> : null}
+      {childrenAfterRegions ? children : null}
+    </body>,
+  ];
 };
 
 
 Page.propTypes = {
-    title: PropTypes.string,
-    regionsData: PropTypes.objectOf(
+  title: PropTypes.string,
+  regionsData: PropTypes.objectOf(
+    PropTypes.shape({
+      components: PropTypes.arrayOf(
         PropTypes.shape({
-            components: PropTypes.arrayOf(
-                PropTypes.shape({
-                    path: PropTypes.string.isRequired,
-                })
-            ),
+          path: PropTypes.string.isRequired,
         })
-    ),
-    regionNames: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string),
-    ]),
-    regionClasses: PropTypes.oneOfType([
-        PropTypes.bool,
-        PropTypes.string,
-        PropTypes.objectOf(PropTypes.string),
-    ]),
-    childrenAfterRegions: PropTypes.bool,
+      ),
+    })
+  ),
+  regionNames: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string),
+  ]),
+  regionClasses: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.string,
+    PropTypes.objectOf(PropTypes.string),
+  ]),
+  childrenAfterRegions: PropTypes.bool,
 };
 
 export default Page;

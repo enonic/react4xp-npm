@@ -4,6 +4,8 @@
     "target": "es6"
   },
   "presets": [
-    ["@babel/preset-env"]
+    [
+      "@babel/preset-env"
+    ]
   ]
 }
