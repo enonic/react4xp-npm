@@ -21,7 +21,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/packages/buildcomponents"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
     open-pull-requests-limit: 10
     assignees:
       - "espen42"
@@ -30,7 +30,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/packages/client"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
     open-pull-requests-limit: 10
     assignees:
       - "espen42"
@@ -39,7 +39,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/packages/constants"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
     open-pull-requests-limit: 10
     assignees:
       - "espen42"
@@ -48,7 +48,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/packages/externals"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
     open-pull-requests-limit: 10
     assignees:
       - "espen42"
@@ -57,7 +57,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/packages/nashornpolyfills"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
     open-pull-requests-limit: 10
     assignees:
       - "espen42"
@@ -66,7 +66,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/packages/react4xp"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
     open-pull-requests-limit: 10
     assignees:
       - "espen42"
@@ -75,7 +75,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/packages/regions"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
     open-pull-requests-limit: 10
     assignees:
       - "espen42"
