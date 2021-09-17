@@ -27,6 +27,8 @@ build.dependsOn += copyGradle
 
 clean.delete './npmInstall.gradle', './util/index.js', './react4xp.gradle', './updaters.gradle', './react4xp.properties', 'lib', './npmLinked.marker'
 
+npmInstall.enabled = true
+
 /*
 doPublish.shouldRunAfter ":packages:buildcomponents:doPublish"
 doPublish.shouldRunAfter ":packages:client:doPublish"

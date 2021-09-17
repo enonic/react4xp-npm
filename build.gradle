@@ -52,17 +52,14 @@ configure(subprojects.findAll { !project.ext.SUBPROJS_TO_IGNORE.contains(it.name
   test.dependsOn build
   // build.dependsOn npmInstall
 
-  npmInstall.enabled = false
+  if (project.name !== 'react4xp') {
+    npmInstall.enabled = false
+  }
 }
-
-
-def slash = File.separator
-def markerName = ".${slash}packages${slash}react4xp${slash}npmLinked.marker"
 
 
 npmInstall.inputs.files('package.json', 'package-lock.json', 'build.gradle')
 npmInstall.outputs.file('package-lock.json')
-npmInstall.outputs.file file(markerName)
 
 // Replace npmInstall with npmDoInstall in order to ensure than npmLink is run afterwards!
 task npmDoInstall(type: NpmTask) {
@@ -70,60 +67,33 @@ task npmDoInstall(type: NpmTask) {
 
   inputs.files('package.json', 'package-lock.json', 'build.gradle')
   inputs.files('package.json', 'build.gradle')
-  outputs.file file(markerName)
 }
 
 task clean(type: Delete) {
   delete 'build'
   followSymlinks = false
-
-  doLast {
-    def marker = new File(markerName)
-    marker.delete()
-  }
 }
 
 task npmUnlink(type: NpmTask) {
   args = ['run', 'npmUnlink']
 
   npmInstall.inputs.files('package.json', 'package-lock.json', 'build.gradle')
-  outputs.file file(markerName)
-
-  doLast {
-    def marker = new File(markerName)
-    marker.delete()
-  }
 }
 task npmLink(type: NpmTask) {
   args = ['run', 'npmLink']
 
   npmInstall.inputs.files('package.json', 'package-lock.json', 'build.gradle')
   inputs.files('package.json', 'build.gradle')
-  outputs.file file(markerName)
-
-  doLast {
-    def marker = new File(markerName)
-    new File(marker.getParent()).mkdirs()
-    marker.text = """
-Marker file, indicating that the npmInstall gradle task has been run in the root project - faster than traversing the entire node_modules tree for changes.
-"""
-    println "\nNPM marker installed --> $markerName"
-  }
 }
 
 npmInstall.enabled = false;
 npmInstall.dependsOn npmDoInstall
-npmInstall.dependsOn npmLink
-npmLink.mustRunAfter npmDoInstall
 npmDoInstall.dependsOn npmUnlink
+// npmLink.mustRunAfter npmDoInstall
+//npmInstall.dependsOn npmLink
 
 
 task setup(type: NpmTask) {
-  doFirst {
-    def marker = new File(markerName)
-    marker.delete()
-  }
-
   args = ['run', 'setup']
 }
 
