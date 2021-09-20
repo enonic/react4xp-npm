@@ -29,15 +29,6 @@
     "url": "https://github.com/enonic/lib-react4xp/issues"
   },
   "homepage": "https://github.com/enonic/react4xp-build-components",
-  "devDependencies": {
-    "eslint": "^7.32.0",
-    "react4xp-buildconstants": "^4.2.0",
-    "react4xp": "^2.0.0"
-  },
-  "dependencies": {
-    "glob": "^7.1.7",
-    "stats-webpack-plugin": "^0.7.0"
-  },
   "peerDependencies": {
     "@babel/plugin-proposal-object-rest-spread": "^7",
     "@babel/plugin-transform-arrow-functions": "^7",
@@ -48,7 +39,9 @@
     "react4xp": "^2",
     "react-dom": "*",
     "webpack": "^5",
-    "webpack-cli": "^4"
+    "webpack-cli": "^4",
+    "glob": "^7.1",
+    "stats-webpack-plugin": "^0.7"
   },
   "lint-staged": {
     "src/webpack.config.js": [

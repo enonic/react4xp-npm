@@ -24,15 +24,6 @@
     "url": "https://github.com/enonic/lib-react4xp/issues"
   },
   "homepage": "https://github.com/enonic/react4xp-runtime-nashornpolyfills",
-  "devDependencies": {
-    "react4xp": "^2.0.0",
-    "react4xp-buildconstants": "^4.2.0",
-    "webpack": "^5.53.0",
-    "webpack-cli": "^4.8.0"
-  },
-  "dependencies": {
-    "es6-set-and-map": "^1.0.5"
-  },
   "peerDependencies": {
     "@babel/plugin-proposal-object-rest-spread": "^7",
     "@babel/plugin-transform-arrow-functions": "^7",
@@ -40,6 +31,7 @@
     "@babel/preset-react": "^7",
     "@babel/register": "*",
     "babel-loader": "^8",
+    "es6-set-and-map": "^1.0.5",
     "react4xp": "^2",
     "react4xp-buildconstants": "^4.2",
     "webpack": "^5",

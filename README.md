@@ -31,14 +31,22 @@ main [react4xp package](https://www.npmjs.com/package/react4xp) (_react4xp_).
 
 You'll need Gradle 5+ (a 6.2.1 gradle wrapper is included), Java JDK 11, Enonic XP 7+, and Node.
 
-Use **Node 10** for development in this project _and in all projects when using `npm link` for linking to these packages
+Use **Node 12** for development in this project _and in all projects when using `npm link` for linking to these packages
 locally_. Usually, that's when developing lib-react4xp.
 
-NOTE: The commands `npm i` is meant to never be run in this project, should be avoided if possibl. The same goes for
-manually deleting _node_modules_ folders. Instead, package.json and build.gradle define scripts and tasks that handle
-NPM setup and interlinking with [CLI commands](#terminal-commands) that should always be **run from root**.
 
-### Internal package dependencies
+
+### NPM packages
+Under the _packages/_ folder are:
+- one "mother packages", _react4xp_. This corresponds to the [react4xp NPM package](https://www.npmjs.com/package/react4xp).
+- several subpackages.
+
+The  _packages/react4xp_ mother package has 3 main purposes:
+- It lists all _react4xp-*_ subpackages as `dependencies`, so that one version of the react4xp package imports and locks in a working combination of all the react4xp subpackages in any consuming project.
+- It supplies the NPM dependencies for all the subpackages _in one place_ (*see the important part below*) so that subpackages can simply list them under `peerDependencies`.
+- It supplies a few _.gradle_ files, which can be used to aid the react4xp build in a consuming project.
+
+### IMPORTANT: NPM and maintainability
 
 All the sub-packages mentioned above are dependencies of this main react4xp package. In addition, _react4xp-regions_
 and _react4xp-buildconstants_ are dependencies of _react4xp-build-components_, and  _react4xp-buildconstants_ is a
@@ -46,7 +54,21 @@ dependency of _react4xp-runtime-nashornpolyfills_:
 
 <img src="media/react4xp-internal-dependencies.png" alt="React4xp internal package dependencies" title="React4xp internal package dependencies" width="1000px">
 
-### Important: git
+**To avoid falling back into interdependency hell** (e.g. dependabot updating the same dependencies in different subpackages, which depend on one another and requiring a lot of extra work for maintaining!), follow these rules:
+
+- As far as possible, none of the subpackages should _any_ `dependencies` or `devDependencies` in their _package.json_. Instead, this is handled by the _package.json_ files in the root project and _packages/react4xp/_, like this:
+    - A **dependency** in a subpackage must be listed as a `peerDependency` in that package, and as a `dependency` in _packages/react4xp/packages.json_. It must also be listed in `devDependencies` (or `dependencies`) in the root project's _package.json_.
+    - A **devDependency** in a subpackages must only be listed in `devDependencies` (or `dependencies`) in the root project's _package.json_.
+- If **adding/removing subpackages**:
+    - Update the list under `dependencies` in _packages/react4xp/package.json_.
+- If a subpackage is a **dev-time dependency of another subpackage** (eg. in testing), it should be handled with symlinks (eg. to avoid that testing happens with the downloaded-from-NPM-version of the subpackage instead of actually using locally changed code).
+    - [Symlink-dir](https://www.npmjs.com/package/symlink-dir) is used to automate this during dev build, in a crossplatform way and directly after `npm install`. See the `postinstall` scripts in the root _package.json_. The result should be this:
+    - _All_ subpackages exist as symlinks to their folders, under _/packages/react4xp/node_modules_.
+    - In addition, subpackages that are dev-time required by other subpackages, have similar symlinks under _/node_modules_.
+
+
+
+### IMPORTANT: git
 
 When committing to git, please follow the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0-beta.2/)
 pattern in your messages, at least use `feat:` and `BREAKING CHANGE`. Also leave tags and all versioning
@@ -86,8 +108,6 @@ Thins ready state should be:
   using [symlink-dir](https://www.npmjs.com/package/symlink-dir) for cross-platform symlinking).
 - Each of the subprojects have their own symlink under _(project root)/node_modules_ - taking care of
   cross-dependencies.
-- A marker file, _npmLinked.marker_, is created under _packages/react4xp_. This only serves to speed up the NPM istall:
-  gradle skips this step if this marker exists.
 
 > NOTE:
 >
