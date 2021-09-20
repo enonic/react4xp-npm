@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "eslint --fix src/**/*.js",
     "test:main": "echo \"(Placeholder necessary for task dependencies)\"",
-    "test:webpack": "webpack --config ./webpack.config.js --env REACT4XP_CONFIG_FILE=/test/react4xpConstants.json --env BUILD_R4X=$(pwd)/build && echo \"\" && echo \"--> build/\" && ls build && echo \"-------------- react4xp-runtime-externals builds. ADD SOME ACTUAL TESTS PLZ?\"",
+    "test:webpack": "NODE_PATH=. webpack --config ./webpack.config.js --env REACT4XP_CONFIG_FILE=/test/react4xpConstants.json --env BUILD_R4X=$(pwd)/build --env ROOT=$(pwd)/../.. && echo \"\" && echo \"--> build/\" && ls build && echo \"-------------- react4xp-runtime-externals builds. ADD SOME ACTUAL TESTS PLZ?\"",
     "postversion": "cd ../.. && ./copytag.js externals"
   },
   "repository": {

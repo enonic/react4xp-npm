@@ -268,7 +268,7 @@ module.exports = (env = {}) => {
     },
     {
       sourcePath: path.join(
-        process.cwd(),
+        ROOT || process.cwd(),
         "node_modules",
         "react4xp-regions",
         "entries"

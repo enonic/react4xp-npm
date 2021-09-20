@@ -27,7 +27,7 @@ exports.normalizePath = (pathString) => {
       )}). Replacing with forward slashes.`
     );
   }
-  return pathString.replace(/\\/g, "/");
+  return pathString.replace(/\\+/g, "/").replace(/\/+/g, "/");
 };
 
 /** Builds component entries from files found under a directory, for selected file extensions, for being transpiled out to a target path. */

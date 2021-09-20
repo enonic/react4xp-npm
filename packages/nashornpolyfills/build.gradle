@@ -7,7 +7,7 @@ clean.delete './nashornpolyfills.es6', './webpack.config.js', 'test/output', 'bu
 compileJS.enabled = false
 
 task buildTestPolyfilled(type: NodeTask) {
-  script = file('node_modules/.bin/webpack-cli')
+  script = file('../../node_modules/.bin/webpack-cli')
   args = ['--config', 'webpack.config.js', '--env', 'NASHORNPOLYFILLS_SOURCE=test/testPolyfiller.es6', '--env', 'BUILD_ENV=development', '--env', 'BUILD_R4X=' + project.PROJDIR + '/test/output', '--env', 'NASHORNPOLYFILLS_FILENAME=testPolyfilled']
 }
 buildTestPolyfilled.inputs.dir('src')
@@ -29,7 +29,7 @@ cleanTest.dependsOn runTestPolyfilled
 
 // ' + project.PROJDIR + '
 task makeConstants(type: NodeTask) {
-  script = file('node_modules/react4xp-buildconstants/bin/cli.js')
+  script = file('../../node_modules/react4xp-buildconstants/bin/cli.js')
   args = [project.PROJDIR, '"{\\"BUILD_ENV\\":\\"development\\", \\"outputFileName\\":\\"test/output/testConfig.json\\", \\"NASHORNPOLYFILLS_SOURCE\\":\\"test/testPolyfiller.es6\\", \\"NASHORNPOLYFILLS_FILENAME\\":\\"testPolyfilled\\", \\"SUBFOLDER_BUILD_MAIN\\":\\"test/output\\", \\"R4X_TARGETSUBDIR\\":\\"\\", \\"overwriteConstantsFile\\":true}"']
 }
 makeConstants.inputs.files('node_modules/react4xp-buildconstants/bin/cli.js', 'test/testPolyfiller.es6')

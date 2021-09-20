@@ -53,6 +53,9 @@ configure(subprojects.findAll { !project.ext.SUBPROJS_TO_IGNORE.contains(it.name
 
 // package.json sets up postinstall script that makes sure packages/react4xp npm i is also run, so this shouldn't also be run as gradle tasks in each subproject
   npmInstall.enabled = false
+
+  task npmLink{}
+  npmLink.dependsOn build
 }
 
 // package.json sets up postinstall script that makes sure packages/react4xp npm i is also run
@@ -86,23 +89,15 @@ task clean(type: Delete) {
   followSymlinks = false
 }
 
-task npmUnlink(type: NpmTask) {
-  args = ['run', 'npmUnlink']
-
-  npmInstall.inputs.files('package.json', 'package-lock.json', 'build.gradle')
-}
-task npmLink(type: NpmTask) {
-  args = ['run', 'link:all']
-
-  npmInstall.inputs.files('package.json', 'package-lock.json', 'build.gradle')
-  inputs.files('package.json', 'build.gradle')
-}
 
 task build {}
 build.dependsOn npmInstall
+build.mustRunAfter npmInstall
 
-// npmLink.mustRunAfter npmDoInstall
-// npmInstall.dependsOn npmLink
+task npmLink(type: NpmTask) {
+  args = ['run', 'link:all']
+}
+npmLink.dependsOn build
 
 ///////////////////////////////////////////////////
 
