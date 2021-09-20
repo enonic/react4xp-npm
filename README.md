@@ -34,7 +34,15 @@ You'll need Gradle 5+ (a 6.2.1 gradle wrapper is included), Java JDK 11, Enonic 
 Use **Node 12** for development in this project _and in all projects when using `npm link` for linking to these packages
 locally_. Usually, that's when developing lib-react4xp.
 
-
+Commands:
+- `npm install` (or `gradlew npmInstall`): basic setup
+- `npm clean`: remove npm folders
+- `gradlew build`: build (includes npmInstall)
+- `gradlew clean`: clean built files
+- `gradlew test`: test build
+- `gradlew npmLink`: for local development; testing these packages in consuming projects before releasing:
+    - This runs `npm link` in all subpackages.
+    - After this command, run the _/getlinks.sh_ bash script at the root (windows script is missing for now, sorry) _from the root of a consuming project (`/relative/path/getlinks.sh` etc) and **after** running `npm install` in that project.
 
 ### NPM packages
 Under the _packages/_ folder are:
