@@ -75,7 +75,7 @@
     "glob": "^7.1.7",
     "husky": "^7.0.2",
     "lerna": "^4.0.0",
-    "lint-staged": "^11.1.2",
+    "lint-staged": "^12.3.1",
     "mocha": "^9.1.1",
     "node-fetch": "^2.6.2",
     "npm-safe-install": "^1.1.0",
