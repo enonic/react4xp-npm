@@ -2,19 +2,22 @@
 
 <img src="media/react4xp.svg" alt="React4xp logo" title="React4xp logo" width="160px">
 
-[React4xp](https://developer.enonic.com/templates/react4xp) monorepo for all the NPM dependency packages required by
+[React4xp](https://developer.enonic.com/templates/react4xp) monorepo for the NPM dependency packages required by
 both [lib-react4xp](https://github.com/enonic/lib-react4xp/) and parent projects running react4xp (for example
 the [react4xp starter](https://market.enonic.com/vendors/enonic/react4xp-starter) and anything derived from it).
+
 
 These packages (with this project's package names in _italics_) are:
 
 - [react4xp-buildconstants](https://www.npmjs.com/package/react4xp-buildconstants) (_constants_)
 - [react4xp-build-components](https://www.npmjs.com/package/react4xp-build-components) (_buildcomponents_)
-- [react4xp-regions](https://www.npmjs.com/package/react4xp-regions) (_regions_)
 - [react4xp-runtime-client](https://www.npmjs.com/package/react4xp-runtime-client) (_client_)
 - [react4xp-runtime-externals](https://www.npmjs.com/package/react4xp-runtime-externals) (_externals_)
-- [react4xp-runtime-nashornpolyfills](https://www.npmjs.com/package/react4xp-runtime-nashornpolyfills) (_
-  nashornpolyfills_)
+- [react4xp-runtime-nashornpolyfills](https://www.npmjs.com/package/react4xp-runtime-nashornpolyfills) (_nashornpolyfills_)
+
+Moved to it's own repository:
+
+- [react4xp-regions](https://www.npmjs.com/package/react4xp-regions) (_regions_)
 
 These packages don't need separate installation, they are bundled as dependencies of the
 main [react4xp package](https://www.npmjs.com/package/react4xp) (_react4xp_).
@@ -56,11 +59,8 @@ The  _packages/react4xp_ mother package has 3 main purposes:
 
 ### IMPORTANT: NPM and maintainability
 
-All the sub-packages mentioned above are dependencies of this main react4xp package. In addition, _react4xp-regions_
-and _react4xp-buildconstants_ are dependencies of _react4xp-build-components_, and  _react4xp-buildconstants_ is a
-dependency of _react4xp-runtime-nashornpolyfills_:
+All the sub-packages mentioned above are dependencies of this main react4xp package. In addition _react4xp-buildconstants_ are dependencies of _react4xp-build-components_, and  _react4xp-buildconstants_ is a dependency of _react4xp-runtime-nashornpolyfills_:
 
-<img src="media/react4xp-internal-dependencies.png" alt="React4xp internal package dependencies" title="React4xp internal package dependencies" width="1000px">
 
 **To avoid falling back into interdependency hell** (e.g. dependabot updating the same dependencies in different subpackages, which depend on one another and requiring a lot of extra work for maintaining!), follow these rules:
 
@@ -159,4 +159,3 @@ Again, these commands are only used **from the project root**:
   - `-Pdry`: dry-run
   - `-Pmessage='...'`: Common description of the entire release for all changed packages, will be used in commit
     messages to clarify and group the multiple commits that will occur during the process.
-

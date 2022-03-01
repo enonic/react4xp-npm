@@ -12,7 +12,7 @@ import groovy.json.JsonSlurper
 //
 // So [ lerna-version --> publish --> post-publish-git ] happens in 3 stages (levels), to ensure that package-locks are
 // rebuilt with existing/published package versions:
-//   - Level 1: The regions + constants packages are released FIRST, since other packages depend on them,
+//   - Level 1: The constants package is released FIRST, since other packages depend on them,
 //   - Level 3: The react4xp package is released LAST, since it depends on all the other packages,
 //   - Level 2: All other packages are published in between.
 // Before all this, building/linting/tests are run.
@@ -296,7 +296,7 @@ def getWaitMessage(currentLevel) {
     "Here's how: check updated versions in level ${currentLevel} packages (see below). " +
     "Then, compare with <dependencies> in package.json in level ${currentLevel + 1} packages and verify that they match the updated versions from level ${currentLevel}. " +
     "If not, update dependencies manually, but ignore versions with '${project.ext.PRERELEASE_ID}'.\n\n" +
-    "    - Level 1: The regions + constants packages are released FIRST, since other packages depend on them\n" +
+    "    - Level 1: The constants package is released FIRST, since other packages depend on them\n" +
     "    - Level 3 (THREE): The react4xp package is released LAST, since it depends on all the other packages\n" +
     "    - Level 2 (TWO): All other packages are published in between.\n\n" +
     "When you're ready, TYPE 'y' TO CONTINUE (git commit/push and npm publish).\n\n"
@@ -466,8 +466,8 @@ configure(subprojects.findAll { !project.ext.SUBPROJS_TO_IGNORE.contains(it.name
 
   // Enables/disables based on currently configured subproject's name:
 
-  // regions and constants are released first, since other packages depend on them:
-  if (project.name == "regions" || project.name == "constants") {
+  // constants is released first, since other packages depend on them:
+  if (project.name == "constants") {
     publishLevel1.enabled = true
     maybeSkipPublishLevel1.enabled = true
     npmClean2.enabled = !project.hasProperty("dry")
