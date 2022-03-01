@@ -63,7 +63,7 @@
     "react4xp-runtime-nashornpolyfills": "2.0.0",
     "stats-webpack-plugin": "^0.7.0",
     "fetch-timeout": "^0.0.2",
-    "node-fetch": "^3.0.0"
+    "node-fetch": "^2.6.7"
   },
   "directories": {
     "lib": "lib",
