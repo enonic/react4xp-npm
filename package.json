@@ -16,22 +16,20 @@
     "build": "run-script-os",
     "build:win32": "gradlew build --info",
     "build:default": "./gradlew build --info",
-    "postinstall": "npm run postinstall:react4xp && npm run postinstall:buildcomponents && npm run postinstall:client && npm run postinstall:constants && npm run postinstall:externals && npm run postinstall:nashornpolyfills && npm run postinstall:regions",
+    "postinstall": "npm run postinstall:react4xp && npm run postinstall:buildcomponents && npm run postinstall:client && npm run postinstall:constants && npm run postinstall:externals && npm run postinstall:nashornpolyfills",
     "postinstall:react4xp": "cd packages/react4xp && npm i && cd .. && cd .. && symlink-dir packages/react4xp node_modules/react4xp",
     "postinstall:buildcomponents": "rimraf packages/react4xp/node_modules/react4xp-build-components && symlink-dir packages/buildcomponents packages/react4xp/node_modules/react4xp-build-components",
     "postinstall:client": "rimraf packages/react4xp/node_modules/react4xp-runtime-client && symlink-dir packages/client packages/react4xp/node_modules/react4xp-runtime-client",
     "postinstall:constants": "symlink-dir packages/constants node_modules/react4xp-buildconstants && rimraf packages/react4xp/node_modules/react4xp-buildconstants && symlink-dir packages/constants packages/react4xp/node_modules/react4xp-buildconstants",
     "postinstall:externals": "rimraf packages/react4xp/node_modules/react4xp-runtime-externals && symlink-dir packages/externals packages/react4xp/node_modules/react4xp-runtime-externals",
     "postinstall:nashornpolyfills": "rimraf packages/react4xp/node_modules/react4xp-runtime-nashornpolyfills && symlink-dir packages/nashornpolyfills packages/react4xp/node_modules/react4xp-runtime-nashornpolyfills",
-    "postinstall:regions": "symlink-dir packages/regions node_modules/react4xp-regions && rimraf packages/react4xp/node_modules/react4xp-regions && symlink-dir packages/regions packages/react4xp/node_modules/react4xp-regions",
     "postbuild": "",
-    "link:all": "npm run link:buildcomponents && npm run link:client && npm run link:constants && npm run link:externals && npm run link:nashornpolyfills && npm run link:regions && npm run link:react4xp",
+    "link:all": "npm run link:buildcomponents && npm run link:client && npm run link:constants && npm run link:externals && npm run link:nashornpolyfills && npm run link:react4xp",
     "link:buildcomponents": "cd packages/buildcomponents && npm link",
     "link:client": "cd packages/client && npm link",
     "link:constants": "cd packages/constants && npm link",
     "link:externals": "cd packages/externals && npm link",
     "link:nashornpolyfills": "cd packages/nashornpolyfills && npm link",
-    "link:regions": "cd packages/regions && npm link",
     "link:react4xp": "cd packages/react4xp && npm link",
     "update": "npm i rimraf && rimraf node_modules && npm install && npm update && npm update --dev && npm audit fix && npm run update:react4xp && npm install",
     "update:react4xp": "rimraf packages/react4xp/node_modules && cd packages/react4xp && npm update && npm update --dev && npm audit fix && cd ../.. && rimraf packages/react4xp/node_modules"
@@ -92,6 +90,5 @@
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com:enonic/react4xp-npm.git"
-  },
-  "dependencies": {}
+  }
 }

@@ -62,4 +62,3 @@ test.outputs.dir('test/build')
 test.outputs.dir('test/output')
 
 //doPublish.shouldRunAfter ":packages:constants:doPublish"
-//doPublish.shouldRunAfter ":packages:regions:doPublish"
