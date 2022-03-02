@@ -33,8 +33,9 @@
     "fetch-timeout": "^0.0.2",
     "node-fetch": "^3.0.0"
   },
-  "description": "Single package wrapping all of React4xp's NPM dependencies",
+  "description": "Build tools for React4xp",
   "devDependencies": {
+    "@babel/preset-env": "^7",
     "path-exists-cli": "^2.0.0",
     "webpack": "^5.53.0",
     "webpack-cli": "^4.8.0",
@@ -46,6 +47,9 @@
     "test": "__tests__"
   },
   "files": [
+    "buildComponents/entriesandchunks.js",
+    "buildComponents/README.md",
+    "buildComponents/webpack.config.js",
     "util/index.js",
     "LICENSE",
     "npmInstall.gradle",
@@ -75,9 +79,17 @@
     "url": "git+ssh://git@github.com:enonic/react4xp-npm.git"
   },
   "scripts": {
-    "clean": "if [ -f *.tgz ]; then rm *.tgz; fi",
+    "build": "npx babel src/buildComponents/entriesandchunks.js -o buildComponents/entriesandchunks.js --no-comments --minified --compact true",
+    "build:components:constants": "../constants/bin/cli.js test/buildComponents \"$(< test/buildComponents/overrides.json)\"",
+    "clean": "rm -r *.tgz test/buildComponents/build test/buildComponents/dummy-build 2>/dev/null; true",
+    "lint": "eslint src/**/*.js --fix",
     "prepack": "npm run clean",
-    "test": "echo \"\n------------------------------ react4xp main: NO TESTS IMPLEMENTED YET! See sub-packages. ------------------------------\n\""
+    "pretest:components:raw": "npm run build:components:constants",
+    "pretest:components:override": "npm run build:components:constants",
+    "test": "echo \"\n------------------------------ react4xp main: NO TESTS IMPLEMENTED YET! See sub-packages. ------------------------------\n\"",
+    "test:components:entriesAndChunks": "mocha --require @babel/register --require @babel/polyfill --require test/buildComponents/test_helper.js \"test/**/*@(spec.js)\"",
+    "test:components:raw": "webpack --config buildComponents/webpack.config.js --env ENTRY_DIRS=entries --env CHUNK_DIRS=sharedComps,redux --env ROOT=$(pwd)/../.. --env OVERRIDE_COMPONENT_WEBPACK=test/buildComponents/webpack.config.symlinks.override.js --env REACT4XP_CONFIG_FILE=test/buildComponents/build/constants.json --env VERBOSE=true",
+    "test:components:override": "webpack --config buildComponents/webpack.config.js --env OVERRIDE_COMPONENT_WEBPACK=test/buildComponents/webpack.config.override.js --env ROOT=$(pwd)/../.. --env VERBOSE=true --env REACT4XP_CONFIG_FILE=test/buildComponents/build/constants.json"
   },
   "version": "2.0.1-SNAPSHOT"
 }

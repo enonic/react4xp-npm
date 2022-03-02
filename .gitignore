@@ -111,7 +111,8 @@
 
 **/*.old-from-lerna
 
-packages/buildcomponents/**/dummy-build/
+packages/react4xp/buildComponents/entriesandchunks.js
+packages/react4xp/test/buildComponents/**/dummy-build/
 packages/regions/entries/
 !packages/constants/src/bin/
 packages/*/*.js

@@ -3,7 +3,7 @@ import deepFreeze from 'deep-freeze';
 import path from 'path';
 
 // TODO: Test cachegroups!
-const { getEntries, getCacheGroups, normalizePath } = require('../entriesandchunks');
+const { getEntries, getCacheGroups, normalizePath } = require('../../buildComponents/entriesandchunks');
 
 const DIR_NAME = __dirname; // eslint-disable-line no-undef
 //console.log("DIR_NAME:", JSON.stringify(DIR_NAME, null, 2));
