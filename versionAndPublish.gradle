@@ -87,7 +87,7 @@ def lernaVersionCommonCmd = [
 ]
 task versionLevel1(type: Exec) {
   def cmds = lernaVersionCommonCmd + [
-    '--conventional-prerelease=react4xp-runtime-client,react4xp-runtime-externals,react4xp-runtime-nashornpolyfills',
+    '--conventional-prerelease=react4xp-runtime-nashornpolyfills',
     '--preid', "$project.ext.PRERELEASE_ID",
     '-m', "'chore(release lvl 1): $msg'"
   ]
@@ -103,7 +103,7 @@ task versionLevel1(type: Exec) {
 }
 task versionLevel2(type: Exec) {
   def cmds = lernaVersionCommonCmd + [
-    '--conventional-graduate=react4xp-runtime-client,react4xp-runtime-externals,react4xp-runtime-nashornpolyfills',
+    '--conventional-graduate=react4xp-runtime-nashornpolyfills',
     '--preid', "$project.ext.PRERELEASE_ID",
     '-m', "'chore(release lvl 2): $msg'"
   ]

@@ -1,7 +1,7 @@
 // LIBRARY_NAME is provided at buildtime by the react constants file via webpack, SERVICE_URL_ROOT may or may not be added globally:
 /* global LIBRARY_NAME, SERVICE_URL_ROOT */
 
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
 
 /** Adjusted version of https://www.oreilly.com/library/view/high-performance-javascript/9781449382308/ch01.html#I_programlisting1_d1e1051
  * in order to parallelly load internally independent scripts from multiple urls, and only when they've ALL completely loaded
@@ -13,7 +13,7 @@ function loadScripts(urls, callback) {
 
   function maybeCallback() {
     scriptsToComplete -= 1;
-    if (scriptsToComplete < 1 && typeof callback === 'function') {
+    if (scriptsToComplete < 1 && typeof callback === "function") {
       callback();
     }
   }
@@ -25,8 +25,10 @@ function loadScripts(urls, callback) {
 
   // Prevents a lot of bad input in one check (after handling an empty url array above): prevents it if url is missing,
   // null, an empty or only-spaces string, or an array where none of the items contain characters other than spaces
-  if (((urls || "") + "").replace(/,/g, '').trim() === "") {
-    console.error("Aborting: malformed 'urls' argument (all empty): " + JSON.stringify(urls));
+  if (`${urls || ""}`.replace(/,/g, "").trim() === "") {
+    console.error(
+      `Aborting: malformed 'urls' argument (all empty): ${JSON.stringify(urls)}`
+    );
     return;
   }
 
@@ -35,81 +37,87 @@ function loadScripts(urls, callback) {
   }
 
   // Trim each url, and remove the duplicates and empty items
-  urls = urls.map(url => (url || "").trim());
-  urls = urls.filter((url, index) =>
-    url !== "" &&
-    urls.indexOf(url) === index
-  );
+  urls = urls.map((url) => (url || "").trim());
+  urls = urls.filter((url, index) => url !== "" && urls.indexOf(url) === index);
 
   scriptsToComplete = urls.length;
 
-
   try {
-    urls.forEach(url => {
-      if (url.toLowerCase().endsWith('.css')) {
+    urls.forEach((url) => {
+      if (url.toLowerCase().endsWith(".css")) {
         const styles = document.createElement("link");
         styles.rel = "stylesheet";
         styles.type = "text/css";
 
-        if (styles.readyState) {  //IE
+        if (styles.readyState) {
+          // IE
           styles.onreadystatechange = () => {
-            if (styles.readyState == "loaded" || styles.readyState == "complete") {
+            if (
+              styles.readyState === "loaded" ||
+              styles.readyState === "complete"
+            ) {
               styles.onreadystatechange = null;
               maybeCallback();
             }
           };
-        } else {  //Others
+        } else {
+          // Others
           styles.onload = maybeCallback;
         }
 
         styles.href = url;
         document.getElementsByTagName("head")[0].appendChild(styles);
-
-      } else if (url.toLowerCase().endsWith('.js')) {
+      } else if (url.toLowerCase().endsWith(".js")) {
         try {
           const script = document.createElement("script");
           script.type = "text/javascript";
 
-          if (script.readyState) {  //IE
+          if (script.readyState) {
+            // IE
             script.onreadystatechange = () => {
-              if (script.readyState == "loaded" || script.readyState == "complete") {
+              if (
+                script.readyState === "loaded" ||
+                script.readyState === "complete"
+              ) {
                 script.onreadystatechange = null;
                 maybeCallback();
               }
             };
-          } else {  //Others
+          } else {
+            // Others
             script.onload = maybeCallback;
           }
 
           script.src = url;
           document.getElementsByTagName("head")[0].appendChild(script);
-
         } catch (e) {
-          throw Error("Error occurred while trying to load script from url [ " + url + " ]: " + e.message);
+          throw Error(
+            `Error occurred while trying to load script from url [ ${url} ]: ${e.message}`
+          );
         }
-
       } else {
-        console.error("Unexpected asset type:", url, "\n\nreact4xp.CLIENT.renderWithDependencies will currently only " +
-          "handle chunks (secondary assets) of type .JS and .CSS, see https://github.com/enonic/lib-react4xp/issues/103");
+        console.error(
+          "Unexpected asset type:",
+          url,
+          "\n\nreact4xp.CLIENT.renderWithDependencies will currently only " +
+            "handle chunks (secondary assets) of type .JS and .CSS, see https://github.com/enonic/lib-react4xp/issues/103"
+        );
         maybeCallback();
       }
     });
-
   } catch (e) {
-    console.error("Aborted - " + e.message);
+    console.error(`Aborted - ${e.message}`);
   }
 }
-
 
 /** After all the dependency and entry source scripts have been loaded and run, it's time to add a script tag that calls
  * the render method on each entry, and finally runs the callback */
 function runEntryCalls(entriesWithTargetIdsAndProps, entryNames, callback) {
-
   const script = document.createElement("script");
   script.type = "text/javascript";
 
   let inlineScript = "\n";
-  entryNames.forEach(entryName => {
+  entryNames.forEach((entryName) => {
     const trimmedEntryName = (entryName || "").trim();
     if (trimmedEntryName === "") {
       return;
@@ -121,14 +129,13 @@ function runEntryCalls(entriesWithTargetIdsAndProps, entryNames, callback) {
       `${JSON.stringify(entriesWithTargetIdsAndProps[entryName].props)});\n`;
   });
 
-  if (typeof callback === 'function') {
-    inlineScript += "(" + callback.toString() + ")();\n";
+  if (typeof callback === "function") {
+    inlineScript += `(${callback.toString()})();\n`;
   }
 
   script.appendChild(document.createTextNode(inlineScript));
   document.getElementsByTagName("head")[0].appendChild(script);
 }
-
 
 /** Takes an object entriesWithTargetIdsAndProps where the keys are entry names (jsxPath) and the values are
  * objects with a mandatory targetId attribute and an optional props attribute - which is a regular object of any shape.
@@ -141,88 +148,100 @@ function runEntryCalls(entriesWithTargetIdsAndProps, entryNames, callback) {
  * /_/service/my.app/react4xp/ and /_/service/my.app/react4xp-dependencies/, then serviceRootUrl should be /_/service/my.app (without
  * a trailing slash). Optional, sort of: you can define the constant SERVICE_URL_ROOT in global namespace and skip it. If you don't,
  * it's mandatory. */
-export function renderWithDependencies(entriesWithTargetIdsAndProps, callback, serviceUrlRoot) {
+export function renderWithDependencies(
+  entriesWithTargetIdsAndProps,
+  callback,
+  serviceUrlRoot // strings are not passed by reference so cannot be modified
+) {
   const entries = Object.keys(entriesWithTargetIdsAndProps) || [];
 
   const entryNames = entries
-    .map(name => ((name || "") + "").trim())
-    .filter(name => name !== "");
+    .map((name) => `${name || ""}`.trim())
+    .filter((name) => name !== "");
+
+  let localServiceUrlRoot = serviceUrlRoot; // avoid no-param-reassign
 
   if (entryNames.length > 0) {
-    if (!serviceUrlRoot) {
-      if (typeof SERVICE_URL_ROOT === 'undefined') {
-        throw Error("Missing service URL root. Include it as a last argument " +
-          "or set a global variable constant SERVICE_URL_ROOT before calling renderWithDependencies.");
+    if (!localServiceUrlRoot) {
+      if (typeof SERVICE_URL_ROOT === "undefined") {
+        throw Error(
+          "Missing service URL root. Include it as a last argument " +
+            "or set a global variable constant SERVICE_URL_ROOT before calling renderWithDependencies."
+        );
       }
-      serviceUrlRoot = SERVICE_URL_ROOT;
+      localServiceUrlRoot = SERVICE_URL_ROOT;
     }
 
-    fetch(`${serviceUrlRoot}/react4xp-dependencies?${entryNames.join("&")}`)
-      .then(data => {
-        return data.json();
+    fetch(`${localServiceUrlRoot}/react4xp-dependencies?${entryNames.join("&")}`)
+      .then((data) => data.json())
+      .then((dependencyUrls) => {
+        loadScripts(dependencyUrls, () => {
+          loadScripts(
+            entryNames.map((name) => `${localServiceUrlRoot}/react4xp/${name}.js`),
+            () =>
+              runEntryCalls(entriesWithTargetIdsAndProps, entryNames, callback)
+          );
+        });
       })
-      .then(dependencyUrls => {
-        loadScripts(
-          dependencyUrls,
-          () => {
-            loadScripts(
-              entryNames.map(name => `${serviceUrlRoot}/react4xp/${name}.js`),
-              () => runEntryCalls(entriesWithTargetIdsAndProps, entryNames, callback),
-            );
-          }
-        );
-      })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }
 }
 
-
 const getContainer = (targetId) => {
   let container = null;
   try {
     if (!targetId) {
-      throw Error(`${LIBRARY_NAME}.CLIENT can't mount component into target container: missing targetId`);
+      throw Error(
+        `${LIBRARY_NAME}.CLIENT can't mount component into target container: missing targetId`
+      );
     }
     container = document.getElementById(targetId);
-
   } catch (e) {
     console.error(e);
   }
 
   if (!container) {
-    throw Error(`${LIBRARY_NAME}.CLIENT can't mount component into target container: no DOM element with ID '${targetId}'`);
+    throw Error(
+      `${LIBRARY_NAME}.CLIENT can't mount component into target container: no DOM element with ID '${targetId}'`
+    );
   }
 
   return container;
 };
 
+const getRenderable = (Component, props) =>
+  typeof Component === "function"
+    ? Component(props)
+    : typeof Component !== "object"
+      ? Component
+      : typeof Component.default === "function"
+        ? Component.default(props)
+        : Component.default;
 
-const getRenderable = (Component, props) => {
-  return (typeof Component === 'function') ?
-    Component(props) :
-    (typeof Component !== 'object') ?
-      Component :
-      (typeof Component.default === 'function') ?
-        Component.default(props) :
-        Component.default;
-};
-
-
-const postFillBody = (componentPath, htmlBody, region, regionName, regionsBuffer, regionsRemaining) => {
+const postFillBody = (
+  componentPath,
+  htmlBody,
+  region,
+  regionName,
+  regionsBuffer,
+  regionsRemaining
+) => {
   if (htmlBody) {
     // TODO: Error if no body?
-    const compTag = `<!--# COMPONENT ${componentPath} -->`.replace(/\//g, '/');
+    const compTag = `<!--# COMPONENT ${componentPath} -->`.replace(/\//g, "/");
 
-    regionsBuffer[regionName] = regionsBuffer[regionName].replace(new RegExp(compTag), htmlBody);
+    regionsBuffer[regionName] = regionsBuffer[regionName].replace(
+      new RegExp(compTag),
+      htmlBody
+    );
 
     if (regionsRemaining[regionName] === 0) {
       region.innerHTML = regionsBuffer[regionName];
     }
   }
 };
-
 
 /*
 const makeElementArrayAndRange = (insertHtml, targetElement) => {
@@ -297,21 +316,23 @@ const postFillPageContributions = (json) => {
 };
  */
 
-
 const postFillRegions = (props) => {
-
   // If hasRegions, render iterates regions and their components, makes a call to lib-react4xp-service react4xp-component
   // for each, looks for body and pageContributions. If body exists, replaces the corresponding tag with body. Runs pageContributions.
   const regionsBuffer = {};
   const regionsRemaining = {};
 
-  Object.keys(props.regionsData || {}).forEach(regionName => {
+  Object.keys(props.regionsData || {}).forEach((regionName) => {
     const components = props.regionsData[regionName].components || [];
 
     // TODO: check for length !== 1
-    const region = document.querySelectorAll(`[data-portal-region='${regionName}']`)[0];
+    const region = document.querySelectorAll(
+      `[data-portal-region='${regionName}']`
+    )[0];
     if (!region) {
-      console.error(`Expected region name attribute not found in document: data-portal-region="${regionName}"`);
+      console.error(
+        `Expected region name attribute not found in document: data-portal-region="${regionName}"`
+      );
       return;
     }
 
@@ -321,41 +342,58 @@ const postFillRegions = (props) => {
     // Used in dev mode for constructing the inserted postfill console warning (see webpack.config.js):
     const regionPathsPostfilled = []; // eslint-disable-line
 
-    components.forEach(component => {
-      if (!component || typeof component !== 'object' || Array.isArray(component) || !Object.keys(component).length) {
-        throw Error(`React4xp couldn't postfill component. Components array has an item that is empty or a non-object: ${
-          JSON.stringify(components)}`);
+    components.forEach((component) => {
+      if (
+        !component ||
+        typeof component !== "object" ||
+        Array.isArray(component) ||
+        !Object.keys(component).length
+      ) {
+        throw Error(
+          `React4xp couldn't postfill component. Components array has an item that is empty or a non-object: ${JSON.stringify(
+            components
+          )}`
+        );
       }
 
-      const [app, compName] = ((component.descriptor || '') + '').split(':');
+      const [app, compName] = `${component.descriptor || ""}`.split(":");
       if (!app || !compName) {
-        throw Error("Missing or malformed descriptor - React4xp expected a .descriptor attribute like '<enonicXpAppName>:" +
-          "<componentName>, and therefore couldn't properly client-side-render this component: ", component);
+        throw Error(
+          "Missing or malformed descriptor - React4xp expected a .descriptor attribute like '<enonicXpAppName>:" +
+            "<componentName>, and therefore couldn't properly client-side-render this component: ",
+          component
+        );
       }
-
 
       if (!component.path) {
-        throw Error(`Missing component.path, React4xp couldn't postfill component: ${JSON.stringify(component)}`);
+        throw Error(
+          `Missing component.path, React4xp couldn't postfill component: ${JSON.stringify(
+            component
+          )}`
+        );
       }
 
       // Append the component path to the current url, without url params:
-      let urlCore = window.location.href.split('?')[0];
-      if (!urlCore.endsWith('/')) {
-        urlCore += '/';
+      let urlCore = window.location.href.split("?")[0];
+      if (!urlCore.endsWith("/")) {
+        urlCore += "/";
       }
       const url = `${urlCore}_/component${component.path}`;
 
-      fetch(
-        url,
-        {
-          method: 'GET',
-        })
-        .then(data => {
-          return data.text();
-        })
-        .then(text => {
+      fetch(url, {
+        method: "GET"
+      })
+        .then((data) => data.text())
+        .then((text) => {
           regionsRemaining[regionName] -= 1;
-          postFillBody(component.path, text, region, regionName, regionsBuffer, regionsRemaining);
+          postFillBody(
+            component.path,
+            text,
+            region,
+            regionName,
+            regionsBuffer,
+            regionsRemaining
+          );
           // postFillPageContributions(json);
 
           // Webpack dev mode (--env BUILD_ENV=production) will enable a client-console warning here. Nothing if not dev mode:
@@ -367,7 +405,7 @@ const postFillRegions = (props) => {
           // to work. Component path(s): <component path array>`"
           DEVMODE_WARN_AGAINST_CLIENTRENDERED_REGIONS // eslint-disable-line
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         });
     });
@@ -382,7 +420,6 @@ export function render(Component, targetId, props, isPage, hasRegions) {
   if (hasRegions) {
     postFillRegions(props);
   }
-
 }
 
 export function hydrate(Component, targetId, props, isPage, hasRegions) {
