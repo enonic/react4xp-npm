@@ -31,7 +31,7 @@
     ],
     "comma-dangle": [
       "error",
-      "always-multiline"
+      "never"
     ],
     "no-console": [
       "off"
@@ -48,12 +48,18 @@
     "no-duplicate-imports": [
       "error"
     ],
+    "no-nested-ternary": [
+      "off"
+    ],
     "no-var": [
       "error"
     ],
     "max-len": [
       "error",
       140
+    ],
+    "prettier/prettier": [
+      "off"
     ],
     "space-infix-ops": [
       "error",
@@ -70,7 +76,13 @@
     ],
     "operator-linebreak": [
       "error",
-      "after"
+      "after",
+      {
+        "overrides": {
+          "?": "before",
+          ":": "before"
+        }
+      }
     ]
   }
 }
