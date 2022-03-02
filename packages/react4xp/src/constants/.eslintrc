@@ -21,6 +21,9 @@
     "eol-last": [
       "error"
     ],
+    "func-names": [
+      "off"
+    ],
     "indent": [
       "error",
       2,
@@ -74,6 +77,12 @@
     "operator-linebreak": [
       "error",
       "after"
+    ],
+    "prefer-template": [
+      "off"
+    ],
+    "prettier/prettier": [
+      "off"
     ],
     "react/jsx-uses-vars": [
       1
