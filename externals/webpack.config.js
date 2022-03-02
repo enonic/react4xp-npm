@@ -34,7 +34,7 @@ const fs = require("fs");
 
 const Chunks2json = require("chunks-2-json-webpack-plugin");
 
-const { cleanAnyDoublequotes } = require("react4xp/util");
+const { cleanAnyDoublequotes } = require("../util");
 
 // TODO: Find a good pattern to control output name for chunks,
 // allowing for multi-chunks and still doing it in one pass (only one chunks.externals.json)

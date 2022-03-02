@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const ensureTargetOutputPath = require('./ensureTargetOutputPath');
 
-const {makeVerboseLogger} = require('react4xp/util');
+const {makeVerboseLogger} = require('../util');
 
 const ME = typeof __filename !== "undefined" ? `: ${__filename}` : '';  // eslint-disable-line no-undef
 
