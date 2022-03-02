@@ -16,17 +16,19 @@ if (typeof console === 'undefined') {
 }
 */
 
-var context = typeof window !== 'undefined' ? window : global;
+const context = typeof window !== 'undefined' ? window : global;
 
 // Polyfills Set, Map and empty event listener (since nashorn is only used for SSR, where event listener is irrelevant):
-var Map = require('es6-set-and-map').map;
-var Set = require('es6-set-and-map').set;
+const Map = require('es6-set-and-map').map;
+const Set = require('es6-set-and-map').set;
+
 (function (window) {
-  if (typeof window.Map === 'undefined') window.Map = Map;
-  if (typeof window.Set === 'undefined') window.Set = Set;
-  if (typeof window.addEventListener !== 'function') window.addEventListener = function () {
-  };
-  if (typeof window.document === 'undefined') window.document = {};
+  if (typeof window.Map === 'undefined') window.Map = Map; // eslint-disable-line no-param-reassign
+  if (typeof window.Set === 'undefined') window.Set = Set; // eslint-disable-line no-param-reassign
+  if (typeof window.addEventListener !== 'function') {
+    window.addEventListener = function () {}; // eslint-disable-line no-param-reassign
+  }
+  if (typeof window.document === 'undefined') window.document = {}; // eslint-disable-line no-param-reassign
 })(context);
 
 
@@ -40,13 +42,13 @@ var Set = require('es6-set-and-map').set;
 (function (context) {
   'use strict';
 
-  var Timer = Java.type('java.util.Timer');
-  var Phaser = Java.type('java.util.concurrent.Phaser');
+  const Timer = Java.type('java.util.Timer');
+  const Phaser = Java.type('java.util.concurrent.Phaser');
 
-  var timer = new Timer('jsEventLoop', false);
-  var phaser = new Phaser();
+  const timer = new Timer('jsEventLoop', false);
+  const phaser = new Phaser();
 
-  var timeoutStack = 0;
+  let timeoutStack = 0;
 
   function pushTimeout() {
     timeoutStack++;
@@ -61,16 +63,17 @@ var Set = require('es6-set-and-map').set;
     phaser.forceTermination();
   }
 
-  var onTaskFinished = function () {
+  const onTaskFinished = function () {
     phaser.arriveAndDeregister();
   };
 
   if (typeof context.setTimeout === 'undefined') {
     context.setTimeout = function (fn, millis /* [, args...] */) {
-      var args = [].slice.call(arguments, 2, arguments.length);
+      const args = [].slice.call(arguments, 2, arguments.length);
 
-      var phase = phaser.register();
-      var canceled = false;
+      // const phase =
+      phaser.register();
+      let canceled = false;
       timer.schedule(function () {
         if (canceled) {
           return;
@@ -79,7 +82,9 @@ var Set = require('es6-set-and-map').set;
         try {
           fn.apply(context, args);
         } catch (e) {
-          print(e);
+          /* eslint-disable no-restricted-globals */
+          print(e); // eslint-disable-line no-undef
+          /* eslint-enable no-restricted-globals */
         } finally {
           onTaskFinished();
           popTimeout();
@@ -104,11 +109,11 @@ var Set = require('es6-set-and-map').set;
 
   if (typeof context.setInterval === 'undefined') {
     context.setInterval = function (fn, delay /* [, args...] */) {
-      var args = [].slice.call(arguments, 2, arguments.length);
+      const args = [].slice.call(arguments, 2, arguments.length);
 
-      var cancel = null;
+      let cancel = null;
 
-      var loop = function () {
+      const loop = function () {
         cancel = context.setTimeout(loop, delay);
         fn.apply(context, args);
       };
@@ -135,17 +140,18 @@ if (typeof Object.assign !== 'function') {
   Object.defineProperty(Object, "assign", {
     value: function assign(target, varArgs) {
       'use strict';
+
       if (target === null || target === undefined) {
         throw new TypeError('Cannot convert undefined or null to object');
       }
 
-      var to = Object(target);
+      const to = Object(target);
 
-      for (var index = 1; index < arguments.length; index++) {
-        var nextSource = arguments[index];
+      for (let index = 1; index < arguments.length; index++) {
+        const nextSource = arguments[index];
 
         if (nextSource !== null && nextSource !== undefined) {
-          for (var nextKey in nextSource) {
+          for (let nextKey in nextSource) {
             // Avoid bugs when hasOwnProperty is shadowed
             if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
               to[nextKey] = nextSource[nextKey];
