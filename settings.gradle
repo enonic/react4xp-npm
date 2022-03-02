@@ -10,6 +10,4 @@
 rootProject.name = 'react4xp'
 
 include ":packages:constants"
-include ":packages:client"
-include ":packages:externals"
 include ":packages:nashornpolyfills"

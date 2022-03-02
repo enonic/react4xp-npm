@@ -117,8 +117,8 @@ task config_tasks {
     // Read the file content into an object
     def REACT4XP_TASKS = [
       "react4xpComponents",
-      "react4xp_externals",
-      "react4xp_client",
+      "react4xpExternals",
+      "react4xpClient",
       "react4xp_nashornpolyfills"
     ]
     def configFile = new File(project.ext.react4xp.masterConfigFileName)
@@ -180,14 +180,14 @@ react4xpComponents.dependsOn += 'config_tasks'
 jar.dependsOn += "react4xpComponents"
 
 
-task react4xp_externals(type: NodeTask) {
+task react4xpExternals(type: NodeTask) {
   group 'React4xp'
   description 'Compile the externals (react and react-dom'
 
   // 1 MANDATORY STEP: react4xp/buildComponents compiles the components added in this project into runnable/renderable components. See react4xp/buildComponents docs.
   script = file('node_modules/webpack/bin/webpack.js')
   args = [
-    '--config', 'node_modules/react4xp-runtime-externals/webpack.config.js',  // react4xp-runtime-externals comes with react4xp@^0.2.0
+    '--config', 'node_modules/react4xp/externals/webpack.config.js'
     '--color',
     '--env', 'VERBOSE=' + project.ext.react4xp.verbose,
     '--env', 'ENTRY_DIRS=' + project.ext.react4xp.entryDirs,
@@ -204,7 +204,7 @@ task react4xp_externals(type: NodeTask) {
   args.addAll(['--env', 'REACT4XP_CONFIG_FILE=' + project.ext.react4xp.masterConfigFileName])
 
 /*  if (project.ext.react4xp.verbose && project.ext.react4xp.buildExternals) {
-    println "react4xp_externals task - args:"
+    println "react4xpExternals task - args:"
     println "\t${args}\n"
   }*/
 
@@ -212,20 +212,20 @@ task react4xp_externals(type: NodeTask) {
   inputs.file("package.json")
   inputs.file("package-lock.json")
 }
-react4xp_externals.dependsOn += 'config_tasks'
+react4xpExternals.dependsOn += 'config_tasks'
 if (project.ext.react4xp.buildExternals) {
-  jar.dependsOn += 'react4xp_externals'
+  jar.dependsOn += 'react4xpExternals'
 }
 
 
-task react4xp_client(type: NodeTask) {
+task react4xp_(type: NodeTask) {
   group 'React4xp'
   description 'Compile the react4xp runtime client'
 
   // 1 MANDATORY STEP: react4xp/buildComponents compiles the components added in this project into runnable/renderable components. See react4xp/buildComponents docs.
   script = file('node_modules/webpack/bin/webpack.js')
   args = [
-    '--config', 'node_modules/react4xp-runtime-client/webpack.config.js',   // react4xp-runtime-client comes with react4xp@^0.2.0
+    '--config', 'node_modules/react4xp/client/webpack.config.js',
     '--color',
     '--env', 'VERBOSE=' + project.ext.react4xp.verbose,
     '--env', 'ENTRY_DIRS=' + project.ext.react4xp.entryDirs,
@@ -242,7 +242,7 @@ task react4xp_client(type: NodeTask) {
   args.addAll(['--env', 'REACT4XP_CONFIG_FILE=' + project.ext.react4xp.masterConfigFileName])
 
   if (project.ext.react4xp.verbose && project.ext.react4xp.buildRuntimeClient) {
-    println "react4xp_client task - args:"
+    println "react4xpClient task - args:"
     println "\t${args}\n"
   }
 
@@ -250,9 +250,9 @@ task react4xp_client(type: NodeTask) {
   inputs.file("package.json")
   inputs.file("package-lock.json")
 }
-react4xp_client.dependsOn += 'config_tasks'
+react4xpClient.dependsOn += 'config_tasks'
 if (project.ext.react4xp.buildRuntimeClient) {
-  jar.dependsOn += 'react4xp_client'
+  jar.dependsOn += 'react4xpClient'
 }
 
 

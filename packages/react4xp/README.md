@@ -4,9 +4,6 @@ Bundles all the necessary NPM components of [React4xp](https://market.enonic.com
 that these packages don't need to be separately installed and version-handled:
 
 - [react4xp-buildconstants](https://www.npmjs.com/package/react4xp-buildconstants)
-- [react4xp-build-components](https://www.npmjs.com/package/react4xp-build-components)
-- [react4xp-runtime-client](https://www.npmjs.com/package/react4xp-runtime-client)
-- [react4xp-runtime-externals](https://www.npmjs.com/package/react4xp-runtime-externals)
 - [react4xp-runtime-nashornpolyfills](https://www.npmjs.com/package/react4xp-runtime-nashornpolyfills)
 
 Moved to it's own repository:
