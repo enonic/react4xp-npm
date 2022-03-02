@@ -10,8 +10,6 @@ the [react4xp starter](https://market.enonic.com/vendors/enonic/react4xp-starter
 These packages (with this project's package names in _italics_) are:
 
 - [react4xp-buildconstants](https://www.npmjs.com/package/react4xp-buildconstants) (_constants_)
-- [react4xp-runtime-client](https://www.npmjs.com/package/react4xp-runtime-client) (_client_)
-- [react4xp-runtime-externals](https://www.npmjs.com/package/react4xp-runtime-externals) (_externals_)
 - [react4xp-runtime-nashornpolyfills](https://www.npmjs.com/package/react4xp-runtime-nashornpolyfills) (_nashornpolyfills_)
 
 Moved to it's own repository:
