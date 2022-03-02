@@ -47,10 +47,11 @@
   },
   "files": [
     "util/index.js",
+    "LICENSE",
     "npmInstall.gradle",
     "react4xp.gradle",
-    "updaters.gradle",
-    "react4xp.properties"
+    "react4xp.properties",
+    "updaters.gradle"
   ],
   "homepage": "https://github.com/enonic/react4xp#readme",
   "keywords": [
