@@ -5,7 +5,7 @@
 /* global __filename, process, __dirname */
 
 const path = require('path');
-const {makeVerboseLogger, cleanAnyDoublequotes} = require("react4xp/util");
+const {makeVerboseLogger, cleanAnyDoublequotes} = require("../util");
 
 const Chunks2json = require('chunks-2-json-webpack-plugin');
 const webpack = require('webpack');

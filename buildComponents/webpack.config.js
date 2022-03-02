@@ -3,7 +3,7 @@
 const StatsPlugin = require("stats-webpack-plugin");
 const path = require("path");
 const fs = require("fs");
-const { makeVerboseLogger, cleanAnyDoublequotes } = require("react4xp/util");
+const { makeVerboseLogger, cleanAnyDoublequotes } = require("../util");
 const React4xpEntriesAndChunks = require("./entriesandchunks");
 
 // Turns a comma-separated list of subdirectories below the root React4xp source folder (SRC_R4X, usually .../resources/react4xp/)
