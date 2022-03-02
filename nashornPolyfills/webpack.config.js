@@ -1,7 +1,7 @@
 // Transpiles nashorn polyfill from, among other things, npm libraries.
 
 const path = require("path");
-const { makeVerboseLogger, cleanAnyDoublequotes } = require("react4xp/util");
+const { makeVerboseLogger, cleanAnyDoublequotes } = require("../util");
 
 module.exports = (env) => {
   env = env || {}; // eslint-disable-line no-param-reassign
