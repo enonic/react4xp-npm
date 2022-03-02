@@ -2,8 +2,7 @@ const path = require('path');
 const fs = require('fs');
 
 function ensureTargetOutputPath(outputFile, verboseLog) {
-  verboseLog = verboseLog || function () {
-  };
+  verboseLog = verboseLog || function () {};
 
   if (outputFile.indexOf(path.sep) === -1) {
     outputFile = '.' + path.sep + outputFile;
