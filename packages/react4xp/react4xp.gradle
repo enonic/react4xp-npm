@@ -119,7 +119,7 @@ task config_tasks {
       "react4xpComponents",
       "react4xpExternals",
       "react4xpClient",
-      "react4xp_nashornpolyfills"
+      "react4xpNashornPolyfills"
     ]
     def configFile = new File(project.ext.react4xp.masterConfigFileName)
     CONFIG = new JsonSlurper().parseText(configFile.text)
@@ -256,13 +256,13 @@ if (project.ext.react4xp.buildRuntimeClient) {
 }
 
 
-task react4xp_nashornpolyfills(type: NodeTask) {
+task react4xpNashornPolyfills(type: NodeTask) {
   group 'React4xp'
   description 'Run the imported react4xp webpack scripts that compile the components and externals (as well as client and nashorn polyfills if needed)'
 
   script = file('node_modules/webpack/bin/webpack.js')
   args = [
-    '--config', 'node_modules/react4xp-runtime-nashornpolyfills/webpack.config.js',    // react4xp-runtime-nashornpolyfills comes with react4xp@^0.2.0
+    '--config', 'node_modules/react4xp/nashornPolyfills/webpack.config.js',
     '--color',
     '--env', 'VERBOSE=' + project.ext.react4xp.verbose,
     '--env', 'ENTRY_DIRS=' + project.ext.react4xp.entryDirs,
@@ -279,7 +279,7 @@ task react4xp_nashornpolyfills(type: NodeTask) {
   args.addAll(['--env', 'REACT4XP_CONFIG_FILE=' + project.ext.react4xp.masterConfigFileName])
 
   if (project.ext.react4xp.verbose && project.ext.react4xp.nashornPolyfillsSource != null) {
-    println "react4xp_nashornpolyfills task - args:"
+    println "react4xpNashornPolyfills task - args:"
     println "\t${args}\n"
   }
 
@@ -287,7 +287,7 @@ task react4xp_nashornpolyfills(type: NodeTask) {
   inputs.file("package.json")
   inputs.file("package-lock.json")
 }
-react4xp_nashornpolyfills.dependsOn += 'config_tasks'
+react4xpNashornPolyfills.dependsOn += 'config_tasks'
 if (project.ext.react4xp.nashornPolyfillsSource != null) {
-  jar.dependsOn += 'react4xp_nashornpolyfills'
+  jar.dependsOn += 'react4xpNashornPolyfills'
 }
