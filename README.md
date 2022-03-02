@@ -10,7 +10,6 @@ the [react4xp starter](https://market.enonic.com/vendors/enonic/react4xp-starter
 These packages (with this project's package names in _italics_) are:
 
 - [react4xp-buildconstants](https://www.npmjs.com/package/react4xp-buildconstants) (_constants_)
-- [react4xp-build-components](https://www.npmjs.com/package/react4xp-build-components) (_buildcomponents_)
 - [react4xp-runtime-client](https://www.npmjs.com/package/react4xp-runtime-client) (_client_)
 - [react4xp-runtime-externals](https://www.npmjs.com/package/react4xp-runtime-externals) (_externals_)
 - [react4xp-runtime-nashornpolyfills](https://www.npmjs.com/package/react4xp-runtime-nashornpolyfills) (_nashornpolyfills_)
@@ -59,7 +58,7 @@ The  _packages/react4xp_ mother package has 3 main purposes:
 
 ### IMPORTANT: NPM and maintainability
 
-All the sub-packages mentioned above are dependencies of this main react4xp package. In addition _react4xp-buildconstants_ are dependencies of _react4xp-build-components_, and  _react4xp-buildconstants_ is a dependency of _react4xp-runtime-nashornpolyfills_:
+All the sub-packages mentioned above are dependencies of this main react4xp package. In addition _react4xp-buildconstants_ is a dependency of _react4xp-runtime-nashornpolyfills_:
 
 
 **To avoid falling back into interdependency hell** (e.g. dependabot updating the same dependencies in different subpackages, which depend on one another and requiring a lot of extra work for maintaining!), follow these rules:
