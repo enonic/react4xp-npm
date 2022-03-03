@@ -98,7 +98,7 @@ task config_react4xp(type: NodeTask) {
   group 'React4xp'
   description 'Build the master config JSON file and its copy'
 
-  script = file('node_modules/react4xp-buildconstants/bin/cli.js')
+  script = file('node_modules/react4xp/bin/buildConstants.js')
   // react4xp-buildconstants comes with react4xp@^0.2.0
   args = [ROOT, JsonOutput.toJson(JsonOutput.toJson(project.ext.react4xp))]
 }
