@@ -187,7 +187,7 @@ task react4xpExternals(type: NodeTask) {
   // 1 MANDATORY STEP: react4xp/buildComponents compiles the components added in this project into runnable/renderable components. See react4xp/buildComponents docs.
   script = file('node_modules/webpack/bin/webpack.js')
   args = [
-    '--config', 'node_modules/react4xp/externals/webpack.config.js'
+    '--config', 'node_modules/react4xp/externals/webpack.config.js',
     '--color',
     '--env', 'VERBOSE=' + project.ext.react4xp.verbose,
     '--env', 'ENTRY_DIRS=' + project.ext.react4xp.entryDirs,
@@ -218,7 +218,7 @@ if (project.ext.react4xp.buildExternals) {
 }
 
 
-task react4xp_(type: NodeTask) {
+task react4xpClient(type: NodeTask) {
   group 'React4xp'
   description 'Compile the react4xp runtime client'
 
