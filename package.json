@@ -39,7 +39,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7",
     "path-exists-cli": "^2.0.0",
-    "webpack": "^5.53.0",
+    "webpack": "^5.72.0",
     "webpack-cli": "^4.8.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
