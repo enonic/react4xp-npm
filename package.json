@@ -21,7 +21,7 @@
     "babel-loader": "^8.2.2",
     "chai": "^4.3.4",
     "chunks-2-json-webpack-plugin": "^1.0.4",
-    "core-js": "^3.18.0",
+    "core-js": "^3.22.2",
     "deep-freeze": "^0.0.1",
     "es6-set-and-map": "^1.0.5",
     "fetch-timeout": "^0.0.2",
