@@ -28,7 +28,7 @@
     "glob": "^7.1.7",
     "q-i": "^2.0.1",
     "mocha": "^9.1.1",
-    "node-fetch": "^3.0.0",
+    "node-fetch": "^3.2.4",
     "npm-safe-install": "^1.1.0",
     "prop-types": "^15.7.2",
     "react4xp-regions": "1.1.0",
