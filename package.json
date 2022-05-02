@@ -10,7 +10,7 @@
     "Christian Westgaard <cwe@enonic.com>"
   ],
   "dependencies": {
-    "@babel/cli": "^7.14.8",
+    "@babel/cli": "^7.17.10",
     "@babel/core": "^7.15.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.15.6",
     "@babel/plugin-transform-arrow-functions": "^7.14.5",
