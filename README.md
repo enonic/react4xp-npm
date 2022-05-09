@@ -1,3 +1,5 @@
+**This NPM module is DEPRECATED and replaced by [@enonic/react4xp](https://www.npmjs.com/package/@enonic/react4xp). Please refer to this [upgrade guide](https://developer.enonic.com/docs/react4xp/master) if your project is using this dependency.**
+
 # `react4xp`
 
 Bundles all the necessary NPM components of [React4xp](https://market.enonic.com/vendors/enonic/react4xp-starter), so
